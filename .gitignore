@@ -1,0 +1,26 @@
+# =============================================================================
+#  osint-harian — berkas yang TIDAK boleh di-commit
+# =============================================================================
+
+# --- Lock (cegah double-run) ---
+.lock
+
+# --- TIER-LOKAL: JANGAN PERNAH commit teks penuh media komersial ---
+# (hak cipta; risiko DMCA; Pasal 43 UUHC)
+data/news-full/
+
+# --- Laporan --cek tidak di-commit (riwayat error harian tetap di-commit) ---
+data/errors/cek-*.md
+
+# --- Log lokal ---
+*.log
+data/cron.log
+
+# --- OS / editor ---
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*~
+.idea/
+.vscode/
