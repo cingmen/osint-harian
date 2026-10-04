@@ -79,6 +79,9 @@ sebelumnya lewat **mesin diff terstruktur**, mendeteksi **anomali**, mencatat
 osint-harian/
 ├── tracker-harian.sh          # skrip utama (macOS/Linux, bash)
 ├── tracker-harian.ps1         # skrip utama (Windows, PowerShell) — perilaku identik
+├── jaga-harian.sh             # penjaga: jalankan otomatis tiap 00:00 (bash)
+├── jaga-harian.ps1            # penjaga: jalankan otomatis tiap 00:00 (Windows)
+├── setup-git.sh               # penyiapan repo git + remote (sekali saja)
 ├── docs/                      # yang dilayani GitHub Pages (folder /docs)
 │   ├── index.html             # dashboard statis (gelap, responsif, tanpa framework)
 │   ├── data.json              # manifest (dibuat ulang tiap run)
@@ -95,6 +98,7 @@ osint-harian/
 │   ├── errors/                #   <tanggal>.md  → DI-COMMIT
 │   │   └── cek-<tanggal>.md   #   laporan --cek  → TIDAK di-commit
 │   ├── news-full/             #   ⛔ GITIGNORED, tidak pernah di-commit
+│   ├── logs/                  #   ⛔ GITIGNORED, log penjaga jaga-<tanggal>.log
 │   └── CHANGES-<tanggal>.md   #   log status + blok PERUBAHAN
 ├── .github/workflows/update.yml
 ├── .gitignore
@@ -473,6 +477,10 @@ Diperbaiki dari laporan error run nyata `data/errors/2026-10-04.md`:
 | **RSS kompas** → `404` | Feed Kompas dihapus | Diganti **CNBC Indonesia** (`cnbcindonesia.com/rss`) |
 | **RSS antara** → `403` | Jalur `/rss/news` diblokir | Diganti `/rss/top-news` (terverifikasi HTTP 200) |
 | **OpenSky** → `timeout (exit 28)` | Tanpa kredensial sering diblokir/timeout | Dijadikan `env:OPENSKY_USER` (dilewati bila tak ada kredensial) |
+| **CISA KEV** tabel kosong | KEV di-render JSON rapi (spasi setelah `:`), regex lama mengasumsikan JSON padat → tak pernah cocok | Ekstraksi id & vendor toleran spasi, lalu dipasangkan |
+| **RSS** dedup/diff selalu "snapshot pertama" | Berkas disimpan `-bbc.json` padahal semua lookup memakai `rss_bbc` | Nama berkas disamakan `-rss_<feed>.json` |
+| **`docs/data.json` tidak valid** saat data banyak | Tabel (`gempa`/`cve`/`kev`/`rss`) tidak menulis koma pemisah (flag `first` hilang di subshell pipa) | Loop memakai process substitution; koma ditulis benar |
+| Tabel `rss` / `kev` kosong walau data ada | Bug di atas + regex JSON padat | Lihat dua baris sebelumnya |
 
 ---
 

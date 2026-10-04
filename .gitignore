@@ -15,6 +15,12 @@ data/errors/cek-*.md
 # --- Log lokal ---
 *.log
 data/cron.log
+data/logs/
+
+# --- Artefak debug sementara ---
+.trace.txt
+*.harness.sh
+.run.log
 
 # --- OS / editor ---
 .DS_Store
