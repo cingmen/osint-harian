@@ -1,0 +1,49 @@
+Dataset License — Creative Commons Attribution 4.0 International (CC BY 4.0)
+
+Copyright (c) 2026 osint-harian contributors
+
+This license applies to the DATA collected and derived by this project (for
+example the daily snapshots under `data/`, the manifest `docs/data.json` /
+`docs/data.js`, the log `data/CHANGES-*.md`, the error reports under
+`data/errors/`, and the feed `docs/feed.xml`). The SOURCE CODE is licensed
+separately under the MIT License (see LICENSE).
+
+You are free to:
+
+  Share  — copy and redistribute the material in any medium or format.
+  Adapt  — remix, transform, and build upon the material for any purpose,
+           even commercially.
+
+Under the following terms:
+
+  Attribution — You must give appropriate credit, provide a link to this
+  license, and indicate if changes were made. You may do so in any reasonable
+  manner, but not in any way that suggests the licensor endorses you or your
+  use.
+
+  No additional restrictions — You may not apply legal terms or technological
+  measures that legally restrict others from doing anything the license permits.
+
+Full legal code (the authoritative text of CC BY 4.0):
+  https://creativecommons.org/licenses/by/4.0/legalcode
+
+Human-readable summary:
+  https://creativecommons.org/licenses/by/4.0/
+
+Suggested attribution:
+
+  "Data: osint-harian (<https://github.com/<username>/osint-harian>),
+   licensed under CC BY 4.0."
+
+IMPORTANT — third-party sources
+
+The snapshots in this repository are compiled from PUBLIC, OFFICIAL third-party
+sources (BMKG, OFAC, CISA, NVD, WHO, USGS, NWS, ransomwhere.live, OpenSky, NASA
+FIRMS, FAA, Wikimedia, and news RSS feeds). Each upstream source keeps its own
+copyright and terms. Where the upstream material is a commercial news article,
+this project stores ONLY the headline, the link, and a short quotation of at
+most 300 characters (see the three-tier policy in README.md). You are
+responsible for complying with each upstream source's terms when you reuse the
+data.
+
+This dataset is provided "AS IS", without warranty of any kind.

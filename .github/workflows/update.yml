@@ -1,0 +1,54 @@
+name: update
+
+# HANYA manual (workflow_dispatch). TANPA `schedule` — jalankan dari tab Actions
+# ("Run workflow"). Disiapkan untuk masa depan bila PC tidak selalu menyala.
+on:
+  workflow_dispatch:
+
+# Diperlukan agar langkah commit/push dapat menulis ke repo.
+permissions:
+  contents: write
+
+# Cegah dua run menumpuk.
+concurrency:
+  group: osint-harian-update
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Jalankan tracker harian
+        env:
+          # Isi lewat Settings → Secrets and variables → Actions (opsional).
+          NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          FIRMS_KEY: ${{ secrets.FIRMS_KEY }}
+          OPENSKY_USER: ${{ secrets.OPENSKY_USER }}
+          OPENSKY_PASS: ${{ secrets.OPENSKY_PASS }}
+          FAA_CLIENT_ID: ${{ secrets.FAA_CLIENT_ID }}
+          FAA_CLIENT_SECRET: ${{ secrets.FAA_CLIENT_SECRET }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          chmod +x tracker-harian.sh
+          # Skrip akan mencoba commit+push sendiri; jika gagal, langkah
+          # berikutnya yang menuntaskan push.
+          ./tracker-harian.sh || true
+
+      - name: Pastikan commit & push
+        run: |
+          git config user.name  "osint-harian bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Tidak ada perubahan — tidak ada yang di-commit."
+          else
+            git commit -m "Update harian $(date -u +%F) [actions]"
+            git push
+          fi

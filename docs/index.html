@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>osint-harian — tracker data publik harian</title>
+<meta name="description" content="Pantauan harian data publik (Indonesia + global) yang deterministik: BMKG, OFAC, CISA, NVD, WHO, USGS, RSS berita, dan lainnya.">
+<link rel="alternate" type="application/rss+xml" title="osint-harian — tracker perubahan" href="feed.xml">
+<style>
+  :root{
+    --bg:#0d1117; --bg2:#161b22; --bg3:#1c2230; --line:#2a3340;
+    --fg:#e6edf3; --muted:#8b98a5; --accent:#58a6ff;
+    --ok:#2ea043; --sama:#6e7681; --gagal:#f85149; --rusak:#d29922;
+    --anomali:#d29922; --watch:#a371f7; --lewat:#484f58;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--bg); color:var(--fg);
+    font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,"Noto Sans",sans-serif;
+  }
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .wrap{max-width:1180px;margin:0 auto;padding:20px}
+  header.top{border-bottom:1px solid var(--line);background:linear-gradient(180deg,#11161d,var(--bg));}
+  header.top .wrap{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
+  h1{font-size:20px;margin:0;letter-spacing:.2px}
+  h1 .sub{display:block;font-size:12px;color:var(--muted);font-weight:400;margin-top:2px}
+  h2{font-size:16px;margin:26px 0 10px;border-left:3px solid var(--accent);padding-left:10px}
+  .muted{color:var(--muted)}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+  .chip{background:var(--bg2);border:1px solid var(--line);border-radius:999px;padding:4px 12px;font-size:13px}
+  .chip b{font-variant-numeric:tabular-nums}
+  .chip.ok b{color:var(--ok)} .chip.sama b{color:var(--sama)}
+  .chip.gagal b{color:var(--gagal)} .chip.rusak b{color:var(--rusak)}
+  .chip.anomali b{color:var(--anomali)} .chip.watch b{color:var(--watch)}
+  .toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;background:var(--bg2);
+           border:1px solid var(--line);border-radius:10px;padding:12px;margin-top:16px}
+  input,select{background:var(--bg3);color:var(--fg);border:1px solid var(--line);
+               border-radius:8px;padding:8px 10px;font-size:14px}
+  input[type=search]{min-width:220px;flex:1}
+  label.f{display:flex;gap:6px;align-items:center;font-size:13px;color:var(--muted)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+  .card{background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:14px}
+  .card .row1{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+  .card .lbl{font-weight:600}
+  .card .tier{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px}
+  .card .meta{font-size:12.5px;color:var(--muted);margin-top:8px;display:grid;gap:3px}
+  .card .err{color:var(--gagal);font-size:12.5px;margin-top:8px}
+  .card .err span{color:var(--fg)}
+  .badge{font-size:11px;font-weight:700;letter-spacing:.4px;border-radius:999px;padding:3px 9px;white-space:nowrap}
+  .badge.OK{background:rgba(46,160,67,.16);color:var(--ok);border:1px solid rgba(46,160,67,.4)}
+  .badge.SAMA{background:rgba(110,118,129,.16);color:#a8b1bb;border:1px solid rgba(110,118,129,.4)}
+  .badge.GAGAL{background:rgba(248,81,73,.14);color:var(--gagal);border:1px solid rgba(248,81,73,.4)}
+  .badge.RUSAK{background:rgba(210,153,34,.14);color:var(--rusak);border:1px solid rgba(210,153,34,.4)}
+  .badge.LEWAT{background:rgba(72,79,88,.2);color:#a8b1bb;border:1px solid var(--line)}
+  .sparkbox{display:flex;align-items:center;gap:10px;margin-top:8px;color:var(--accent)}
+  .spark{opacity:.9}
+  .score{font-variant-numeric:tabular-nums;font-size:12px;color:var(--muted);white-space:nowrap}
+  .bar{height:5px;background:var(--bg3);border-radius:4px;overflow:hidden;margin-top:6px}
+  .bar > i{display:block;height:100%;background:var(--ok)}
+  .bar.warn > i{background:var(--rusak)} .bar.bad > i{background:var(--gagal)}
+  .list{margin:0;padding-left:18px}
+  .list li{margin:3px 0}
+  table{width:100%;border-collapse:collapse;margin-top:8px;font-size:13.5px}
+  th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:var(--muted);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.3px}
+  tr:hover td{background:rgba(88,166,255,.05)}
+  .tblwrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px}
+  .panel{background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:14px}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .empty{color:var(--muted);font-style:italic}
+  footer{margin-top:34px;border-top:1px solid var(--line);padding:18px 0;color:var(--muted);font-size:13px}
+  .hidden{display:none !important}
+  .tag{font-size:11px;color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:1px 6px}
+  @media (max-width:720px){ .two{grid-template-columns:1fr} input[type=search]{min-width:100%} }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <div>
+      <h1 id="judul">osint-harian<span class="sub" id="sub">tracker data publik harian — Indonesia + global</span></h1>
+    </div>
+    <div class="muted" style="font-size:13px;text-align:right">
+      <div id="tgl">—</div>
+      <div><a id="rsslink" href="feed.xml">Langganan RSS perubahan</a></div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap" id="app">
+  <noscript><p class="empty">Halaman ini butuh JavaScript untuk menampilkan data. Data tersedia di <a href="data.json">data.json</a>.</p></noscript>
+</main>
+
+<footer>
+  <div class="wrap" id="foot">
+    <div id="footrepo"></div>
+    <div style="margin-top:6px">Konten ini <b>bukan nasihat hukum</b>. Hanya agregat data publik resmi; tanpa data pribadi perorangan (UU PDP).</div>
+    <div style="margin-top:6px">Kode: <a href="https://opensource.org/license/mit">MIT</a> · Data: <a href="https://creativecommons.org/licenses/by/4.0/">CC-BY 4.0</a>. Berita media komersial hanya judul + link + kutipan singkat.</div>
+  </div>
+</footer>
+
+<!-- window.DATA (untuk uji lokal via file://). Bila tidak ada, fallback ke data.json. -->
+<script src="data.js"></script>
+<script>
+(function () {
+  "use strict";
+  var app = document.getElementById("app");
+
+  function esc(s) {
+    return String(s == null ? "" : s)
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+  }
+  function el(id) { return document.getElementById(id); }
+
+  function render(D) {
+    if (!D || !D.sumber) return;
+    var r = D.ringkasan || {};
+
+    el("judul").innerHTML = esc(D.proyek || "osint-harian") +
+      '<span class="sub" id="sub">tracker data publik harian — Indonesia + global</span>';
+    el("sub").textContent = "run " + (D.tanggal || "") + " · dibuat " + (D.dibuat || "");
+    el("tgl").textContent = "Tanggal: " + (D.tanggal || "—");
+    if (D.situs) {
+      el("rsslink").href = "feed.xml";
+      el("footrepo").innerHTML = 'Repositori: <a href="' + esc(D.situs) + '">' + esc(D.situs) + '</a>';
+    }
+
+    var html = "";
+
+    // --- ringkasan ---
+    html += '<div class="chips">' +
+      chip("ok", "OK", r.ok) + chip("sama", "SAMA", r.sama) +
+      chip("gagal", "GAGAL", r.gagal) + chip("rusak", "RUSAK", r.rusak) +
+      chip("lewat", "LEWAT", r.lewat) + chip("anomali", "ANOMALI", r.anomali) +
+      chip("watch", "WATCH", r.watch) + '</div>';
+
+    // --- toolbar ---
+    html += '<div class="toolbar">' +
+      '<input type="search" id="q" placeholder="Cari label / judul / CVE / lokasi…" aria-label="Cari">' +
+      '<label class="f">Sumber <select id="fsumber"><option value="">semua</option></select></label>' +
+      '<label class="f">Log dari <input type="date" id="fdari"></label>' +
+      '<label class="f">sampai <input type="date" id="fsampai"></label>' +
+      '<label class="f"><input type="checkbox" id="fgagal"> hanya GAGAL</label>' +
+      '</div>';
+
+    // --- panel anomali & watch ---
+    html += '<div class="two">' +
+      '<div class="panel"><h2 style="margin-top:0">ANOMALI hari ini</h2>' +
+        listOrEmpty(D.anomali, "Tidak ada anomali pageviews.") + '</div>' +
+      '<div class="panel"><h2 style="margin-top:0">KATA KUNCI (WATCH)</h2>' +
+        listOrEmpty(D.watch, "Tidak ada judul yang cocok dengan kata kunci.") + '</div>' +
+      '</div>';
+
+    // --- kartu sumber ---
+    html += '<h2>Kesehatan sumber</h2><div class="grid" id="cards">';
+    (D.sumber || []).forEach(function (s) {
+      var riw = s.riwayat || [];
+      var skor = (typeof s.skor === "number") ? s.skor : 0;
+      var bcls = skor >= 80 ? "" : (skor >= 50 ? " warn" : " bad");
+      html += '<article class="card" data-sumber="' + esc(s.label) + '">' +
+        '<div class="row1"><div><div class="lbl">' + esc(s.label) + '</div>' +
+        '<div class="tier">tier ' + esc(s.tier) + ' · ' + esc(s.folder) + '</div></div>' +
+        '<span class="badge ' + esc(s.status) + '">' + esc(s.status) + '</span></div>' +
+        '<div class="sparkbox">' + spark(riw) +
+          '<span class="score">' + skor + '% sehat (30h)</span></div>' +
+        '<div class="bar' + bcls + '"><i style="width:' + Math.max(0, Math.min(100, skor)) + '%"></i></div>' +
+        '<div class="meta">' +
+          '<div>Snapshot: ' + (s.snapshot ? esc(s.snapshot) : '<span class="muted">belum ada</span>') +
+            ' · ' + (s.jumlah_file || 0) + ' file tersimpan</div>' +
+          '<div>HTTP ' + esc(s.http || "000") + ' · ' + (Number(s.laten || 0)).toFixed(2) + 's</div>' +
+          (s.diff ? '<div>Perubahan terakhir: ' + esc(s.diff) + '</div>' : '') +
+        '</div>' +
+        (s.status === "GAGAL" || s.status === "RUSAK"
+          ? '<div class="err">' + esc(s.pesan_error || "gagal") +
+            (s.saran ? '<br><span>Saran: ' + esc(s.saran) + '</span>' : '') + '</div>'
+          : '') +
+        '</article>';
+    });
+    html += '</div>';
+
+    // --- log 14 hari ---
+    html += '<h2>Log 14 hari terakhir</h2><div class="tblwrap"><table id="tlog"><thead><tr>' +
+      '<th>Tanggal</th><th>OK</th><th>GAGAL</th><th>Berkas</th></tr></thead><tbody>';
+    (D.log || []).forEach(function (l) {
+      html += '<tr data-tanggal="' + esc(l.tanggal) + '"><td>' + esc(l.tanggal) + '</td>' +
+        '<td>' + (l.ok || 0) + '</td><td>' + (l.gagal || 0) + '</td>' +
+        '<td><a href="' + esc(l.file) + '">' + esc(l.file) + '</a></td></tr>';
+    });
+    html += '</tbody></table></div>';
+
+    // --- tabel data ---
+    var t = D.tabel || {};
+    html += '<h2>Gempa terbaru</h2>' + tableGempa(t.gempa);
+    html += '<h2>Kerentanan (NVD CVE 24 jam)</h2>' + tableCve(t.cve);
+    html += '<h2>CISA KEV (kerentanan aktif dieksploitasi)</h2>' + tableKev(t.kev);
+    html += '<h2>Berita (judul + kutipan singkat)</h2>' + tableRss(t.rss);
+
+    app.innerHTML = html;
+    pasangFilter(D);
+  }
+
+  function chip(cls, label, v) {
+    return '<span class="chip ' + cls + '">' + label + ' <b>' + (v == null ? 0 : v) + '</b></span>';
+  }
+  function listOrEmpty(arr, msg) {
+    if (!arr || !arr.length) return '<p class="empty">' + esc(msg) + '</p>';
+    return '<ul class="list">' + arr.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join("") + '</ul>';
+  }
+  function spark(vals) {
+    var w = 140, h = 28, n = vals.length;
+    if (!n) return "";
+    var step = n > 1 ? w / (n - 1) : w, pts = [];
+    for (var i = 0; i < n; i++) {
+      var x = (i * step).toFixed(1);
+      var y = (h - 3 - (vals[i] ? (h - 6) : 0)).toFixed(1);
+      pts.push(x + "," + y);
+    }
+    return '<svg class="spark" viewBox="0 0 ' + w + ' ' + h + '" width="' + w + '" height="' + h +
+      '" role="img" aria-label="riwayat 30 hari"><polyline points="' + pts.join(" ") +
+      '" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>';
+  }
+  function tableGempa(a) {
+    a = a || [];
+    if (!a.length) return '<p class="empty">Belum ada data gempa.</p>';
+    var h = '<div class="tblwrap"><table><thead><tr><th>Sumber</th><th>Magnitudo</th><th>Lokasi</th><th>Waktu</th></tr></thead><tbody>';
+    a.forEach(function (g) {
+      h += '<tr><td>' + esc(g.sumber) + '</td><td>' + esc(g.magnitudo) + '</td>' +
+        '<td>' + esc(g.lokasi) + '</td><td>' + esc(g.waktu) + '</td></tr>';
+    });
+    return h + '</tbody></table></div>';
+  }
+  function tableCve(a) {
+    a = a || [];
+    if (!a.length) return '<p class="empty">Belum ada data CVE.</p>';
+    var h = '<div class="tblwrap"><table><thead><tr><th>ID</th><th>Cari</th></tr></thead><tbody>';
+    a.forEach(function (c) {
+      var id = c.id || "";
+      h += '<tr><td>' + esc(id) + '</td><td><a href="https://nvd.nist.gov/vuln/detail/' +
+        encodeURIComponent(id) + '">detail NVD</a></td></tr>';
+    });
+    return h + '</tbody></table></div>';
+  }
+  function tableKev(a) {
+    a = a || [];
+    if (!a.length) return '<p class="empty">Belum ada data KEV.</p>';
+    var h = '<div class="tblwrap"><table><thead><tr><th>ID</th><th>Vendor</th><th>Referensi</th></tr></thead><tbody>';
+    a.forEach(function (k) {
+      var id = k.id || "";
+      h += '<tr><td>' + esc(id) + '</td><td>' + esc(k.vendor || "") + '</td>' +
+        '<td><a href="https://nvd.nist.gov/vuln/detail/' + encodeURIComponent(id) + '">NVD</a></td></tr>';
+    });
+    return h + '</tbody></table></div>';
+  }
+  function tableRss(a) {
+    a = a || [];
+    if (!a.length) return '<p class="empty">Belum ada data berita.</p>';
+    var h = '<div class="tblwrap"><table id="trss"><thead><tr><th>Feed</th><th>Judul</th><th>Kutipan</th><th>Arsip</th></tr></thead><tbody>';
+    a.forEach(function (n) {
+      h += '<tr data-feed="' + esc(n.feed) + '"><td>' + esc(n.feed) + '</td>' +
+        '<td><a href="' + esc(n.link) + '">' + esc(n.title) + '</a></td>' +
+        '<td>' + esc(n.snippet) + '</td>' +
+        '<td><a href="' + esc(n.wayback) + '">Wayback</a></td></tr>';
+    });
+    return h + '</tbody></table></div>';
+  }
+
+  // --- pencarian & filter client-side ---
+  function pasangFilter(D) {
+    var q = el("q"), fs = el("fsumber"), fg = el("fgagal"),
+        fd = el("fdari"), fsa = el("fsampai");
+
+    // isi dropdown sumber (label unik)
+    var labels = [];
+    (D.sumber || []).forEach(function (s) {
+      if (labels.indexOf(s.label) < 0) labels.push(s.label);
+    });
+    labels.forEach(function (l) {
+      var o = document.createElement("option"); o.value = l; o.textContent = l; fs.appendChild(o);
+    });
+
+    function apply() {
+      var term = (q.value || "").trim().toLowerCase();
+      var src = fs.value;
+      var onlyFail = fg.checked;
+      var d1 = fd.value, d2 = fsa.value;
+
+      // kartu
+      document.querySelectorAll("#cards .card").forEach(function (c) {
+        var label = c.getAttribute("data-sumber") || "";
+        var ok = true;
+        if (src && label !== src) ok = false;
+        if (onlyFail && c.querySelector(".badge").textContent !== "GAGAL") ok = false;
+        if (term && c.textContent.toLowerCase().indexOf(term) < 0) ok = false;
+        c.classList.toggle("hidden", !ok);
+      });
+
+      // tabel berita per feed
+      document.querySelectorAll("#trss tbody tr").forEach(function (tr) {
+        var ok = true;
+        var feed = tr.getAttribute("data-feed") || "";
+        // dropdown memakai label ("RSS: bbc"); baris memakai nama feed ("bbc").
+        if (src && src !== feed && src.indexOf(feed) < 0) ok = false;
+        if (term && tr.textContent.toLowerCase().indexOf(term) < 0) ok = false;
+        tr.classList.toggle("hidden", !ok);
+      });
+
+      // tabel log: filter tanggal + teks
+      document.querySelectorAll("#tlog tbody tr").forEach(function (tr) {
+        var tgl = tr.getAttribute("data-tanggal") || "";
+        var ok = true;
+        if (d1 && tgl < d1) ok = false;
+        if (d2 && tgl > d2) ok = false;
+        if (term && tr.textContent.toLowerCase().indexOf(term) < 0) ok = false;
+        tr.classList.toggle("hidden", !ok);
+      });
+
+      // tabel gempa/cve/kev: filter teks + (cve/kev tidak terikat sumber)
+      document.querySelectorAll("main table").forEach(function (tb) {
+        if (tb.id === "tlog" || tb.id === "trss") return;
+        tb.querySelectorAll("tbody tr").forEach(function (tr) {
+          var ok = true;
+          if (term && tr.textContent.toLowerCase().indexOf(term) < 0) ok = false;
+          tr.classList.toggle("hidden", !ok);
+        });
+      });
+    }
+
+    [q, fs, fd, fsa].forEach(function (x) { x.addEventListener("input", apply); });
+    fg.addEventListener("change", apply);
+  }
+
+  function fallbackJson() {
+    return fetch("data.json", { cache: "no-store" })
+      .then(function (r) { return r.json(); })
+      .then(render)
+      .catch(function () {
+        app.innerHTML = '<p class="empty">Data belum tersedia. Jalankan <code>tracker-harian.sh</code> ' +
+          'atau <code>tracker-harian.ps1</code> lalu muat ulang halaman ini.</p>';
+      });
+  }
+
+  if (window.DATA && window.DATA.sumber) render(window.DATA);
+  else fallbackJson();
+})();
+</script>
+</body>
+</html>
