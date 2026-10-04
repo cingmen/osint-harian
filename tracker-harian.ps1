@@ -748,7 +748,8 @@ function Process-Rss {
     $nama = $ent.Split('|')[0]
     $url = $ent.Substring($ent.IndexOf('|') + 1)
     $folder = 'rss'
-    $target = Join-Path (Join-Path $DATA_DIR $folder) "$TODAY-$nama.json"
+    # Awalan rss_ agar nama berkas = `nama` di state/manifest (dedup/diff cocok).
+    $target = Join-Path (Join-Path $DATA_DIR $folder) "$TODAY-rss_$nama.json"
     New-Item -ItemType Directory -Force -Path (Join-Path $DATA_DIR $folder) | Out-Null
     Info "AMBIL : RSS $nama (tier snippet) ..."
     $raw = Join-Path $TMPD "rss_$nama.xml"
@@ -912,7 +913,10 @@ function Tabel-Gempa {
     if ($lines.Count -gt 1) {
       $rows = $lines[1..($lines.Count - 1)] | ForEach-Object {
         $c = $_ -split ','
-        if ($c.Count -ge 14) { [pscustomobject]@{ t = $c[0]; mag = [double]$c[4]; place = $c[13] } }
+        if ($c.Count -ge 14) {
+          $place = $c[13].Trim('"')
+          [pscustomobject]@{ t = $c[0]; mag = [double]$c[4]; place = $place }
+        }
       } | Sort-Object mag -Descending | Select-Object -First 5
       foreach ($r in $rows) { $out += [ordered]@{ sumber = 'USGS'; magnitudo = "$($r.mag)"; lokasi = $r.place; waktu = $r.t } }
     }
@@ -932,10 +936,13 @@ function Tabel-Kev {
   $out = @()
   $f = Get-NewestSnapshot 'cisa' 'kev'
   if ($f) {
-    $raw = [System.IO.File]::ReadAllText($f)
-    $ms = [regex]::Matches($raw, '"cveID":"(CVE-[0-9-]+)","vendorProject":"([^"]*)"')
-    foreach ($m in ($ms | Select-Object -First 20)) {
-      $out += [ordered]@{ id = $m.Groups[1].Value; vendor = $m.Groups[2].Value }
+    # CISA KEV = JSON rapi (spasi setelah ':'); ambil id & vendor terpisah lalu
+    # pasangkan (urutannya sejajar per entri).
+    $raw  = [System.IO.File]::ReadAllText($f)
+    $ids  = @([regex]::Matches($raw, '"cveID"\s*:\s*"(CVE-[0-9-]+)"')       | ForEach-Object { $_.Groups[1].Value } | Select-Object -First 20)
+    $vens = @([regex]::Matches($raw, '"vendorProject"\s*:\s*"([^"]*)"') | ForEach-Object { $_.Groups[1].Value } | Select-Object -First 20)
+    for ($i = 0; $i -lt [Math]::Min($ids.Count, $vens.Count); $i++) {
+      $out += [ordered]@{ id = $ids[$i]; vendor = $vens[$i] }
     }
   }
   return $out

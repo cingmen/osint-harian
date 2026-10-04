@@ -730,7 +730,9 @@ proses_rss() {
     IFS="$IFS_OLD"
     local nama="${ent%%|*}" url="${ent##*|}"
     local folder="rss"
-    local target="$DATA_DIR/$folder/${TODAY}-${nama}.json"
+    # Nama berkas memakai awalan rss_ agar SAMA dengan `nama` di state/manifest,
+    # sehingga dedup, diff, dan pencarian snapshot menemukan berkasnya.
+    local target="$DATA_DIR/$folder/${TODAY}-rss_${nama}.json"
     mkdir -p "$DATA_DIR/$folder"
     info "AMBIL : RSS $nama (tier snippet) …"
     local raw="$TMPD/rss_${nama}.xml"
@@ -899,7 +901,9 @@ build_manifest() {
           ofac|usgs|firms) ext="csv" ;;
           cisa) ext="$( [ "$nama" = "advisories" ] && echo xml || echo json )" ;;
         esac
-        local snap; snap="$(ls -1 "$DATA_DIR/$folder" 2>/dev/null | grep -E "^[0-9]{8}-${nama}\." | sort | tail -1)"
+        # Pencarian snapshot lewat glob bash (tanpa ls|grep|sort|tail) — jauh
+        # lebih cepat di Windows; nama berkas diambil dari basename.
+        local snap; snap="$(_terbaru_snapshot "$folder" "$nama")"; snap="${snap##*/}"
         local jumlah; jumlah="$(jumlah_file "$folder" "$nama")"
         local skor; skor="$(skor_kesehatan "$label")"
         local riwayat; riwayat="$(riwayat_30 "$folder" "$nama" "$ext")"
@@ -988,27 +992,30 @@ ambil_latest() { # $1=folder $2=nama $3=ext → path terbaru (termasuk hari ini)
 
 tabel_gempa() {
   printf '    "gempa": ['
-  local first=1
-  local f; f="$(ambil_latest bmkg autogempa json)"
+  local first=1 f row mag wil tgl
+  f="$(ambil_latest bmkg autogempa json)"
   if [ -n "$f" ] && [ -f "$f" ]; then
-    local mag wil tgl
     mag="$(grep -o '"Magnitude":"[^"]*"' "$f" | head -1 | sed 's/.*:"//; s/"//')"
     wil="$(grep -o '"Wilayah":"[^"]*"' "$f" | head -1 | sed 's/.*:"//; s/"//')"
     tgl="$(grep -o '"Tanggal":"[^"]*"' "$f" | head -1 | sed 's/.*:"//; s/"//')"
-    [ "$first" -eq 0 ] && printf ','
     printf ' {"sumber":"BMKG","magnitudo":"%s","lokasi":"%s","waktu":"%s"}' "$(jesc "$mag")" "$(jesc "$wil")" "$(jesc "$tgl")"
     first=0
   fi
   local fu; fu="$(ambil_latest usgs m25hari csv)"
   if [ -n "$fu" ] && [ -f "$fu" ]; then
-    # Ambil 5 gempa terkuat dari USGS.
-    tail -n +2 "$fu" | sort -t',' -k5 -g | tail -5 | while IFS= read -r row; do
-      local t lat lon dep mag place
+    # 5 gempa terkuat. Loop memakai process substitution agar variabel `first`
+    # (koma pemisah JSON) tidak hilang di dalam subshell pipa.
+    while IFS= read -r row; do
+      [ -z "$row" ] && continue
+      local t m place
       t="$(printf '%s' "$row" | cut -d',' -f1)"
-      mag="$(printf '%s' "$row" | cut -d',' -f5)"
-      place="$(printf '%s' "$row" | cut -d',' -f14)"
-      printf ' {"sumber":"USGS","magnitudo":"%s","lokasi":"%s","waktu":"%s"}' "$(jesc "$mag")" "$(jesc "$place")" "$(jesc "$t")"
-    done
+      m="$(printf '%s' "$row" | cut -d',' -f5)"
+      # `place` adalah field ber-kutip (kolom 14) dan boleh memuat koma.
+      place="$(printf '%s' "$row" | grep -o '"[^"]*"' | head -1 | sed 's/^"//; s/"$//')"
+      [ "$first" -eq 0 ] && printf ','
+      printf ' {"sumber":"USGS","magnitudo":"%s","lokasi":"%s","waktu":"%s"}' "$(jesc "$m")" "$(jesc "$place")" "$(jesc "$t")"
+      first=0
+    done < <(tail -n +2 "$fu" | sort -t',' -k5 -g | tail -5)
   fi
   printf ' ]'
 }
@@ -1017,9 +1024,13 @@ tabel_cve() {
   printf '    "cve": ['
   local f; f="$(ambil_latest nvd cve json)"
   if [ -n "$f" ] && [ -f "$f" ]; then
-    grep -o '"id":"CVE-[0-9][0-9-]*"' "$f" | sed 's/.*:"//; s/"//' | sort -u | head -40 | while IFS= read -r id; do
+    local first=1 id
+    while IFS= read -r id; do
+      [ -z "$id" ] && continue
+      [ "$first" -eq 0 ] && printf ','
       printf ' {"id":"%s"}' "$(jesc "$id")"
-    done
+      first=0
+    done < <(grep -o '"id":"CVE-[0-9][0-9-]*"' "$f" | sed 's/.*:"//; s/"//' | sort -u | head -40)
   fi
   printf ' ]'
 }
@@ -1028,27 +1039,37 @@ tabel_kev() {
   printf '    "kev": ['
   local f; f="$(ambil_latest cisa kev json)"
   if [ -n "$f" ] && [ -f "$f" ]; then
-    # Ambil 20 entri terbaru (dateAdded terbesar) — sederhana: potong objek.
-    grep -o '"cveID":"CVE-[0-9-]*","vendorProject":"[^"]*","product":"[^"]*"[^,]*,"vulnerabilityName":"[^"]*"' "$f" 2>/dev/null \
-      | head -20 | while IFS= read -r seg; do
-        local cid ven nm; cid="$(printf '%s' "$seg" | sed 's/.*"cveID":"//; s/".*//')"
-        ven="$(printf '%s' "$seg" | sed 's/.*"vendorProject":"//; s/".*//')"
-        printf ' {"id":"%s","vendor":"%s"}' "$(jesc "$cid")" "$(jesc "$ven")"
-      done
+    # CISA KEV = JSON rapi (multi-baris, ada spasi setelah ':'), jadi regex
+    # satu-baris tidak cocok. Ambil id & vendor terpisah (urutannya sejajar per
+    # entri) lalu pasangkan.
+    local first=1 cid ven
+    local ids vens
+    ids="$(grep -o '"cveID"[[:space:]]*:[[:space:]]*"CVE-[0-9-]*"' "$f" 2>/dev/null | sed 's/.*"\(CVE-[0-9-]*\)"/\1/' | head -20)"
+    vens="$(grep -o '"vendorProject"[[:space:]]*:[[:space:]]*"[^"]*"' "$f" 2>/dev/null | sed 's/.*"\([^"]*\)"$/\1/' | head -20)"
+    while IFS='|' read -r cid ven; do
+      [ -z "$cid" ] && continue
+      [ "$first" -eq 0 ] && printf ','
+      printf ' {"id":"%s","vendor":"%s"}' "$(jesc "$cid")" "$(jesc "$ven")"
+      first=0
+    done < <(paste -d'|' <(printf '%s\n' "$ids") <(printf '%s\n' "$vens"))
   fi
   printf ' ]'
 }
 
 tabel_rss() {
   printf '    "rss": ['
-  local first=1 nama
+  local first=1 nama f it
   for nama in bbc aljazeera guardian cna cnbcindonesia cnnindonesia antara; do
-    local f; f="$(ambil_latest rss "rss_${nama}" json)"
+    f="$(ambil_latest rss "rss_${nama}" json)"
     [ -n "$f" ] && [ -f "$f" ] || continue
-    # Ambil 5 item pertama per feed.
-    grep -o '{"title":"[^"]*","link":"[^"]*","snippet":"[^"]*","wayback":"[^"]*"}' "$f" 2>/dev/null | head -5 | while IFS= read -r it; do
-      printf ' {"feed":"%s",%s}' "$(jesc "$nama")" "${it#\{}"
-    done
+    # 5 item pertama per feed.
+    while IFS= read -r it; do
+      [ -z "$it" ] && continue
+      [ "$first" -eq 0 ] && printf ','
+      # `${it#\{}` sudah memuat kurung tutup milik item, jadi jangan ditambah '}'.
+      printf ' {"feed":"%s",%s' "$(jesc "$nama")" "${it#\{}"
+      first=0
+    done < <(grep -o '{"title":"[^"]*","link":"[^"]*","snippet":"[^"]*","wayback":"[^"]*"}' "$f" 2>/dev/null | head -5)
   done
   printf ' ]'
 }

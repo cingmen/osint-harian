@@ -1,8 +1,11 @@
 time,latitude,longitude,depth,mag,magType,nst,gap,dmin,rms,net,id,updated,place,type,horizontalError,depthError,magError,magNst,status,locationSource,magSource
+2026-10-04T17:19:53.148Z,28.5785,104.7108,10,4.4,mb,52,130,4.503,0.76,us,us6000tzjw,2026-10-04T17:59:06.040Z,"13 km N of Xunchang, China",earthquake,10.57,1.878,0.085,40,reviewed,us,us
 2026-10-04T17:15:00.280Z,19.430334091186,-155.59399414062,40.689998626709,2.45,ml,43,43,0.03806,0.389999986,hv,hv75049762,2026-10-04T17:46:14.040Z,"27 km NNW of Pāhala, Hawaii",earthquake,0.76,1.40999997,0.36,18,automatic,hv,hv
 2026-10-04T16:47:25.790Z,38.2097,-117.7635,4.1361,2.52,ml,44,58,0.446,0.5274,nn,nn00925269,2026-10-04T16:51:39.077Z,"36 km ESE of Mina, Nevada",earthquake,,0.5072,0.24,21,automatic,nn,nn
-2026-10-04T16:30:36.607Z,58.51,-137.235,5,3,ml,22,155,0.8,0.7,ak,aka2026trbbuc,2026-10-04T16:33:49.932Z,"62 km WNW of Elfin Cove, Alaska",earthquake,4.6,,0.2,15,automatic,ak,ak
+2026-10-04T16:30:36.607Z,58.51,-137.235,5,3,ml,22,155,0.8,0.7,ak,aka2026trbbuc,2026-10-04T17:49:57.040Z,"62 km WNW of Elfin Cove, Alaska",earthquake,4.6,,0.2,15,automatic,ak,ak
+2026-10-04T16:00:26.211Z,37.7748,36.1388,10,4.3,mb,25,71,0.254,1.03,us,us6000tzjn,2026-10-04T18:12:16.040Z,"20 km ESE of Feke, Turkey",earthquake,2.4,1.934,0.201,7,reviewed,us,us
 2026-10-04T15:03:30.731Z,55.418,-158.759,27.6,2.5,ml,13,312,0.7,0.1,ak,aka2026tqyehr,2026-10-04T15:04:33.499Z,"60 km SSE of Perryville, Alaska",earthquake,14.2,7.5765,0.3,5,automatic,ak,ak
+2026-10-04T14:59:44.179Z,-9.8792,118.8554,25.554,4.2,mb,21,126,4.914,1.02,us,us6000tzjg,2026-10-04T18:03:43.040Z,"65 km SW of Tambolaka, Indonesia",earthquake,9.5,5.818,0.167,12,reviewed,us,us
 2026-10-04T14:09:56.506Z,32.5442,-104.6295,5,2.9,ml,28,79,0.07,0.45,us,us6000tzj9,2026-10-04T15:47:54.040Z,"31 km SSE of Hope, New Mexico",earthquake,2.13,1.754,0.066,30,reviewed,us,us
 2026-10-04T14:06:10.385Z,5.3695,-82.7171,10,5,mww,61,64,3.903,1.44,us,us6000tzj8,2026-10-04T14:28:42.040Z,"295 km S of Burica, Panama",earthquake,10.27,1.865,0.06,27,reviewed,us,us
 2026-10-04T13:38:07.206Z,57.033,-155.084,65.3,3.4,ml,87,189,0.9,0.5,ak,aka2026tqvifo,2026-10-04T13:56:43.040Z,"56 km W of Akhiok, Alaska",earthquake,5.4,5.6909,0.2,65,automatic,ak,ak
@@ -43,4 +46,3 @@ time,latitude,longitude,depth,mag,magType,nst,gap,dmin,rms,net,id,updated,place,
 2026-10-03T20:33:45.577Z,14.1052,-93.3523,10,4.5,mb,50,165,2.462,0.9,us,us6000tze6,2026-10-03T20:48:12.040Z,"121 km SW of Puerto Madero, Mexico",earthquake,9.29,1.941,0.048,125,reviewed,us,us
 2026-10-03T20:00:44.104Z,51.5457,159.8296,10,5.1,mb,99,135,2.039,1.07,us,us6000tze2,2026-10-03T20:22:14.040Z,"182 km SSE of Vilyuchinsk, Russia",earthquake,10.36,1.892,0.044,167,reviewed,us,us
 2026-10-03T19:30:56.985Z,51.4038,159.9887,10,4.4,mb,30,183,2.212,1,us,us6000tzdz,2026-10-03T20:10:44.040Z,"201 km SSE of Vilyuchinsk, Russia",earthquake,11.74,1.951,0.105,26,reviewed,us,us
-2026-10-03T18:12:46.916Z,20.6061,93.3991,35,4.9,mb,86,59,1.539,0.89,us,us6000tzdp,2026-10-03T18:34:52.040Z,"72 km NE of Sittwe, Burma (Myanmar)",earthquake,8.09,1.894,0.064,76,reviewed,us,us
