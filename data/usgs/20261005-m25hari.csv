@@ -1,6 +1,7 @@
 time,latitude,longitude,depth,mag,magType,nst,gap,dmin,rms,net,id,updated,place,type,horizontalError,depthError,magError,magNst,status,locationSource,magSource
+2026-10-05T03:05:50.670Z,18.817,-64.437,23.55,2.91,md,10,278,0.3267,0.19,pr,pr71535753,2026-10-05T04:02:19.890Z,"65 km NE of Cruz Bay, U.S. Virgin Islands",earthquake,1.01,4.31,0.14886935308839,4,reviewed,pr,pr
 2026-10-05T02:34:54.630Z,47.136833333333,-113.108,5,3.25,ml,44,79,0.2434,0.26,mb,mb90210028,2026-10-05T03:11:14.770Z,"13 km N of Ovando, Montana",earthquake,0.31,31.61,0.20708250183961,35,reviewed,mb,mb
-2026-10-05T02:16:31.883Z,-9.2033,112.9221,51.442,4.2,mb,18,79,7.235,0.56,us,us6000tzlz,2026-10-05T02:38:06.040Z,"111 km S of Dampit, Indonesia",earthquake,13.46,8.399,0.153,13,reviewed,us,us
+2026-10-05T02:16:31.883Z,-9.2033,112.9221,51.442,4.2,mb,18,79,7.235,0.56,us,us6000tzlz,2026-10-05T03:38:24.013Z,"111 km S of Dampit, Indonesia",earthquake,13.46,8.399,0.153,13,reviewed,us,us
 2026-10-05T01:55:50.241Z,39.1608,-119.0403,0.0226,2.82,ml,26,50,0.09,0.1422,nn,nn00925282,2026-10-05T02:21:35.040Z,"22 km NNE of Yerington, Nevada",earthquake,,9.914,0.15,13,automatic,nn,nn
 2026-10-05T01:20:21.127Z,12.0958,-86.4891,167.36,4.4,mb,51,133,1.671,0.63,us,us6000tzln,2026-10-05T02:06:18.040Z,"12 km N of Villa El Carmen, Nicaragua",earthquake,8.93,9.679,0.081,44,reviewed,us,us
 2026-10-05T01:18:50.392Z,-0.4325,-19.965,10,5.3,mb,71,46,9.312,0.81,us,us6000tzlp,2026-10-05T01:35:49.040Z,"central Mid-Atlantic Ridge",earthquake,10.43,1.858,0.033,307,reviewed,us,us

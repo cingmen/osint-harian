@@ -8,84 +8,78 @@
     <title>PERUBAHAN : BMKG Gempa Terkini — kejadian: 1 · magnitudo tertinggi: 4.6</title>
     <link>https://cingmen.github.io/osint-harian#log</link>
     <guid isPermaLink="false">20261005-0</guid>
-    <pubDate>Mon, 05 Oct 2026 10:55:26 +0700</pubDate>
+    <pubDate>Mon, 05 Oct 2026 04:06:13 GMT</pubDate>
   </item>
   <item>
     <title>PERUBAHAN : BMKG Gempa Dirasakan — kejadian: 15 · magnitudo tertinggi: 6.1</title>
     <link>https://cingmen.github.io/osint-harian#log</link>
     <guid isPermaLink="false">20261005-1</guid>
-    <pubDate>Mon, 05 Oct 2026 10:55:26 +0700</pubDate>
+    <pubDate>Mon, 05 Oct 2026 04:06:13 GMT</pubDate>
   </item>
   <item>
     <title>PERUBAHAN : CISA KEV (kerentanan aktif) — CVE baru masuk KEV: CVE-2026-88779</title>
     <link>https://cingmen.github.io/osint-harian#log</link>
     <guid isPermaLink="false">20261005-2</guid>
-    <pubDate>Mon, 05 Oct 2026 10:55:26 +0700</pubDate>
+    <pubDate>Mon, 05 Oct 2026 04:06:13 GMT</pubDate>
   </item>
   <item>
     <title>PERUBAHAN : NVD CVE 24 jam — baris 0 → 0 (+0)</title>
     <link>https://cingmen.github.io/osint-harian#log</link>
     <guid isPermaLink="false">20261005-3</guid>
-    <pubDate>Mon, 05 Oct 2026 10:55:26 +0700</pubDate>
+    <pubDate>Mon, 05 Oct 2026 04:06:13 GMT</pubDate>
   </item>
   <item>
-    <title>PERUBAHAN : USGS Gempa M2.5+ 24 jam — kejadian: 43 · magnitudo tertinggi: 5.5</title>
+    <title>PERUBAHAN : USGS Gempa M2.5+ 24 jam — kejadian: 44 · magnitudo tertinggi: 5.5</title>
     <link>https://cingmen.github.io/osint-harian#log</link>
     <guid isPermaLink="false">20261005-4</guid>
-    <pubDate>Mon, 05 Oct 2026 10:55:26 +0700</pubDate>
+    <pubDate>Mon, 05 Oct 2026 04:06:13 GMT</pubDate>
   </item>
   <item>
-    <title>PERUBAHAN : NWS Peringatan Aktif (AS) — baris 38465 → 27898 (-10567)</title>
+    <title>PERUBAHAN : NWS Peringatan Aktif (AS) — baris 38465 → 27710 (-10755)</title>
     <link>https://cingmen.github.io/osint-harian#log</link>
     <guid isPermaLink="false">20261005-5</guid>
-    <pubDate>Mon, 05 Oct 2026 10:55:26 +0700</pubDate>
-  </item>
-  <item>
-    <title>GAGAL : GitHub DMCA Commit 24 jam — HTTP 403 (diblokir / User-Agent ditolak) (HTTP 403, exit 22)</title>
-    <link>https://cingmen.github.io/osint-harian#log</link>
-    <guid isPermaLink="false">20261005-6</guid>
-    <pubDate>Mon, 05 Oct 2026 10:55:26 +0700</pubDate>
+    <pubDate>Mon, 05 Oct 2026 04:06:13 GMT</pubDate>
   </item>
   <item>
     <title>RUSAK : CISA Advisories — konten rusak atau tidak lengkap (HTTP 200)</title>
     <link>https://cingmen.github.io/osint-harian#log</link>
-    <guid isPermaLink="false">20261004-7</guid>
-    <pubDate>Mon, 05 Oct 2026 10:55:26 +0700</pubDate>
+    <guid isPermaLink="false">20261004-6</guid>
+    <pubDate>Mon, 05 Oct 2026 04:06:13 GMT</pubDate>
   </item>
   <item>
     <title>GAGAL : Ransomware.live (korban terbaru) — HTTP 404 (endpoint pindah) (HTTP 404, exit 22)</title>
     <link>https://cingmen.github.io/osint-harian#log</link>
-    <guid isPermaLink="false">20261004-8</guid>
-    <pubDate>Mon, 05 Oct 2026 10:55:26 +0700</pubDate>
+    <guid isPermaLink="false">20261004-7</guid>
+    <pubDate>Mon, 05 Oct 2026 04:06:13 GMT</pubDate>
   </item>
   <item>
     <title>GAGAL : WHO Disease Outbreak News — HTTP 404 (endpoint pindah) (HTTP 404, exit 22)</title>
     <link>https://cingmen.github.io/osint-harian#log</link>
-    <guid isPermaLink="false">20261004-9</guid>
-    <pubDate>Mon, 05 Oct 2026 10:55:26 +0700</pubDate>
+    <guid isPermaLink="false">20261004-8</guid>
+    <pubDate>Mon, 05 Oct 2026 04:06:13 GMT</pubDate>
   </item>
   <item>
-    <title>GAGAL : OpenSky Penerbangan (Indonesia) — Timeout (>90s) (HTTP 000, exit 28)</title>
+    <title>GAGAL : OpenSky Penerbangan (Indonesia) — Timeout (&gt;90s) (HTTP 000, exit 28)</title>
     <link>https://cingmen.github.io/osint-harian#log</link>
-    <guid isPermaLink="false">20261004-10</guid>
-    <pubDate>Mon, 05 Oct 2026 10:55:26 +0700</pubDate>
+    <guid isPermaLink="false">20261004-9</guid>
+    <pubDate>Mon, 05 Oct 2026 04:06:13 GMT</pubDate>
   </item>
   <item>
     <title>RUSAK : GitHub DMCA Commit 24 jam — konten rusak atau tidak lengkap (HTTP 200)</title>
     <link>https://cingmen.github.io/osint-harian#log</link>
-    <guid isPermaLink="false">20261004-11</guid>
-    <pubDate>Mon, 05 Oct 2026 10:55:26 +0700</pubDate>
+    <guid isPermaLink="false">20261004-10</guid>
+    <pubDate>Mon, 05 Oct 2026 04:06:13 GMT</pubDate>
   </item>
   <item>
     <title>GAGAL : RSS kompas — HTTP 404 (endpoint pindah) (HTTP 404)</title>
     <link>https://cingmen.github.io/osint-harian#log</link>
-    <guid isPermaLink="false">20261004-12</guid>
-    <pubDate>Mon, 05 Oct 2026 10:55:26 +0700</pubDate>
+    <guid isPermaLink="false">20261004-11</guid>
+    <pubDate>Mon, 05 Oct 2026 04:06:13 GMT</pubDate>
   </item>
   <item>
     <title>GAGAL : RSS antara — HTTP 403 (diblokir / User-Agent ditolak) (HTTP 403)</title>
     <link>https://cingmen.github.io/osint-harian#log</link>
-    <guid isPermaLink="false">20261004-13</guid>
-    <pubDate>Mon, 05 Oct 2026 10:55:26 +0700</pubDate>
+    <guid isPermaLink="false">20261004-12</guid>
+    <pubDate>Mon, 05 Oct 2026 04:06:13 GMT</pubDate>
   </item>
 </channel></rss>
