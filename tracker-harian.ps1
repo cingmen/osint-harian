@@ -36,65 +36,12 @@ $ARROW = [string][char]0x2192   # panah kanan
 #  BAGIAN 3 — KONFIGURASI (semua pengaturan ada di blok ini)
 # -----------------------------------------------------------------------------
 
-# --- Identitas (ubah hanya di sini) ---
-$PROJECT_NAME = 'osint-harian'
-$CONTACT      = 'https://cingmen.github.io/osint-harian'       # kontak di User-Agent (URL situs)
-$SITE_BASE    = 'https://cingmen.github.io/osint-harian'     # URL absolut untuk feed.xml
-$USER_AGENT   = "$PROJECT_NAME/1.0 (+https://github.com/$PROJECT_NAME; kontak: $CONTACT)"
-
-# --- Ambang & retensi ---
-$ANOMALI_THRESHOLD = 3
-$RETENTION_DAYS    = 90
-$RSS_MAX_ITEMS     = 50
-$TELEGRAM_LIMIT    = 4000
-$SNIPPET_MAX       = 300
-
-# --- Kata kunci pemantauan (case-insensitive) ---
-$KEYWORDS_WATCH = @('sanction', 'eruption', 'zero-day')
-
-# --- Daftar sumber statis ---
-#   Format: folder|nama|label|url|tier|jadwal|ext
-$SOURCES = @'
-bmkg|autogempa|BMKG Gempa Terkini|https://data.bmkg.go.id/DataMKG/TEWS/autogempa.json|full|daily|json
-bmkg|gempadirasakan|BMKG Gempa Dirasakan|https://data.bmkg.go.id/DataMKG/TEWS/gempadirasakan.json|full|daily|json
-ofac|sdn|OFAC SDN (daftar sanksi)|https://www.treasury.gov/ofac/downloads/sdn.csv|full|senin|csv
-cisa|kev|CISA KEV (kerentanan aktif)|https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json|full|daily|json
-cisa|advisories|CISA Advisories|https://www.cisa.gov/cybersecurity-advisories/all.xml|full|daily|xml
-nvd|cve|NVD CVE 24 jam|https://services.nvd.nist.gov/rest/json/cves/2.0?pubStartDate={FROM_ISO_ENC}&pubEndDate={TO_ISO_ENC}|full|daily|json
-ransomware|live|Ransomware.live (korban terbaru)|https://api-pro.ransomware.live/victims/recent|full|env:RANSOMWARE_API_KEY|json
-who|don|WHO Disease Outbreak News|https://www.who.int/api/news/diseaseoutbreaknews|full|daily|json
-usgs|m25hari|USGS Gempa M2.5+ 24 jam|https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_day.csv|full|daily|csv
-nws|alerts|NWS Peringatan Aktif (AS)|https://api.weather.gov/alerts/active?status=actual|full|daily|json
-firms|hotspot|NASA FIRMS Hotspot (Indonesia)|https://firms.modaps.eosdis.nasa.gov/api/area/csv/{FIRMS_KEY}/VIIRS_SNPP_NRT/94,-11,142,6/1|full|env:FIRMS_KEY|csv
-opensky|states|OpenSky Penerbangan (Indonesia)|https://opensky-network.org/api/states/all?lamin=-11&lomin=94&lamax=6&lomax=141|full|env:OPENSKY_USER|json
-github|dmca|GitHub DMCA Commit 24 jam|https://api.github.com/repos/github/dmca/commits?since={FROM_ISO_ENC}&per_page=100|full|daily|json
-faa|notam|FAA NOTAM (contoh: WIII)|https://api.faa.gov/notamapi/v1/notams?icaoLocation=WIII|full|env:FAA_CLIENT_ID|json
-'@ -split "`n"
-
-# --- Artikel Wikipedia (pageviews 7 hari). Format: label|judul_artikel ---
-$WIKI_ARTICLES = @'
-Indonesia|Indonesia
-Ibu Kota Nusantara|Ibu_Kota_Nusantara
-Bank Sentral Asia|Bank_Central_Asia
-'@ -split "`n"
-$WIKI_PROJECT = 'id.wikipedia'
-
-# --- RSS berita (tier snippet). Format: nama|url ---
-$RSS_FEEDS = @'
-bbc|https://feeds.bbci.co.uk/news/world/rss.xml
-aljazeera|https://www.aljazeera.com/xml/rss/all.xml
-guardian|https://www.theguardian.com/world/rss
-cna|https://www.channelnewsasia.com/api/v1/rss-outbound-feed?_format=xml
-cnbcindonesia|https://www.cnbcindonesia.com/rss
-cnnindonesia|https://www.cnnindonesia.com/rss
-antara|https://www.antaranews.com/rss/top-news
-'@ -split "`n"
-
 # -----------------------------------------------------------------------------
-#  Variabel runtime (jangan diubah kecuali tahu akibatnya)
+#  Jalur runtime (dihitung lebih dahulu agar konfigurasi bersama bisa dimuat)
 # -----------------------------------------------------------------------------
 $BASE_DIR = Split-Path -Parent $MyInvocation.MyCommand.Path
 if (-not $BASE_DIR) { $BASE_DIR = (Get-Location).Path }
+$CONFIG_DIR   = Join-Path $BASE_DIR 'config'
 $DATA_DIR     = Join-Path $BASE_DIR 'data'
 $ERRORS_DIR   = Join-Path $DATA_DIR 'errors'
 $HISTORY_DIR  = Join-Path $DATA_DIR 'history'
@@ -112,6 +59,49 @@ $ANOMALI_FILE = Join-Path $TMPD 'anomali.txt'
 $WATCH_FILE   = Join-Path $TMPD 'watch.txt'
 $RINGKAS_FILE = Join-Path $TMPD 'ringkas.txt'
 $SKOR_FILE    = Join-Path $TMPD 'skor.tsv'
+
+# -----------------------------------------------------------------------------
+#  KONFIGURASI BERSAMA — SATU sumber kebenaran (folder config/), dipakai
+#  bersama tracker-harian.sh. Ubah di config/, bukan di skrip.
+# -----------------------------------------------------------------------------
+function Load-SharedConfig {
+  foreach ($n in @('pengaturan.conf', 'sumber.tsv', 'wiki.tsv', 'rss.tsv')) {
+    $p = Join-Path $CONFIG_DIR $n
+    if (-not (Test-Path -LiteralPath $p)) { throw "Konfigurasi bersama tidak ditemukan: $p" }
+  }
+  foreach ($line in (Get-Content -Encoding UTF8 -LiteralPath (Join-Path $CONFIG_DIR 'pengaturan.conf'))) {
+    if ($line -match '^\s*#' -or -not $line.Trim()) { continue }
+    $i = $line.IndexOf('='); if ($i -lt 0) { continue }
+    $k = $line.Substring(0, $i).Trim(); $v = $line.Substring($i + 1)
+    switch ($k) {
+      'PROJECT_NAME'      { $script:PROJECT_NAME = $v }
+      'CONTACT'           { $script:CONTACT = $v }
+      'SITE_BASE'         { $script:SITE_BASE = $v }
+      'ANOMALI_THRESHOLD' { $script:ANOMALI_THRESHOLD = [int]$v }
+      'RETENTION_DAYS'    { $script:RETENTION_DAYS = [int]$v }
+      'RSS_MAX_ITEMS'     { $script:RSS_MAX_ITEMS = [int]$v }
+      'TELEGRAM_LIMIT'    { $script:TELEGRAM_LIMIT = [int]$v }
+      'SNIPPET_MAX'       { $script:SNIPPET_MAX = [int]$v }
+      'WIKI_PROJECT'      { $script:WIKI_PROJECT = $v }
+      'TABEL_CVE_LIMIT'   { $script:TABEL_CVE_LIMIT = [int]$v }
+      'TABEL_KEV_LIMIT'   { $script:TABEL_KEV_LIMIT = [int]$v }
+      'TABEL_RSS_LIMIT'   { $script:TABEL_RSS_LIMIT = [int]$v }
+      'TABEL_USGS_LIMIT'  { $script:TABEL_USGS_LIMIT = [int]$v }
+      'KEYWORDS_WATCH'    { $script:KEYWORDS_WATCH = @($v -split ',') }
+    }
+  }
+  $readTs = {
+    param($name)
+    $p = Join-Path $CONFIG_DIR $name
+    return @(Get-Content -Encoding UTF8 -LiteralPath $p | Where-Object { $_ -notmatch '^\s*#' -and $_.Trim() })
+  }
+  $script:SOURCES       = & $readTs 'sumber.tsv'
+  $script:WIKI_ARTICLES = & $readTs 'wiki.tsv'
+  $script:RSS_FEEDS     = & $readTs 'rss.tsv'
+  $script:RSS_NAMES     = @($script:RSS_FEEDS | ForEach-Object { ($_ -split '\|')[0] } | Where-Object { $_ })
+  $script:USER_AGENT    = "$script:PROJECT_NAME/1.0 (+https://github.com/$script:PROJECT_NAME; kontak: $script:CONTACT)"
+}
+Load-SharedConfig
 
 # --- Waktu ---
 $TODAY      = (Get-Date).ToString('yyyyMMdd')
@@ -954,7 +944,7 @@ function Tabel-Gempa {
           $place = $c[13].Trim('"')
           [pscustomobject]@{ t = $c[0]; mag = [double]$c[4]; place = $place }
         }
-      } | Sort-Object mag -Descending | Select-Object -First 5
+      } | Sort-Object mag -Descending | Select-Object -First $TABEL_USGS_LIMIT
       foreach ($r in $rows) { $out += [ordered]@{ sumber = 'USGS'; magnitudo = "$($r.mag)"; lokasi = $r.place; waktu = $r.t } }
     }
   }
@@ -964,7 +954,7 @@ function Tabel-Cve {
   $out = @()
   $f = Get-NewestSnapshot 'nvd' 'cve'
   if ($f) {
-    $ids = @([regex]::Matches([System.IO.File]::ReadAllText($f), '"id":"(CVE-[0-9-]+)"') | ForEach-Object { $_.Groups[1].Value } | Sort-Object -Unique | Select-Object -First 40)
+    $ids = @([regex]::Matches([System.IO.File]::ReadAllText($f), '"id":"(CVE-[0-9-]+)"') | ForEach-Object { $_.Groups[1].Value } | Sort-Object -Unique | Select-Object -First $TABEL_CVE_LIMIT)
     foreach ($id in $ids) { $out += [ordered]@{ id = $id } }
   }
   return $out
@@ -976,8 +966,8 @@ function Tabel-Kev {
     # CISA KEV = JSON rapi (spasi setelah ':'); ambil id & vendor terpisah lalu
     # pasangkan (urutannya sejajar per entri).
     $raw  = [System.IO.File]::ReadAllText($f)
-    $ids  = @([regex]::Matches($raw, '"cveID"\s*:\s*"(CVE-[0-9-]+)"')       | ForEach-Object { $_.Groups[1].Value } | Select-Object -First 20)
-    $vens = @([regex]::Matches($raw, '"vendorProject"\s*:\s*"([^"]*)"') | ForEach-Object { $_.Groups[1].Value } | Select-Object -First 20)
+    $ids  = @([regex]::Matches($raw, '"cveID"\s*:\s*"(CVE-[0-9-]+)"')       | ForEach-Object { $_.Groups[1].Value } | Select-Object -First $TABEL_KEV_LIMIT)
+    $vens = @([regex]::Matches($raw, '"vendorProject"\s*:\s*"([^"]*)"') | ForEach-Object { $_.Groups[1].Value } | Select-Object -First $TABEL_KEV_LIMIT)
     for ($i = 0; $i -lt [Math]::Min($ids.Count, $vens.Count); $i++) {
       $out += [ordered]@{ id = $ids[$i]; vendor = $vens[$i] }
     }
@@ -986,12 +976,12 @@ function Tabel-Kev {
 }
 function Tabel-Rss {
   $out = @()
-  foreach ($nama in @('bbc', 'aljazeera', 'guardian', 'cna', 'cnbcindonesia', 'cnnindonesia', 'antara')) {
+  foreach ($nama in $RSS_NAMES) {
     $f = Get-NewestSnapshot 'rss' "rss_$nama"
     if (-not $f) { continue }
     $raw = [System.IO.File]::ReadAllText($f)
     $ms = [regex]::Matches($raw, '\{"title":"([^"]*)","link":"([^"]*)","snippet":"([^"]*)","wayback":"([^"]*)"\}')
-    foreach ($m in ($ms | Select-Object -First 5)) {
+    foreach ($m in ($ms | Select-Object -First $TABEL_RSS_LIMIT)) {
       $out += [ordered]@{
         feed = $nama; title = $m.Groups[1].Value; link = $m.Groups[2].Value
         snippet = $m.Groups[3].Value; wayback = $m.Groups[4].Value

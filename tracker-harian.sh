@@ -24,71 +24,11 @@ set -u
 #  BAGIAN 3 — KONFIGURASI (semua pengaturan ada di blok ini)
 # -----------------------------------------------------------------------------
 
-# --- Identitas (ubah hanya di sini) ---
-PROJECT_NAME="osint-harian"
-CONTACT="https://cingmen.github.io/osint-harian"       # kontak di User-Agent (URL situs)
-SITE_BASE="https://cingmen.github.io/osint-harian"     # URL absolut untuk feed.xml
-USER_AGENT="${PROJECT_NAME}/1.0 (+https://github.com/${PROJECT_NAME}; kontak: ${CONTACT})"
-
-# --- Ambang & retensi ---
-ANOMALI_THRESHOLD=3        # kali rata-rata 7 hari agar pageviews dianggap ANOMALI
-RETENTION_DAYS=90          # retensi data/news-full/
-RSS_MAX_ITEMS=50           # maks entri di docs/feed.xml
-TELEGRAM_LIMIT=4000        # batas karakter pesan Telegram
-SNIPPET_MAX=300            # panjang kutipan maksimum (tier snippet)
-
-# --- Kata kunci pemantauan (case-insensitive), bisa diedit ---
-KEYWORDS_WATCH=("sanction" "eruption" "zero-day")
-
-# --- Daftar sumber statis ---
-#   Format: folder|nama|label|url|tier|jadwal|ext
-#     tier   : full | snippet | lokal
-#     jadwal : daily | senin | env:NAMA_ENV   (env harus terisi agar dijalankan)
-#     token URL yang disubstitusi saat run:
-#       {TODAY} {TODAY_DASH} {FROM_ISO} {TO_ISO} {FROM_ISO_ENC} {TO_ISO_ENC} {FIRMS_KEY}
-SOURCES=$(cat <<'EOF'
-bmkg|autogempa|BMKG Gempa Terkini|https://data.bmkg.go.id/DataMKG/TEWS/autogempa.json|full|daily|json
-bmkg|gempadirasakan|BMKG Gempa Dirasakan|https://data.bmkg.go.id/DataMKG/TEWS/gempadirasakan.json|full|daily|json
-ofac|sdn|OFAC SDN (daftar sanksi)|https://www.treasury.gov/ofac/downloads/sdn.csv|full|senin|csv
-cisa|kev|CISA KEV (kerentanan aktif)|https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json|full|daily|json
-cisa|advisories|CISA Advisories|https://www.cisa.gov/cybersecurity-advisories/all.xml|full|daily|xml
-nvd|cve|NVD CVE 24 jam|https://services.nvd.nist.gov/rest/json/cves/2.0?pubStartDate={FROM_ISO_ENC}&pubEndDate={TO_ISO_ENC}|full|daily|json
-ransomware|live|Ransomware.live (korban terbaru)|https://api-pro.ransomware.live/victims/recent|full|env:RANSOMWARE_API_KEY|json
-who|don|WHO Disease Outbreak News|https://www.who.int/api/news/diseaseoutbreaknews|full|daily|json
-usgs|m25hari|USGS Gempa M2.5+ 24 jam|https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_day.csv|full|daily|csv
-nws|alerts|NWS Peringatan Aktif (AS)|https://api.weather.gov/alerts/active?status=actual|full|daily|json
-firms|hotspot|NASA FIRMS Hotspot (Indonesia)|https://firms.modaps.eosdis.nasa.gov/api/area/csv/{FIRMS_KEY}/VIIRS_SNPP_NRT/94,-11,142,6/1|full|env:FIRMS_KEY|csv
-opensky|states|OpenSky Penerbangan (Indonesia)|https://opensky-network.org/api/states/all?lamin=-11&lomin=94&lamax=6&lomax=141|full|env:OPENSKY_USER|json
-github|dmca|GitHub DMCA Commit 24 jam|https://api.github.com/repos/github/dmca/commits?since={FROM_ISO_ENC}&per_page=100|full|daily|json
-faa|notam|FAA NOTAM (contoh: WIII)|https://api.faa.gov/notamapi/v1/notams?icaoLocation=WIII|full|env:FAA_CLIENT_ID|json
-EOF
-)
-
-# --- Artikel Wikipedia (pageviews 7 hari). Format: label|judul_artikel ---
-WIKI_ARTICLES=$(cat <<'EOF'
-Indonesia|Indonesia
-Ibu Kota Nusantara|Ibu_Kota_Nusantara
-Bank Sentral Asia|Bank_Central_Asia
-EOF
-)
-WIKI_PROJECT="id.wikipedia"
-
-# --- RSS berita (tier snippet). Format: nama|url ---
-RSS_FEEDS=$(cat <<'EOF'
-bbc|https://feeds.bbci.co.uk/news/world/rss.xml
-aljazeera|https://www.aljazeera.com/xml/rss/all.xml
-guardian|https://www.theguardian.com/world/rss
-cna|https://www.channelnewsasia.com/api/v1/rss-outbound-feed?_format=xml
-cnbcindonesia|https://www.cnbcindonesia.com/rss
-cnnindonesia|https://www.cnnindonesia.com/rss
-antara|https://www.antaranews.com/rss/top-news
-EOF
-)
-
 # -----------------------------------------------------------------------------
-#  Variabel runtime (jangan diubah kecuali tahu akibatnya)
+#  Jalur runtime (dihitung lebih dahulu agar konfigurasi bersama bisa dimuat)
 # -----------------------------------------------------------------------------
 BASE_DIR="$(cd "$(dirname "$0")" && pwd)"
+CONFIG_DIR="$BASE_DIR/config"
 DATA_DIR="$BASE_DIR/data"
 ERRORS_DIR="$DATA_DIR/errors"
 HISTORY_DIR="$DATA_DIR/history"
@@ -100,6 +40,63 @@ STATE_FILE="$TMPD/state.tsv"       # folder|nama|label|tier|status|http|laten|di
 ANOMALI_FILE="$TMPD/anomali.txt"
 WATCH_FILE="$TMPD/watch.txt"
 RINGKAS_FILE="$TMPD/ringkas.txt"   # ringkasan perubahan untuk commit & telegram
+
+# -----------------------------------------------------------------------------
+#  KONFIGURASI BERSAMA — SATU sumber kebenaran untuk bash & PowerShell.
+#  Ubah di folder config/, bukan di skrip:
+#    config/pengaturan.conf  KEY=value (identitas, ambang, kata kunci, batas tabel)
+#    config/sumber.tsv       folder|nama|label|url|tier|jadwal|ext
+#    config/wiki.tsv         label|judul_artikel
+#    config/rss.tsv          nama|url  (urutan = urutan tabel `rss`)
+# -----------------------------------------------------------------------------
+muat_konfigurasi() {
+  local conf="$CONFIG_DIR/pengaturan.conf" f
+  for f in "$conf" "$CONFIG_DIR/sumber.tsv" "$CONFIG_DIR/wiki.tsv" "$CONFIG_DIR/rss.tsv"; do
+    if [ ! -f "$f" ]; then
+      printf '[FATAL] Konfigurasi bersama tidak ditemukan: %s\n' "$f" >&2
+      exit 2
+    fi
+  done
+
+  # KEY=value → variabel global (daftar eksplisit agar aman dari salah ketik).
+  local line k v
+  while IFS= read -r line || [ -n "$line" ]; do
+    case "$line" in ''|\#*) continue ;; esac
+    k="${line%%=*}"; v="${line#*=}"
+    case "$k" in
+      PROJECT_NAME)      PROJECT_NAME="$v" ;;
+      CONTACT)           CONTACT="$v" ;;
+      SITE_BASE)         SITE_BASE="$v" ;;
+      ANOMALI_THRESHOLD) ANOMALI_THRESHOLD="$v" ;;
+      RETENTION_DAYS)    RETENTION_DAYS="$v" ;;
+      RSS_MAX_ITEMS)     RSS_MAX_ITEMS="$v" ;;
+      TELEGRAM_LIMIT)    TELEGRAM_LIMIT="$v" ;;
+      SNIPPET_MAX)       SNIPPET_MAX="$v" ;;
+      WIKI_PROJECT)      WIKI_PROJECT="$v" ;;
+      TABEL_CVE_LIMIT)   TABEL_CVE_LIMIT="$v" ;;
+      TABEL_KEV_LIMIT)   TABEL_KEV_LIMIT="$v" ;;
+      TABEL_RSS_LIMIT)   TABEL_RSS_LIMIT="$v" ;;
+      TABEL_USGS_LIMIT)  TABEL_USGS_LIMIT="$v" ;;
+      KEYWORDS_WATCH)    IFS=',' read -r -a KEYWORDS_WATCH <<< "$v" ;;
+    esac
+  done < "$conf"
+
+  # Daftar statis (baris komentar dibuang; pemakai lain sudah membuang baris kosong).
+  SOURCES="$(grep -v '^[[:space:]]*#' "$CONFIG_DIR/sumber.tsv")"
+  WIKI_ARTICLES="$(grep -v '^[[:space:]]*#' "$CONFIG_DIR/wiki.tsv")"
+  RSS_FEEDS="$(grep -v '^[[:space:]]*#' "$CONFIG_DIR/rss.tsv")"
+
+  # Nama feed berurutan (untuk tabel `rss` pada manifest).
+  RSS_NAMES=()
+  local rn _ru
+  while IFS='|' read -r rn _ru; do
+    [ -z "$rn" ] && continue
+    RSS_NAMES+=("$rn")
+  done < <(grep -v '^[[:space:]]*#' "$CONFIG_DIR/rss.tsv")
+
+  USER_AGENT="${PROJECT_NAME}/1.0 (+https://github.com/${PROJECT_NAME}; kontak: ${CONTACT})"
+}
+muat_konfigurasi
 
 MODE="harian"
 [ "${1:-}" = "--cek" ] && MODE="cek"
@@ -1060,7 +1057,7 @@ tabel_gempa() {
       jescv "$m"; local jm="$JESC_OUT"; jescv "$place"; local jp="$JESC_OUT"; jescv "$t"; local jt="$JESC_OUT"
       printf ' {"sumber":"USGS","magnitudo":"%s","lokasi":"%s","waktu":"%s"}' "$jm" "$jp" "$jt"
       first=0
-    done < <(tail -n +2 "$fu" | sort -t',' -k5 -g | tail -5)
+    done < <(tail -n +2 "$fu" | sort -t',' -k5 -g | tail -"${TABEL_USGS_LIMIT:-5}")
   fi
   printf ' ]'
 }
@@ -1076,7 +1073,7 @@ tabel_cve() {
       jescv "$id"
       printf ' {"id":"%s"}' "$JESC_OUT"
       first=0
-    done < <(grep -o '"id":"CVE-[0-9][0-9-]*"' "$f" | sed 's/.*:"//; s/"//' | sort -u | head -40)
+    done < <(grep -o '"id":"CVE-[0-9][0-9-]*"' "$f" | sed 's/.*:"//; s/"//' | sort -u | head -"${TABEL_CVE_LIMIT:-40}")
   fi
   printf ' ]'
 }
@@ -1090,8 +1087,8 @@ tabel_kev() {
     # entri) lalu pasangkan.
     local first=1 cid ven
     local ids vens
-    ids="$(grep -o '"cveID"[[:space:]]*:[[:space:]]*"CVE-[0-9-]*"' "$f" 2>/dev/null | sed 's/.*"\(CVE-[0-9-]*\)"/\1/' | head -20)"
-    vens="$(grep -o '"vendorProject"[[:space:]]*:[[:space:]]*"[^"]*"' "$f" 2>/dev/null | sed 's/.*"\([^"]*\)"$/\1/' | head -20)"
+    ids="$(grep -o '"cveID"[[:space:]]*:[[:space:]]*"CVE-[0-9-]*"' "$f" 2>/dev/null | sed 's/.*"\(CVE-[0-9-]*\)"/\1/' | head -"${TABEL_KEV_LIMIT:-20}")"
+    vens="$(grep -o '"vendorProject"[[:space:]]*:[[:space:]]*"[^"]*"' "$f" 2>/dev/null | sed 's/.*"\([^"]*\)"$/\1/' | head -"${TABEL_KEV_LIMIT:-20}")"
     while IFS='|' read -r cid ven; do
       [ -z "$cid" ] && continue
       [ "$first" -eq 0 ] && printf ','
@@ -1106,7 +1103,7 @@ tabel_kev() {
 tabel_rss() {
   printf '    "rss": ['
   local first=1 nama f it
-  for nama in bbc aljazeera guardian cna cnbcindonesia cnnindonesia antara; do
+  for nama in "${RSS_NAMES[@]}"; do
     f="$(ambil_latest rss "rss_${nama}" json)"
     [ -n "$f" ] && [ -f "$f" ] || continue
     jescv "$nama"; local jfeed="$JESC_OUT"
@@ -1117,7 +1114,7 @@ tabel_rss() {
       # `${it#\{}` sudah memuat kurung tutup milik item, jadi jangan ditambah '}'.
       printf ' {"feed":"%s",%s' "$jfeed" "${it#\{}"
       first=0
-    done < <(grep -o '{"title":"[^"]*","link":"[^"]*","snippet":"[^"]*","wayback":"[^"]*"}' "$f" 2>/dev/null | head -5)
+    done < <(grep -o '{"title":"[^"]*","link":"[^"]*","snippet":"[^"]*","wayback":"[^"]*"}' "$f" 2>/dev/null | head -"${TABEL_RSS_LIMIT:-5}")
   done
   printf ' ]'
 }
