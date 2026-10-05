@@ -21,6 +21,7 @@ data/logs/
 .trace.txt
 *.harness.sh
 .run.log
+.bench/
 
 # --- OS / editor ---
 .DS_Store

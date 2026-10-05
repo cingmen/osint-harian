@@ -485,6 +485,7 @@ Diperbaiki dari laporan error run nyata `data/errors/2026-10-04.md`:
 | **RSS** dedup/diff selalu "snapshot pertama" | Berkas disimpan `-bbc.json` padahal semua lookup memakai `rss_bbc` | Nama berkas disamakan `-rss_<feed>.json` |
 | **`docs/data.json` tidak valid** saat data banyak | Tabel (`gempa`/`cve`/`kev`/`rss`) tidak menulis koma pemisah (flag `first` hilang di subshell pipa) | Loop memakai process substitution; koma ditulis benar |
 | Tabel `rss` / `kev` kosong walau data ada | Bug di atas + regex JSON padat | Lihat dua baris sebelumnya |
+| **Manifest lambat** (bash 88 dtk; PowerShell 1,6 dtk) | Bash: ratusan fork subshell `$(jesc …)` per field + 32 fork `date`; PowerShell: `Get-ChildItem`/`Test-Path` diulang per sumber | Bash: helper `jescv` tanpa-fork, `_siapkan_hari` satu-proses awk (dengan fallback portable), substitusi token URL ber-fork hanya bila perlu; PowerShell: cache daftar berkas + himpunan nama + cache state. **Manifest+feed: bash 88→24 dtk, PowerShell 1,6→1,35 dtk**, keluaran identik |
 
 ---
 
