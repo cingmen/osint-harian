@@ -82,6 +82,11 @@ osint-harian/
 ├── jaga-harian.sh             # penjaga: jalankan otomatis tiap 00:00 (bash)
 ├── jaga-harian.ps1            # penjaga: jalankan otomatis tiap 00:00 (Windows)
 ├── setup-git.sh               # penyiapan repo git + remote (sekali saja)
+├── config/                    # ⭐ SATU sumber kebenaran untuk kedua skrip
+│   ├── pengaturan.conf        #   KEY=value (identitas, ambang, kata kunci, batas tabel)
+│   ├── sumber.tsv             #   folder|nama|label|url|tier|jadwal|ext
+│   ├── wiki.tsv               #   label|judul_artikel
+│   └── rss.tsv                #   nama|url  (urutan = urutan tabel `rss`)
 ├── docs/                      # yang dilayani GitHub Pages (folder /docs)
 │   ├── index.html             # dashboard statis (gelap, responsif, tanpa framework)
 │   ├── data.json              # manifest (dibuat ulang tiap run)
@@ -187,10 +192,21 @@ pesan jelas. Sumber `senin` hanya jalan pada hari Senin.
 
 ## 7. Konfigurasi & menambah sumber
 
-**Semua pengaturan ada di SATU blok di bagian atas skrip** (Bash: blok `BAGIAN 3`;
-PowerShell: blok `BAGIAN 3`). Yang perlu Anda ubah:
+**Semua pengaturan ada di folder `config/`** — SATU sumber kebenaran yang dipakai
+**bersama** oleh `tracker-harian.sh` (bash) dan `tracker-harian.ps1` (PowerShell).
+Ubah di sana; kedua skrip otomatis ikut. Tidak ada lagi daftar sumber yang
+diduplikasi di dua skrip.
 
-| Variabel | Arti |
+| Berkas | Isi |
+|---|---|
+| `config/pengaturan.conf` | `KEY=value`: identitas, ambang, kata kunci, batas tabel |
+| `config/sumber.tsv` | daftar sumber statis (`folder\|nama\|label\|url\|tier\|jadwal\|ext`) |
+| `config/wiki.tsv` | artikel pageviews (`label\|judul_artikel`) |
+| `config/rss.tsv` | umpan RSS (`nama\|url`; urutannya menentukan urutan tabel `rss`) |
+
+Kunci pada `config/pengaturan.conf`:
+
+| Kunci | Arti |
 |---|---|
 | `PROJECT_NAME` | Nama proyek (dipakai di User-Agent & judul) |
 | `CONTACT` | Kontak di User-Agent (**wajib diisi**; di sini diisi URL situs) |
@@ -199,11 +215,13 @@ PowerShell: blok `BAGIAN 3`). Yang perlu Anda ubah:
 | `RETENTION_DAYS` | Umur retensi `data/news-full/` (default 90) |
 | `RSS_MAX_ITEMS` | Maks entri `docs/feed.xml` (default 50) |
 | `SNIPPET_MAX` | Panjang kutipan maksimum (default 300) |
-| `KEYWORDS_WATCH` | Kata kunci pemantauan (default `sanction`, `eruption`, `zero-day`) |
+| `KEYWORDS_WATCH` | Kata kunci pemantauan, dipisah koma (default `sanction,eruption,zero-day`) |
+| `TABEL_CVE_LIMIT` / `TABEL_KEV_LIMIT` / `TABEL_RSS_LIMIT` / `TABEL_USGS_LIMIT` | Batas baris tiap tabel manifest (40 / 20 / 5 / 5) |
+| `WIKI_PROJECT` | Proyek Wikimedia (default `id.wikipedia`) |
 
 ### Menambah satu sumber
 
-Tambahkan **SATU baris** ke blok `SOURCES`:
+Tambahkan **SATU baris** ke `config/sumber.tsv`:
 
 ```
 folder|nama|label|url|tier|jadwal|ext
@@ -485,6 +503,7 @@ Diperbaiki dari laporan error run nyata `data/errors/2026-10-04.md`:
 | **RSS** dedup/diff selalu "snapshot pertama" | Berkas disimpan `-bbc.json` padahal semua lookup memakai `rss_bbc` | Nama berkas disamakan `-rss_<feed>.json` |
 | **`docs/data.json` tidak valid** saat data banyak | Tabel (`gempa`/`cve`/`kev`/`rss`) tidak menulis koma pemisah (flag `first` hilang di subshell pipa) | Loop memakai process substitution; koma ditulis benar |
 | Tabel `rss` / `kev` kosong walau data ada | Bug di atas + regex JSON padat | Lihat dua baris sebelumnya |
+| **Konfigurasi terduplikasi** di dua skrip (rawan divergen) | `SOURCES`/`WIKI_ARTICLES`/`RSS_FEEDS`/ambang/kata kunci/batas tabel ditulis dua kali (bash + PowerShell) | Diekstrak ke **`config/`** (satu sumber kebenaran); kedua skrip memuatnya. `RSS_NAMES` & batas tabel kini berasal dari config |
 | **Manifest lambat** (bash 88 dtk; PowerShell 1,6 dtk) | Bash: ratusan fork subshell `$(jesc …)` per field + 32 fork `date`; PowerShell: `Get-ChildItem`/`Test-Path` diulang per sumber | Bash: helper `jescv` tanpa-fork, `_siapkan_hari` satu-proses awk (dengan fallback portable), substitusi token URL ber-fork hanya bila perlu; PowerShell: cache daftar berkas + himpunan nama + cache state. **Manifest+feed: bash 88→24 dtk, PowerShell 1,6→1,35 dtk**, keluaran identik |
 
 ---

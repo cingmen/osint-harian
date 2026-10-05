@@ -1,0 +1,22 @@
+# Daftar sumber statis — SATU sumber kebenaran untuk kedua skrip.
+#   Format: folder|nama|label|url|tier|jadwal|ext
+#     tier   : full | snippet | lokal
+#     jadwal : daily | senin | env:NAMA_ENV   (env harus terisi agar dijalankan)
+#     ext    : json | xml | csv
+#   Token URL yang disubstitusi saat run:
+#     {TODAY} {TODAY_DASH} {FROM_ISO} {TO_ISO} {FROM_ISO_ENC} {TO_ISO_ENC} {FIRMS_KEY}
+#   Baris kosong / diawali '#' diabaikan.
+bmkg|autogempa|BMKG Gempa Terkini|https://data.bmkg.go.id/DataMKG/TEWS/autogempa.json|full|daily|json
+bmkg|gempadirasakan|BMKG Gempa Dirasakan|https://data.bmkg.go.id/DataMKG/TEWS/gempadirasakan.json|full|daily|json
+ofac|sdn|OFAC SDN (daftar sanksi)|https://www.treasury.gov/ofac/downloads/sdn.csv|full|senin|csv
+cisa|kev|CISA KEV (kerentanan aktif)|https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json|full|daily|json
+cisa|advisories|CISA Advisories|https://www.cisa.gov/cybersecurity-advisories/all.xml|full|daily|xml
+nvd|cve|NVD CVE 24 jam|https://services.nvd.nist.gov/rest/json/cves/2.0?pubStartDate={FROM_ISO_ENC}&pubEndDate={TO_ISO_ENC}|full|daily|json
+ransomware|live|Ransomware.live (korban terbaru)|https://api-pro.ransomware.live/victims/recent|full|env:RANSOMWARE_API_KEY|json
+who|don|WHO Disease Outbreak News|https://www.who.int/api/news/diseaseoutbreaknews|full|daily|json
+usgs|m25hari|USGS Gempa M2.5+ 24 jam|https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_day.csv|full|daily|csv
+nws|alerts|NWS Peringatan Aktif (AS)|https://api.weather.gov/alerts/active?status=actual|full|daily|json
+firms|hotspot|NASA FIRMS Hotspot (Indonesia)|https://firms.modaps.eosdis.nasa.gov/api/area/csv/{FIRMS_KEY}/VIIRS_SNPP_NRT/94,-11,142,6/1|full|env:FIRMS_KEY|csv
+opensky|states|OpenSky Penerbangan (Indonesia)|https://opensky-network.org/api/states/all?lamin=-11&lomin=94&lamax=6&lomax=141|full|env:OPENSKY_USER|json
+github|dmca|GitHub DMCA Commit 24 jam|https://api.github.com/repos/github/dmca/commits?since={FROM_ISO_ENC}&per_page=100|full|daily|json
+faa|notam|FAA NOTAM (contoh: WIII)|https://api.faa.gov/notamapi/v1/notams?icaoLocation=WIII|full|env:FAA_CLIENT_ID|json

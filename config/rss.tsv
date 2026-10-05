@@ -1,0 +1,10 @@
+# RSS berita (tier snippet) — SATU sumber kebenaran untuk kedua skrip.
+#   Format: nama|url
+#   Urutan dipakai untuk tabel `rss` pada docs/data.json.
+bbc|https://feeds.bbci.co.uk/news/world/rss.xml
+aljazeera|https://www.aljazeera.com/xml/rss/all.xml
+guardian|https://www.theguardian.com/world/rss
+cna|https://www.channelnewsasia.com/api/v1/rss-outbound-feed?_format=xml
+cnbcindonesia|https://www.cnbcindonesia.com/rss
+cnnindonesia|https://www.cnnindonesia.com/rss
+antara|https://www.antaranews.com/rss/top-news
