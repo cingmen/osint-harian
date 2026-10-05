@@ -395,13 +395,17 @@ butuh konfigurasi tambahan.
 
 ## 14. Workflow GitHub Actions
 
-`.github/workflows/update.yml` disertakan dengan **hanya `workflow_dispatch`**
-(TANPA `schedule`). Menjalankannya:
+`.github/workflows/update.yml` disertakan dengan **dua pemicu**: `workflow_dispatch`
+(manual) dan `schedule` harian pada **`0 17 * * *` UTC = 00:00 WIB (UTC+7)**.
 
-1. Tab **Actions** → pilih workflow **update** → **Run workflow**.
+- **Manual**: Tab **Actions** → pilih workflow **update** → **Run workflow**.
+- **Otomatis**: berjalan tiap tengah malam WIB di server GitHub, sehingga tetap
+  jalan walau PC Anda mati. Cron GitHub bisa **bergeser beberapa menit** saat jam
+  sibuk, dan hanya berjalan bila repo aktif.
 
-Cocok untuk masa depan bila Anda ingin menjalankan dari server yang selalu nyala;
-saat ini dijalankan manual agar tidak bergantung pada PC yang menyala.
+Isi kredensial opsional lewat **Settings → Secrets and variables → Actions**
+(mis. `RANSOMWARE_API_KEY`, `FIRMS_KEY`, `OPENSKY_USER`). Bila Anda hanya ingin
+penjaga lokal (`jaga-harian`) yang berjalan, hapus blok `schedule` di workflow.
 
 ---
 
