@@ -193,8 +193,8 @@ PowerShell: blok `BAGIAN 3`). Yang perlu Anda ubah:
 | Variabel | Arti |
 |---|---|
 | `PROJECT_NAME` | Nama proyek (dipakai di User-Agent & judul) |
-| `CONTACT` | Kontak di User-Agent (**wajib diisi**) |
-| `SITE_BASE` | URL absolut Pages, mis. `https://username.github.io/osint-harian/` (untuk feed.xml) |
+| `CONTACT` | Kontak di User-Agent (**wajib diisi**; di sini diisi URL situs) |
+| `SITE_BASE` | URL absolut Pages, mis. `https://cingmen.github.io/osint-harian` (untuk feed.xml) |
 | `ANOMALI_THRESHOLD` | Kelipatan rata-rata 7 hari agar dianggap anomali (default 3) |
 | `RETENTION_DAYS` | Umur retensi `data/news-full/` (default 90) |
 | `RSS_MAX_ITEMS` | Maks entri `docs/feed.xml` (default 50) |
@@ -252,7 +252,7 @@ kemenkes|wabah|Kemenkes Wabah|https://example.go.id/api/wabah.json|full|daily|js
   "proyek": "osint-harian",
   "tanggal": "2026-10-04",              // tanggal run (lokal)
   "dibuat": "2026-10-04T07:00:00Z",     // waktu run (UTC)
-  "situs": "https://username.github.io/osint-harian/",
+  "situs": "https://cingmen.github.io/osint-harian",
   "ringkasan": { "ok":5, "sama":3, "gagal":2, "rusak":1, "lewat":1, "anomali":1, "watch":2 },
   "sumber": [
     {
@@ -380,8 +380,8 @@ Setiap `GAGAL`/`RUSAK` menulis entri ke `data/errors/<YYYYMMDD>.md` (folder ini
 2. **Settings → Pages**.
 3. **Source**: *Deploy from a branch*.
 4. **Branch**: `main` · **Folder**: `/docs` → **Save**.
-5. Situs tersedia di `https://<username>.github.io/osint-harian/`.
-6. Sunting `SITE_BASE` di skrip agar sama dengan URL di atas (dipakai feed.xml).
+5. Situs tersedia di `https://cingmen.github.io/osint-harian`.
+6. `SITE_BASE` di skrip sudah diarahkan ke URL di atas (dipakai feed.xml).
 
 Dashboard memakai **path relatif** (`data.js`, `data.json`, `feed.xml`), jadi tidak
 butuh konfigurasi tambahan.

@@ -7,6 +7,22 @@
     <language>en</language>
     
     <item>
+  <title>CISA Adds One Known Exploited Vulnerability to Catalog </title>
+  <link>https://www.cisa.gov/news-events/alerts/2026/10/04/cisa-adds-one-known-exploited-vulnerability-catalog</link>
+  <description>&lt;p class=&quot;text-align-justify&quot;&gt;CISA has added one new vulnerability to its&amp;nbsp;&lt;a href=&quot;https://www.cisa.gov/known-exploited-vulnerabilities-catalog&quot;&gt;Known Exploited Vulnerabilities (KEV) Catalog&lt;/a&gt;, based on evidence of active exploitation.&lt;/p&gt;
+&lt;ul type=&quot;disc&quot;&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.cve.org/CVERecord?id=CVE-2026-88779&quot;&gt;CVE-2026-88779&lt;/a&gt; Citrix NetScaler Improper Restriction of Operations within the Bounds of a Memory Buffer Vulnerability&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This type of vulnerability is a frequent attack vector for malicious cyber actors and poses significant risks to the federal enterprise.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://www.cisa.gov/news-events/directives/bod-26-04-implementation-guidance-prioritizing-security-updates-based-risk&quot;&gt;Binding Operational Directive (BOD) 26-04: Prioritizing Security Updates Based on Risk&lt;/a&gt; establishes vulnerability management requirements for Federal Civilian Executive Branch (FCEB) agencies. BOD 26-04 reinforces the importance of the KEV Catalog and requires federal agencies to prioritize rapid remediation of high-risk vulnerabilities, specifically those identified by Common Vulnerabilities and Exposures (CVEs) listed in CISA’s KEV Catalog on publicly exposed assets that grant total control of the asset post-exploitation, while deferring action for lower-risk vulnerabilities. BOD 26-04 further establishes basic expectations for when agencies must check whether threat actors compromised the system before the patch was applied.&lt;/p&gt;
+&lt;p&gt;While BOD 26-04 applies only to FCEB agencies, CISA encourages all organizations to adopt risk-based vulnerability management and prioritize remediation of&amp;nbsp;&lt;a href=&quot;https://www.cisa.gov/known-exploited-vulnerabilities-catalog&quot;&gt;KEV Catalog vulnerabilities&lt;/a&gt;. CISA will continue to add vulnerabilities to the catalog that meet the&amp;nbsp;&lt;a href=&quot;https://www.cisa.gov/known-exploited-vulnerabilities&quot;&gt;specified criteria&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Aware of an exploited vulnerability not currently listed in the KEV Catalog? Submit it for potential addition through CISA’s&amp;nbsp;&lt;a href=&quot;https://cisasurvey.gov1.qualtrics.com/jfe/form/SV_1Zwu52kgK2OYf3w&quot;&gt;KEV Nomination Form&lt;/a&gt;. Potential KEV additions must have a CVE ID, evidence of exploitation, and clear mitigation guidance.&lt;/p&gt;
+</description>
+  <pubDate>Sun, 04 Oct 26 12:00:00 +0000</pubDate>
+    <dc:creator>CISA</dc:creator>
+    <guid isPermaLink="false">/node/25583</guid>
+    </item>
+<item>
   <title>CISA Adds Two Known Exploited Vulnerabilities to Catalog</title>
   <link>https://www.cisa.gov/news-events/alerts/2026/10/02/cisa-adds-two-known-exploited-vulnerabilities-catalog</link>
   <description>&lt;p&gt;CISA has added two new vulnerabilities to its &lt;a href=&quot;https://www.cisa.gov/known-exploited-vulnerabilities-catalog&quot;&gt;Known Exploited Vulnerabilities (KEV) Catalog&lt;/a&gt;, based on evidence of active exploitation.&lt;/p&gt;
@@ -4233,22 +4249,6 @@
     <guid isPermaLink="false">/node/25553</guid>
     </item>
 <item>
-  <title>CISA Adds One Known Exploited Vulnerability to Catalog</title>
-  <link>https://www.cisa.gov/news-events/alerts/2026/09/25/cisa-adds-one-known-exploited-vulnerability-catalog</link>
-  <description>&lt;p&gt;CISA has added one new vulnerability to its &lt;a href=&quot;https://www.cisa.gov/known-exploited-vulnerabilities-catalog&quot;&gt;Known Exploited Vulnerabilities (KEV) Catalog&lt;/a&gt;, based on evidence of active exploitation.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;https://www.cve.org/CVERecord?id=CVE-2026-87902 &quot; target=&quot;_blank&quot;&gt;CVE-2026-87902&lt;/a&gt; WordPress Core Remote File Inclusion Vulnerability&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;This type of vulnerability is a frequent attack vector for malicious cyber actors and poses significant risks to the federal enterprise.&amp;nbsp;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;https://www.cisa.gov/news-events/directives/bod-26-04-implementation-guidance-prioritizing-security-updates-based-risk&quot;&gt;Binding Operational Directive (BOD) 26-04: Prioritizing Security Updates Based on Risk&lt;/a&gt; establishes vulnerability management requirements for Federal Civilian Executive Branch (FCEB) agencies. BOD 26-04 reinforces the importance of the KEV Catalog and requires federal agencies to prioritize rapid remediation of high-risk vulnerabilities, specifically those identified by Common Vulnerabilities and Exposures (CVEs) listed in CISA’s KEV Catalog on publicly exposed assets that grant total control of the asset post-exploitation, while deferring action for lower-risk vulnerabilities. BOD 26-04 further establishes basic expectations for when agencies must check whether threat actors compromised the system before the patch was applied.&amp;nbsp;&lt;/p&gt;
-&lt;p&gt;While BOD 26-04 applies only to FCEB agencies, CISA encourages all organizations to adopt risk-based vulnerability management and prioritize remediation of &lt;a href=&quot;https://www.cisa.gov/known-exploited-vulnerabilities-catalog&quot;&gt;KEV Catalog vulnerabilities&lt;/a&gt;. CISA will continue to add vulnerabilities to the catalog that meet the &lt;a href=&quot;https://www.cisa.gov/known-exploited-vulnerabilities&quot;&gt;specified criteria&lt;/a&gt;.&amp;nbsp;&lt;/p&gt;
-&lt;p&gt;Aware of an exploited vulnerability not currently listed in the KEV Catalog? Submit it for potential addition through CISA’s &lt;a href=&quot;https://cisasurvey.gov1.qualtrics.com/jfe/form/SV_1Zwu52kgK2OYf3w&quot; target=&quot;_blank&quot;&gt;KEV Nomination Form&lt;/a&gt;. Potential KEV additions must have a CVE ID, evidence of exploitation, and clear mitigation guidance.&amp;nbsp;&lt;/p&gt;
-</description>
-  <pubDate>Fri, 25 Sep 26 12:00:00 +0000</pubDate>
-    <dc:creator>CISA</dc:creator>
-    <guid isPermaLink="false">/node/25551</guid>
-    </item>
-<item>
   <title>CISA Adds Two Known Exploited Vulnerabilities to Catalog</title>
   <link>https://www.cisa.gov/news-events/alerts/2026/09/25/cisa-adds-two-known-exploited-vulnerabilities-catalog</link>
   <description>&lt;p&gt;CISA has added two new vulnerabilities to its &lt;a href=&quot;https://www.cisa.gov/known-exploited-vulnerabilities-catalog&quot;&gt;Known Exploited Vulnerabilities (KEV) Catalog&lt;/a&gt;, based on evidence of active exploitation.&lt;/p&gt;
@@ -4266,168 +4266,20 @@
     <guid isPermaLink="false">/node/25549</guid>
     </item>
 <item>
-  <title>Siemens Mendix Runtime (Update A)</title>
-  <link>https://www.cisa.gov/news-events/ics-advisories/icsa-26-209-02</link>
-  <description>&lt;p&gt;&lt;a href=&quot;https://github.com/cisagov/CSAF/blob/develop/csaf_files/OT/white/2026/icsa-26-209-02.json&quot;&gt;&lt;strong&gt;View CSAF&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;h2&gt;Summary&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;This advisory is revoked. Re-investigation confirmed the reported behavior is expected platform configuration and does not expose the protected attribute.&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;The following versions of Siemens Mendix Runtime are affected:&lt;/p&gt;
+  <title>CISA Adds One Known Exploited Vulnerability to Catalog</title>
+  <link>https://www.cisa.gov/news-events/alerts/2026/09/25/cisa-adds-one-known-exploited-vulnerability-catalog</link>
+  <description>&lt;p&gt;CISA has added one new vulnerability to its &lt;a href=&quot;https://www.cisa.gov/known-exploited-vulnerabilities-catalog&quot;&gt;Known Exploited Vulnerabilities (KEV) Catalog&lt;/a&gt;, based on evidence of active exploitation.&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;Siemens Mendix Runtime vers:all/* (CVE-2026-7891)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.cve.org/CVERecord?id=CVE-2026-87902 &quot; target=&quot;_blank&quot;&gt;CVE-2026-87902&lt;/a&gt; WordPress Core Remote File Inclusion Vulnerability&lt;/li&gt;
 &lt;/ul&gt;
-&lt;div class=&quot;csaf-table&quot;&gt;
-&lt;table class=&quot;tablesaw tablesaw-stack&quot; data-tablesaw-mode=&quot;stack&quot; data-tablesaw-minimap&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th role=&quot;columnheader&quot; data-tablesaw-priority=&quot;persist&quot;&gt;CVSS&lt;/th&gt;
-&lt;th role=&quot;columnheader&quot;&gt;Vendor&lt;/th&gt;
-&lt;th role=&quot;columnheader&quot;&gt;Equipment&lt;/th&gt;
-&lt;th role=&quot;columnheader&quot;&gt;Vulnerabilities&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;v3 9.1&lt;/td&gt;
-&lt;td&gt;Siemens&lt;/td&gt;
-&lt;td&gt;Siemens Mendix Runtime&amp;nbsp;&lt;/td&gt;
-&lt;td&gt;Insecure Inherited Permissions&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;/div&gt;
-&lt;h3&gt;Background&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Critical Infrastructure Sectors: &lt;/strong&gt;Critical Manufacturing&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Countries/Areas Deployed: &lt;/strong&gt;Worldwide&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Company Headquarters Location: &lt;/strong&gt;Germany&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
-&lt;h2&gt;Vulnerabilities&lt;/h2&gt;
-&lt;div class=&quot;csaf-accordion&quot;&gt;
-&lt;p&gt;&lt;a class=&quot;csaf-accordion-toggle-all&quot; href=&quot;#&quot;&gt;Expand All +&lt;/a&gt;&lt;/p&gt;
-&lt;div class=&quot;csaf-accordion-item&quot;&gt;
-&lt;h3&gt;&lt;a class=&quot;csaf-accordion-toggle&quot; href=&quot;#&quot;&gt;CVE-2026-7891&lt;/a&gt;&lt;/h3&gt;
-&lt;div class=&quot;csaf-accordion-content&quot;&gt;
-&lt;p&gt;This CVE has been retracted. Re-investigation confirmed the reported behavior is expected platform configuration and does not expose the protected application-specific attribute.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;https://www.cve.org/CVERecord?id=CVE-2026-7891&quot;&gt;View CVE Details&lt;/a&gt;&lt;/p&gt;
-&lt;hr&gt;
-&lt;h4&gt;Affected Products&lt;/h4&gt;
-&lt;h5&gt;Siemens Mendix Runtime (Update A)&lt;/h5&gt;
-&lt;div class=&quot;ics-vendor-version-status&quot;&gt;
-&lt;div class=&quot;ics-vendor&quot;&gt;&lt;strong&gt;Vendor:&lt;/strong&gt;&lt;br&gt;Siemens&lt;/div&gt;
-&lt;div class=&quot;ics-version&quot;&gt;&lt;strong&gt;Product Version:&lt;/strong&gt;&lt;br&gt;Siemens Siemens Mendix Runtime: vers:all/*&lt;/div&gt;
-&lt;div class=&quot;ics-status&quot;&gt;&lt;strong&gt;Product Status:&lt;/strong&gt;&lt;br&gt;not_affected&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;ics-remediations&quot;&gt;
-&lt;h6&gt;Remediations&lt;/h6&gt;
-&lt;p&gt;&lt;strong&gt;Mitigation&lt;/strong&gt;&lt;br&gt;Vulnerability is rejected as re-investigation confirmed the reported behavior is expected platform configuration and does not expose the protected application-specific attribute (Vulnerable Code Not Present).&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Mitigation&lt;/strong&gt;&lt;br&gt;As a general security measure, Siemens recommends protecting network access to devices with appropriate mechanisms. To operate the devices in a protected IT environment, Siemens recommends configuring the environment according to Siemens&#039; operational guidelines for industrial security and following recommendations in the product manuals.&lt;br&gt;&lt;a href=&quot;https://www.siemens.com/cert/operational-guidelines-industrial-security&quot;&gt;https://www.siemens.com/cert/operational-guidelines-industrial-security&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Mitigation&lt;/strong&gt;&lt;br&gt;Additional information on industrial security by Siemens can be found on the Siemens industrial security webpage&lt;br&gt;&lt;a href=&quot;https://www.siemens.com/industrialsecurity&quot;&gt;https://www.siemens.com/industrialsecurity&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Mitigation&lt;/strong&gt;&lt;br&gt;For more information see the associated Siemens security advisory SSA-814963 in HTML.&lt;br&gt;&lt;a href=&quot;https://cert-portal.siemens.com/productcert/html/ssa-814963.html&quot;&gt;https://cert-portal.siemens.com/productcert/html/ssa-814963.html&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Mitigation&lt;/strong&gt;&lt;br&gt;For more information see the associated Siemens security advisory SSA-814963 in CSAF.&lt;br&gt;&lt;a href=&quot;https://cert-portal.siemens.com/productcert/csaf/ssa-814963.json&quot;&gt;https://cert-portal.siemens.com/productcert/csaf/ssa-814963.json&lt;/a&gt;&lt;/p&gt;
-&lt;/div&gt;
-&lt;p&gt;&lt;strong&gt;Relevant CWE:&lt;/strong&gt; &lt;a href=&quot;https://cwe.mitre.org/data/definitions/277.html&quot;&gt;CWE-277 Insecure Inherited Permissions&lt;/a&gt;&lt;/p&gt;
-&lt;hr&gt;
-&lt;h4&gt;Metrics&lt;/h4&gt;
-&lt;div class=&quot;csaf-table csaf-metrics-table&quot;&gt;
-&lt;table class=&quot;tablesaw tablesaw-stack&quot; data-tablesaw-mode=&quot;stack&quot; data-tablesaw-minimap&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th role=&quot;columnheader&quot; data-tablesaw-priority=&quot;persist&quot;&gt;CVSS Version&lt;/th&gt;
-&lt;th role=&quot;columnheader&quot;&gt;Base Score&lt;/th&gt;
-&lt;th role=&quot;columnheader&quot;&gt;Base Severity&lt;/th&gt;
-&lt;th role=&quot;columnheader&quot;&gt;Vector String&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;3.1&lt;/td&gt;
-&lt;td&gt;9.1&lt;/td&gt;
-&lt;td&gt;CRITICAL&lt;/td&gt;
-&lt;td&gt;&lt;a href=&quot;https://www.first.org/cvss/calculator/3.1#CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N&quot;&gt;CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N&lt;/a&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;4.0&lt;/td&gt;
-&lt;td&gt;9.1&lt;/td&gt;
-&lt;td&gt;CRITICAL&lt;/td&gt;
-&lt;td&gt;&lt;a href=&quot;https://www.first.org/cvss/calculator/4.0#CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:N/VC:H/VI:H/VA:N/SC:N/SI:N/SA:N&quot;&gt;CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:N/VC:H/VI:H/VA:N/SC:N/SI:N/SA:N&lt;/a&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;hr&gt;
-&lt;h2&gt;Acknowledgments&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Siemens ProductCERT reported this vulnerability to CISA.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
-&lt;h2&gt;Legal Notice and Terms of Use&lt;/h2&gt;
-&lt;p&gt;This product is provided subject to this Notification (&lt;a href=&quot;https://www.cisa.gov/notification&quot;&gt;https://www.cisa.gov/notification&lt;/a&gt;) and this Privacy &amp;amp; Use policy (&lt;a href=&quot;https://www.cisa.gov/privacy-policy&quot;&gt;https://www.cisa.gov/privacy-policy&lt;/a&gt;).&lt;/p&gt;
-&lt;hr&gt;
-&lt;h2&gt;Recommended Practices&lt;/h2&gt;
-&lt;p&gt;CISA recommends users take defensive measures to minimize the risk of exploitation of this vulnerability.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Minimize network exposure for all control system devices and/or systems, ensuring they are not accessible from the internet.&lt;/li&gt;
-&lt;li&gt;Locate control system networks and remote devices behind firewalls and isolating them from business networks.&lt;/li&gt;
-&lt;li&gt;When remote access is required, use more secure methods, such as Virtual Private Networks (VPNs). Recognize VPNs may have vulnerabilities, should be updated to the most recent version available, and are only as secure as the connected devices.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;CISA reminds organizations to perform proper impact analysis and risk assessment prior to deploying defensive measures.&lt;/p&gt;
-&lt;p&gt;CISA also provides a section for control systems security recommended practices on the ICS webpage on cisa.gov. Several CISA products detailing cyber defense best practices are available for reading and download, including Improving Industrial Control Systems Cybersecurity with Defense-in-Depth Strategies.&lt;/p&gt;
-&lt;p&gt;CISA encourages organizations to implement recommended cybersecurity strategies for proactive defense of ICS assets.&lt;/p&gt;
-&lt;p&gt;Additional mitigation guidance and recommended practices are publicly available on the ICS webpage at cisa.gov in the technical information paper, ICS-TIP-12-146-01B--Targeted Cyber Intrusion Detection and Mitigation Strategies.&lt;/p&gt;
-&lt;p&gt;Organizations observing suspected malicious activity should follow established internal procedures and report findings to CISA for tracking and correlation against other incidents.&lt;/p&gt;
-&lt;p&gt;CISA also recommends users take the following measures to protect themselves from social engineering attacks:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Do not click web links or open attachments in unsolicited email messages.&lt;/li&gt;
-&lt;li&gt;Refer to Recognizing and Avoiding Email Scams for more information on avoiding email scams.&lt;/li&gt;
-&lt;li&gt;Refer to Avoiding Social Engineering and Phishing Attacks for more information on social engineering attacks.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;No known public exploitation specifically targeting this vulnerability has been reported to CISA at this time.&lt;/p&gt;
-&lt;hr&gt;
-&lt;h2&gt;Revision History&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Initial Release Date: &lt;/strong&gt;2026-07-14&lt;/li&gt;
-&lt;/ul&gt;
-&lt;table class=&quot;tablesaw tablesaw-stack&quot; data-tablesaw-mode=&quot;stack&quot; data-tablesaw-minimap&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th role=&quot;columnheader&quot; data-tablesaw-priority=&quot;persist&quot;&gt;Date&lt;/th&gt;
-&lt;th role=&quot;columnheader&quot;&gt;Revision&lt;/th&gt;
-&lt;th role=&quot;columnheader&quot;&gt;Summary&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;2026-07-14&lt;/td&gt;
-&lt;td&gt;1&lt;/td&gt;
-&lt;td&gt;Initial Publication&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;2026-07-28&lt;/td&gt;
-&lt;td&gt;2&lt;/td&gt;
-&lt;td&gt;Initial Republication of Siemens ProductCERT SSA-814963&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;2026-09-22&lt;/td&gt;
-&lt;td&gt;3&lt;/td&gt;
-&lt;td&gt;Revoked advisory as the CVE is rejected&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;2026-09-24&lt;/td&gt;
-&lt;td&gt;4&lt;/td&gt;
-&lt;td&gt;Update A - Revoking advisory after Siemens revoked SSA-814963 and rejecting CVE-2026-7891&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;hr&gt;
-&lt;h2&gt;Legal Notice and Terms of Use&lt;/h2&gt;
+&lt;p&gt;This type of vulnerability is a frequent attack vector for malicious cyber actors and poses significant risks to the federal enterprise.&amp;nbsp;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://www.cisa.gov/news-events/directives/bod-26-04-implementation-guidance-prioritizing-security-updates-based-risk&quot;&gt;Binding Operational Directive (BOD) 26-04: Prioritizing Security Updates Based on Risk&lt;/a&gt; establishes vulnerability management requirements for Federal Civilian Executive Branch (FCEB) agencies. BOD 26-04 reinforces the importance of the KEV Catalog and requires federal agencies to prioritize rapid remediation of high-risk vulnerabilities, specifically those identified by Common Vulnerabilities and Exposures (CVEs) listed in CISA’s KEV Catalog on publicly exposed assets that grant total control of the asset post-exploitation, while deferring action for lower-risk vulnerabilities. BOD 26-04 further establishes basic expectations for when agencies must check whether threat actors compromised the system before the patch was applied.&amp;nbsp;&lt;/p&gt;
+&lt;p&gt;While BOD 26-04 applies only to FCEB agencies, CISA encourages all organizations to adopt risk-based vulnerability management and prioritize remediation of &lt;a href=&quot;https://www.cisa.gov/known-exploited-vulnerabilities-catalog&quot;&gt;KEV Catalog vulnerabilities&lt;/a&gt;. CISA will continue to add vulnerabilities to the catalog that meet the &lt;a href=&quot;https://www.cisa.gov/known-exploited-vulnerabilities&quot;&gt;specified criteria&lt;/a&gt;.&amp;nbsp;&lt;/p&gt;
+&lt;p&gt;Aware of an exploited vulnerability not currently listed in the KEV Catalog? Submit it for potential addition through CISA’s &lt;a href=&quot;https://cisasurvey.gov1.qualtrics.com/jfe/form/SV_1Zwu52kgK2OYf3w&quot; target=&quot;_blank&quot;&gt;KEV Nomination Form&lt;/a&gt;. Potential KEV additions must have a CVE ID, evidence of exploitation, and clear mitigation guidance.&amp;nbsp;&lt;/p&gt;
 </description>
-  <pubDate>Thu, 24 Sep 26 12:00:00 +0000</pubDate>
+  <pubDate>Fri, 25 Sep 26 12:00:00 +0000</pubDate>
     <dc:creator>CISA</dc:creator>
-    <guid isPermaLink="false">/node/25229</guid>
+    <guid isPermaLink="false">/node/25551</guid>
     </item>
 <item>
   <title>Botslab G980H Dashcams</title>
@@ -5200,6 +5052,170 @@
     <guid isPermaLink="false">/node/25542</guid>
     </item>
 <item>
+  <title>Siemens Mendix Runtime (Update A)</title>
+  <link>https://www.cisa.gov/news-events/ics-advisories/icsa-26-209-02</link>
+  <description>&lt;p&gt;&lt;a href=&quot;https://github.com/cisagov/CSAF/blob/develop/csaf_files/OT/white/2026/icsa-26-209-02.json&quot;&gt;&lt;strong&gt;View CSAF&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h2&gt;Summary&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;This advisory is revoked. Re-investigation confirmed the reported behavior is expected platform configuration and does not expose the protected attribute.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;The following versions of Siemens Mendix Runtime are affected:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Siemens Mendix Runtime vers:all/* (CVE-2026-7891)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&quot;csaf-table&quot;&gt;
+&lt;table class=&quot;tablesaw tablesaw-stack&quot; data-tablesaw-mode=&quot;stack&quot; data-tablesaw-minimap&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th role=&quot;columnheader&quot; data-tablesaw-priority=&quot;persist&quot;&gt;CVSS&lt;/th&gt;
+&lt;th role=&quot;columnheader&quot;&gt;Vendor&lt;/th&gt;
+&lt;th role=&quot;columnheader&quot;&gt;Equipment&lt;/th&gt;
+&lt;th role=&quot;columnheader&quot;&gt;Vulnerabilities&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;v3 9.1&lt;/td&gt;
+&lt;td&gt;Siemens&lt;/td&gt;
+&lt;td&gt;Siemens Mendix Runtime&amp;nbsp;&lt;/td&gt;
+&lt;td&gt;Insecure Inherited Permissions&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;h3&gt;Background&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Critical Infrastructure Sectors: &lt;/strong&gt;Critical Manufacturing&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Countries/Areas Deployed: &lt;/strong&gt;Worldwide&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Company Headquarters Location: &lt;/strong&gt;Germany&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2&gt;Vulnerabilities&lt;/h2&gt;
+&lt;div class=&quot;csaf-accordion&quot;&gt;
+&lt;p&gt;&lt;a class=&quot;csaf-accordion-toggle-all&quot; href=&quot;#&quot;&gt;Expand All +&lt;/a&gt;&lt;/p&gt;
+&lt;div class=&quot;csaf-accordion-item&quot;&gt;
+&lt;h3&gt;&lt;a class=&quot;csaf-accordion-toggle&quot; href=&quot;#&quot;&gt;CVE-2026-7891&lt;/a&gt;&lt;/h3&gt;
+&lt;div class=&quot;csaf-accordion-content&quot;&gt;
+&lt;p&gt;This CVE has been retracted. Re-investigation confirmed the reported behavior is expected platform configuration and does not expose the protected application-specific attribute.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://www.cve.org/CVERecord?id=CVE-2026-7891&quot;&gt;View CVE Details&lt;/a&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;h4&gt;Affected Products&lt;/h4&gt;
+&lt;h5&gt;Siemens Mendix Runtime (Update A)&lt;/h5&gt;
+&lt;div class=&quot;ics-vendor-version-status&quot;&gt;
+&lt;div class=&quot;ics-vendor&quot;&gt;&lt;strong&gt;Vendor:&lt;/strong&gt;&lt;br&gt;Siemens&lt;/div&gt;
+&lt;div class=&quot;ics-version&quot;&gt;&lt;strong&gt;Product Version:&lt;/strong&gt;&lt;br&gt;Siemens Siemens Mendix Runtime: vers:all/*&lt;/div&gt;
+&lt;div class=&quot;ics-status&quot;&gt;&lt;strong&gt;Product Status:&lt;/strong&gt;&lt;br&gt;not_affected&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;ics-remediations&quot;&gt;
+&lt;h6&gt;Remediations&lt;/h6&gt;
+&lt;p&gt;&lt;strong&gt;Mitigation&lt;/strong&gt;&lt;br&gt;Vulnerability is rejected as re-investigation confirmed the reported behavior is expected platform configuration and does not expose the protected application-specific attribute (Vulnerable Code Not Present).&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Mitigation&lt;/strong&gt;&lt;br&gt;As a general security measure, Siemens recommends protecting network access to devices with appropriate mechanisms. To operate the devices in a protected IT environment, Siemens recommends configuring the environment according to Siemens&#039; operational guidelines for industrial security and following recommendations in the product manuals.&lt;br&gt;&lt;a href=&quot;https://www.siemens.com/cert/operational-guidelines-industrial-security&quot;&gt;https://www.siemens.com/cert/operational-guidelines-industrial-security&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Mitigation&lt;/strong&gt;&lt;br&gt;Additional information on industrial security by Siemens can be found on the Siemens industrial security webpage&lt;br&gt;&lt;a href=&quot;https://www.siemens.com/industrialsecurity&quot;&gt;https://www.siemens.com/industrialsecurity&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Mitigation&lt;/strong&gt;&lt;br&gt;For more information see the associated Siemens security advisory SSA-814963 in HTML.&lt;br&gt;&lt;a href=&quot;https://cert-portal.siemens.com/productcert/html/ssa-814963.html&quot;&gt;https://cert-portal.siemens.com/productcert/html/ssa-814963.html&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Mitigation&lt;/strong&gt;&lt;br&gt;For more information see the associated Siemens security advisory SSA-814963 in CSAF.&lt;br&gt;&lt;a href=&quot;https://cert-portal.siemens.com/productcert/csaf/ssa-814963.json&quot;&gt;https://cert-portal.siemens.com/productcert/csaf/ssa-814963.json&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;strong&gt;Relevant CWE:&lt;/strong&gt; &lt;a href=&quot;https://cwe.mitre.org/data/definitions/277.html&quot;&gt;CWE-277 Insecure Inherited Permissions&lt;/a&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;h4&gt;Metrics&lt;/h4&gt;
+&lt;div class=&quot;csaf-table csaf-metrics-table&quot;&gt;
+&lt;table class=&quot;tablesaw tablesaw-stack&quot; data-tablesaw-mode=&quot;stack&quot; data-tablesaw-minimap&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th role=&quot;columnheader&quot; data-tablesaw-priority=&quot;persist&quot;&gt;CVSS Version&lt;/th&gt;
+&lt;th role=&quot;columnheader&quot;&gt;Base Score&lt;/th&gt;
+&lt;th role=&quot;columnheader&quot;&gt;Base Severity&lt;/th&gt;
+&lt;th role=&quot;columnheader&quot;&gt;Vector String&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;3.1&lt;/td&gt;
+&lt;td&gt;9.1&lt;/td&gt;
+&lt;td&gt;CRITICAL&lt;/td&gt;
+&lt;td&gt;&lt;a href=&quot;https://www.first.org/cvss/calculator/3.1#CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N&quot;&gt;CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;4.0&lt;/td&gt;
+&lt;td&gt;9.1&lt;/td&gt;
+&lt;td&gt;CRITICAL&lt;/td&gt;
+&lt;td&gt;&lt;a href=&quot;https://www.first.org/cvss/calculator/4.0#CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:N/VC:H/VI:H/VA:N/SC:N/SI:N/SA:N&quot;&gt;CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:N/VC:H/VI:H/VA:N/SC:N/SI:N/SA:N&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;hr&gt;
+&lt;h2&gt;Acknowledgments&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Siemens ProductCERT reported this vulnerability to CISA.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2&gt;Legal Notice and Terms of Use&lt;/h2&gt;
+&lt;p&gt;This product is provided subject to this Notification (&lt;a href=&quot;https://www.cisa.gov/notification&quot;&gt;https://www.cisa.gov/notification&lt;/a&gt;) and this Privacy &amp;amp; Use policy (&lt;a href=&quot;https://www.cisa.gov/privacy-policy&quot;&gt;https://www.cisa.gov/privacy-policy&lt;/a&gt;).&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2&gt;Recommended Practices&lt;/h2&gt;
+&lt;p&gt;CISA recommends users take defensive measures to minimize the risk of exploitation of this vulnerability.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Minimize network exposure for all control system devices and/or systems, ensuring they are not accessible from the internet.&lt;/li&gt;
+&lt;li&gt;Locate control system networks and remote devices behind firewalls and isolating them from business networks.&lt;/li&gt;
+&lt;li&gt;When remote access is required, use more secure methods, such as Virtual Private Networks (VPNs). Recognize VPNs may have vulnerabilities, should be updated to the most recent version available, and are only as secure as the connected devices.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;CISA reminds organizations to perform proper impact analysis and risk assessment prior to deploying defensive measures.&lt;/p&gt;
+&lt;p&gt;CISA also provides a section for control systems security recommended practices on the ICS webpage on cisa.gov. Several CISA products detailing cyber defense best practices are available for reading and download, including Improving Industrial Control Systems Cybersecurity with Defense-in-Depth Strategies.&lt;/p&gt;
+&lt;p&gt;CISA encourages organizations to implement recommended cybersecurity strategies for proactive defense of ICS assets.&lt;/p&gt;
+&lt;p&gt;Additional mitigation guidance and recommended practices are publicly available on the ICS webpage at cisa.gov in the technical information paper, ICS-TIP-12-146-01B--Targeted Cyber Intrusion Detection and Mitigation Strategies.&lt;/p&gt;
+&lt;p&gt;Organizations observing suspected malicious activity should follow established internal procedures and report findings to CISA for tracking and correlation against other incidents.&lt;/p&gt;
+&lt;p&gt;CISA also recommends users take the following measures to protect themselves from social engineering attacks:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Do not click web links or open attachments in unsolicited email messages.&lt;/li&gt;
+&lt;li&gt;Refer to Recognizing and Avoiding Email Scams for more information on avoiding email scams.&lt;/li&gt;
+&lt;li&gt;Refer to Avoiding Social Engineering and Phishing Attacks for more information on social engineering attacks.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;No known public exploitation specifically targeting this vulnerability has been reported to CISA at this time.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2&gt;Revision History&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Initial Release Date: &lt;/strong&gt;2026-07-14&lt;/li&gt;
+&lt;/ul&gt;
+&lt;table class=&quot;tablesaw tablesaw-stack&quot; data-tablesaw-mode=&quot;stack&quot; data-tablesaw-minimap&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th role=&quot;columnheader&quot; data-tablesaw-priority=&quot;persist&quot;&gt;Date&lt;/th&gt;
+&lt;th role=&quot;columnheader&quot;&gt;Revision&lt;/th&gt;
+&lt;th role=&quot;columnheader&quot;&gt;Summary&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;2026-07-14&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;Initial Publication&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2026-07-28&lt;/td&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td&gt;Initial Republication of Siemens ProductCERT SSA-814963&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2026-09-22&lt;/td&gt;
+&lt;td&gt;3&lt;/td&gt;
+&lt;td&gt;Revoked advisory as the CVE is rejected&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2026-09-24&lt;/td&gt;
+&lt;td&gt;4&lt;/td&gt;
+&lt;td&gt;Update A - Revoking advisory after Siemens revoked SSA-814963 and rejecting CVE-2026-7891&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr&gt;
+&lt;h2&gt;Legal Notice and Terms of Use&lt;/h2&gt;
+</description>
+  <pubDate>Thu, 24 Sep 26 12:00:00 +0000</pubDate>
+    <dc:creator>CISA</dc:creator>
+    <guid isPermaLink="false">/node/25229</guid>
+    </item>
+<item>
   <title>CISA Adds Two Known Exploited Vulnerabilities to Catalog     </title>
   <link>https://www.cisa.gov/news-events/alerts/2026/09/24/cisa-adds-two-known-exploited-vulnerabilities-catalog</link>
   <description>&lt;p&gt;&amp;nbsp;CISA has added two new vulnerabilities to its &lt;a href=&quot;https://www.cisa.gov/known-exploited-vulnerabilities-catalog&quot;&gt;Known Exploited Vulnerabilities (KEV) Catalog&lt;/a&gt;, based on evidence of active exploitation.&lt;/p&gt;
@@ -5946,151 +5962,6 @@
   <pubDate>Tue, 22 Sep 26 12:00:00 +0000</pubDate>
     <dc:creator>CISA</dc:creator>
     <guid isPermaLink="false">/node/25523</guid>
-    </item>
-<item>
-  <title>lwIP (Lightweight IP)</title>
-  <link>https://www.cisa.gov/news-events/ics-advisories/icsa-26-265-02</link>
-  <description>&lt;p&gt;&lt;a href=&quot;https://github.com/cisagov/CSAF/blob/develop/csaf_files/OT/white/2026/icsa-26-265-02.json&quot;&gt;&lt;strong&gt;View CSAF&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;h2&gt;Summary&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;Successful exploitation of this vulnerability could result in a system crash, a DoS, or memory corruption, which could lead to code execution on the victim system.&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;The following versions of lwIP (Lightweight IP) are affected:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;API &amp;gt;=2.0.1|&amp;lt;=2.2.1 (CVE-2026-91018)&lt;/li&gt;
-&lt;/ul&gt;
-&lt;div class=&quot;csaf-table&quot;&gt;
-&lt;table class=&quot;tablesaw tablesaw-stack&quot; data-tablesaw-mode=&quot;stack&quot; data-tablesaw-minimap&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th role=&quot;columnheader&quot; data-tablesaw-priority=&quot;persist&quot;&gt;CVSS&lt;/th&gt;
-&lt;th role=&quot;columnheader&quot;&gt;Vendor&lt;/th&gt;
-&lt;th role=&quot;columnheader&quot;&gt;Equipment&lt;/th&gt;
-&lt;th role=&quot;columnheader&quot;&gt;Vulnerabilities&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;v3 8.8&lt;/td&gt;
-&lt;td&gt;lwIP&lt;/td&gt;
-&lt;td&gt;lwIP (Lightweight IP)&lt;/td&gt;
-&lt;td&gt;Double Free&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;/div&gt;
-&lt;h3&gt;Background&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Critical Infrastructure Sectors: &lt;/strong&gt;Chemical, Communications, Critical Manufacturing, Energy, Financial Services, Healthcare and Public Health, Transportation Systems, Water and Wastewater Systems&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Countries/Areas Deployed: &lt;/strong&gt;Worldwide&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Company Headquarters Location: &lt;/strong&gt;Sweden&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
-&lt;h2&gt;Vulnerabilities&lt;/h2&gt;
-&lt;div class=&quot;csaf-accordion&quot;&gt;
-&lt;p&gt;&lt;a class=&quot;csaf-accordion-toggle-all&quot; href=&quot;#&quot;&gt;Expand All +&lt;/a&gt;&lt;/p&gt;
-&lt;div class=&quot;csaf-accordion-item&quot;&gt;
-&lt;h3&gt;&lt;a class=&quot;csaf-accordion-toggle&quot; href=&quot;#&quot;&gt;CVE-2026-91018&lt;/a&gt;&lt;/h3&gt;
-&lt;div class=&quot;csaf-accordion-content&quot;&gt;
-&lt;p&gt;The affected product has a double free vulnerability, which could crash the system, cause a DoS, memory corruption, or allow code execution on the victim system.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;https://www.cve.org/CVERecord?id=CVE-2026-91018&quot;&gt;View CVE Details&lt;/a&gt;&lt;/p&gt;
-&lt;hr&gt;
-&lt;h4&gt;Affected Products&lt;/h4&gt;
-&lt;h5&gt;lwIP (Lightweight IP)&lt;/h5&gt;
-&lt;div class=&quot;ics-vendor-version-status&quot;&gt;
-&lt;div class=&quot;ics-vendor&quot;&gt;&lt;strong&gt;Vendor:&lt;/strong&gt;&lt;br&gt;lwIP&lt;/div&gt;
-&lt;div class=&quot;ics-version&quot;&gt;&lt;strong&gt;Product Version:&lt;/strong&gt;&lt;br&gt;lwIP API: &amp;gt;=2.0.1|&amp;lt;=2.2.1&lt;/div&gt;
-&lt;div class=&quot;ics-status&quot;&gt;&lt;strong&gt;Product Status:&lt;/strong&gt;&lt;br&gt;known_affected&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;ics-remediations&quot;&gt;
-&lt;h6&gt;Remediations&lt;/h6&gt;
-&lt;p&gt;&lt;strong&gt;Mitigation&lt;/strong&gt;&lt;br&gt;Users of lwIP are encouraged to update their version of lwIP using the repository found at &lt;a href=&quot;https://cgit.git.savannah.gnu.org/cgit/lwip.git&quot;&gt;https://cgit.git.savannah.gnu.org/cgit/lwip.git&lt;/a&gt;. The commit identifier that contains the fix is f873b6295933e4149a2132adf3e9a2d2a676a5ec.&lt;br&gt;&amp;nbsp;&lt;/p&gt;
-&lt;/div&gt;
-&lt;p&gt;&lt;strong&gt;Relevant CWE:&lt;/strong&gt; &lt;a href=&quot;https://cwe.mitre.org/data/definitions/415.html&quot;&gt;CWE-415 Double Free&lt;/a&gt;&lt;/p&gt;
-&lt;hr&gt;
-&lt;h4&gt;Metrics&lt;/h4&gt;
-&lt;div class=&quot;csaf-table csaf-metrics-table&quot;&gt;
-&lt;table class=&quot;tablesaw tablesaw-stack&quot; data-tablesaw-mode=&quot;stack&quot; data-tablesaw-minimap&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th role=&quot;columnheader&quot; data-tablesaw-priority=&quot;persist&quot;&gt;CVSS Version&lt;/th&gt;
-&lt;th role=&quot;columnheader&quot;&gt;Base Score&lt;/th&gt;
-&lt;th role=&quot;columnheader&quot;&gt;Base Severity&lt;/th&gt;
-&lt;th role=&quot;columnheader&quot;&gt;Vector String&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;3.1&lt;/td&gt;
-&lt;td&gt;8.8&lt;/td&gt;
-&lt;td&gt;HIGH&lt;/td&gt;
-&lt;td&gt;&lt;a href=&quot;https://www.first.org/cvss/calculator/3.1#CVSS:3.1/AV:A/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H&quot;&gt;CVSS:3.1/AV:A/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H&lt;/a&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;4.0&lt;/td&gt;
-&lt;td&gt;8.7&lt;/td&gt;
-&lt;td&gt;HIGH&lt;/td&gt;
-&lt;td&gt;&lt;a href=&quot;https://www.first.org/cvss/calculator/4.0#CVSS:4.0/AV:A/AC:L/AT:N/PR:N/UI:N/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N&quot;&gt;CVSS:4.0/AV:A/AC:L/AT:N/PR:N/UI:N/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N&lt;/a&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;hr&gt;
-&lt;h2&gt;Acknowledgments&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Eric Evenchick of Tetrel Security reported this vulnerability to CISA.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
-&lt;h2&gt;Legal Notice and Terms of Use&lt;/h2&gt;
-&lt;p&gt;This product is provided subject to this Notification (&lt;a href=&quot;https://www.cisa.gov/notification&quot;&gt;https://www.cisa.gov/notification&lt;/a&gt;) and this Privacy &amp;amp; Use policy (&lt;a href=&quot;https://www.cisa.gov/privacy-policy&quot;&gt;https://www.cisa.gov/privacy-policy&lt;/a&gt;).&lt;/p&gt;
-&lt;hr&gt;
-&lt;h2&gt;Recommended Practices&lt;/h2&gt;
-&lt;p&gt;CISA recommends users take defensive measures to minimize the risk of exploitation of this vulnerability.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Minimize network exposure for all control system devices and/or systems, ensuring they are not accessible from the internet.&lt;/li&gt;
-&lt;li&gt;Locate control system networks and remote devices behind firewalls and isolating them from business networks.&lt;/li&gt;
-&lt;li&gt;When remote access is required, use more secure methods, such as Virtual Private Networks (VPNs), recognizing VPNs may have vulnerabilities and should be updated to the most current version available. Also recognize VPN is only as secure as the connected devices.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;CISA reminds organizations to perform proper impact analysis and risk assessment prior to deploying defensive measures.&lt;/p&gt;
-&lt;p&gt;CISA also provides a section for control systems security recommended practices on the ICS webpage on cisa.gov/ics. Several CISA products detailing cyber defense best practices are available for reading and download, including Improving Industrial Control Systems Cybersecurity with Defense-in-Depth Strategies.&lt;/p&gt;
-&lt;p&gt;CISA encourages organizations to implement recommended cybersecurity strategies for proactive defense of ICS assets.&lt;/p&gt;
-&lt;p&gt;Additional mitigation guidance and recommended practices are publicly available on the ICS webpage at cisa.gov/ics in the technical information paper, ICS-TIP-12-146-01B--Targeted Cyber Intrusion Detection and Mitigation Strategies.&lt;/p&gt;
-&lt;p&gt;Organizations observing suspected malicious activity should follow established internal procedures and report findings to CISA for tracking and correlation against other incidents.&lt;/p&gt;
-&lt;p&gt;CISA also recommends users take the following measures to protect themselves from social engineering attacks:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Do not click web links or open attachments in unsolicited email messages.&lt;/li&gt;
-&lt;li&gt;Refer to Recognizing and Avoiding Email Scams for more information on avoiding email scams.&lt;/li&gt;
-&lt;li&gt;Refer to Avoiding Social Engineering and Phishing Attacks for more information on social engineering attacks.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;No known public exploitation specifically targeting this vulnerability has been reported to CISA at this time. This vulnerability is not exploitable remotely.&lt;/p&gt;
-&lt;hr&gt;
-&lt;h2&gt;Revision History&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Initial Release Date: &lt;/strong&gt;2026-09-22&lt;/li&gt;
-&lt;/ul&gt;
-&lt;table class=&quot;tablesaw tablesaw-stack&quot; data-tablesaw-mode=&quot;stack&quot; data-tablesaw-minimap&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th role=&quot;columnheader&quot; data-tablesaw-priority=&quot;persist&quot;&gt;Date&lt;/th&gt;
-&lt;th role=&quot;columnheader&quot;&gt;Revision&lt;/th&gt;
-&lt;th role=&quot;columnheader&quot;&gt;Summary&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;2026-09-22&lt;/td&gt;
-&lt;td&gt;1&lt;/td&gt;
-&lt;td&gt;Initial Publication&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;hr&gt;
-&lt;h2&gt;Legal Notice and Terms of Use&lt;/h2&gt;
-</description>
-  <pubDate>Tue, 22 Sep 26 12:00:00 +0000</pubDate>
-    <dc:creator>CISA</dc:creator>
-    <guid isPermaLink="false">/node/25522</guid>
     </item>
 
   </channel>
