@@ -390,12 +390,24 @@ function Invoke-DiffSumber {
 # =============================================================================
 #  SNAPSHOT
 # =============================================================================
+# Cache daftar berkas per folder: Get-ChildItem hanya sekali per folder
+# (sebelumnya dipanggil ulang untuk tiap sumber & tiap tabel).
+function Ensure-SnapCache {
+  param([string]$Folder)
+  if ($null -eq $script:SNAP_FILES) { $script:SNAP_FILES = @{} }
+  if ($script:SNAP_FILES.ContainsKey($Folder)) { return }
+  $dir = Join-Path $DATA_DIR $Folder
+  if (Test-Path -LiteralPath $dir) {
+    $script:SNAP_FILES[$Folder] = @(Get-ChildItem -LiteralPath $dir -File -ErrorAction SilentlyContinue)
+  } else {
+    $script:SNAP_FILES[$Folder] = @()
+  }
+}
 function Get-SnapshotFiles {
   param([string]$Folder, [string]$Nama)
-  $dir = Join-Path $DATA_DIR $Folder
-  if (-not (Test-Path -LiteralPath $dir)) { return @() }
+  Ensure-SnapCache $Folder
   $pat = '^\d{8}-' + [regex]::Escape($Nama) + '\.'
-  return @(Get-ChildItem -LiteralPath $dir -File -ErrorAction SilentlyContinue |
+  return @($script:SNAP_FILES[$Folder] |
     Where-Object { $_.Name -match $pat } | Sort-Object Name)
 }
 function Get-SnapshotCount { param([string]$Folder, [string]$Nama) return (Get-SnapshotFiles $Folder $Nama).Count }
@@ -801,23 +813,48 @@ function Process-Rss {
 # =============================================================================
 function Status-Count {
   param([string]$St)
-  if (-not (Test-Path -LiteralPath $STATE_FILE)) { return 0 }
-  return @(Get-Content -Encoding UTF8 -LiteralPath $STATE_FILE | Where-Object { $_ -match "\|$St\|" }).Count
+  if ($null -eq $script:STATE_CACHE) {
+    if (Test-Path -LiteralPath $STATE_FILE) {
+      $script:STATE_CACHE = @(Get-Content -Encoding UTF8 -LiteralPath $STATE_FILE)
+    } else {
+      $script:STATE_CACHE = @()
+    }
+  }
+  return @($script:STATE_CACHE | Where-Object { $_ -match "\|$St\|" }).Count
 }
 
+# Himpunan nama snapshot per folder (HashSet) agar Riwayat-30 tidak melakukan
+# 30 x Test-Path ke disk untuk tiap sumber.
+function Ensure-SnapNameSet {
+  param([string]$Folder)
+  Ensure-SnapCache $Folder
+  if ($null -eq $script:SNAP_NAMES) { $script:SNAP_NAMES = @{} }
+  if (-not $script:SNAP_NAMES.ContainsKey($Folder)) {
+    $hs = New-Object 'System.Collections.Generic.HashSet[string]'
+    foreach ($f in $script:SNAP_FILES[$Folder]) { [void]$hs.Add($f.Name) }
+    $script:SNAP_NAMES[$Folder] = $hs
+  }
+}
 function Riwayat-30 {
   param([string]$Folder, [string]$Nama, [string]$Ext)
   Init-Hari
-  $out = @()
+  Ensure-SnapNameSet $Folder
+  $names = $script:SNAP_NAMES[$Folder]
+  $out = New-Object System.Collections.ArrayList
   for ($i = 29; $i -ge 0; $i--) {
     $d = $script:HARI_YMD[$i]
-    if (Test-Path -LiteralPath (Join-Path (Join-Path $DATA_DIR $Folder) "$d-$Nama.$Ext")) { $out += 1 } else { $out += 0 }
+    [void]$out.Add($(if ($names.Contains("$d-$Nama.$Ext")) { 1 } else { 0 }))
   }
-  return $out
+  return $out.ToArray()
 }
 
 function Build-Manifest {
   New-Item -ItemType Directory -Force -Path $DOCS_DIR | Out-Null
+  # Build-Manifest berjalan setelah semua unduhan: segarkan cache snapshot &
+  # state agar tidak memakai daftar folder basi dari fase dedup.
+  $script:SNAP_FILES = @{}
+  $script:SNAP_NAMES = @{}
+  $script:STATE_CACHE = $null
   Init-Hari
   $anomali = @(); if (Test-Path -LiteralPath $ANOMALI_FILE) { $anomali = @(Get-Content -Encoding UTF8 -LiteralPath $ANOMALI_FILE | Where-Object { $_ }) }
   $watch = @();   if (Test-Path -LiteralPath $WATCH_FILE)   { $watch = @(Get-Content -Encoding UTF8 -LiteralPath $WATCH_FILE | Where-Object { $_ }) }

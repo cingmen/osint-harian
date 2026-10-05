@@ -128,6 +128,20 @@ jesc() {
   printf '%s' "$s"
 }
 
+# Variasi TANPA subshell: hasil escape disimpan ke variabel global JESC_OUT.
+# `$(jesc x)` memicu fork (~0,2-0,5 dtk per proses di MSYS2); loop panas
+# (manifest/tabel/feed) memakai ini agar tidak memicu ratusan fork per run.
+JESC_OUT=""
+jescv() { # $1=nilai → JESC_OUT (escape identik dengan jesc)
+  local s="$1"
+  s=${s//\\/\\\\}
+  s=${s//\"/\\\"}
+  s=${s//$'\n'/ }
+  s=${s//$'\r'/}
+  s=${s//$'\t'/ }
+  JESC_OUT="$s"
+}
+
 # URL-encode karakter minimal yang mengganggu query (mis. ':' pada ISO).
 urlenc() {
   printf '%s' "$1" | sed -e 's/:/%3A/g' -e 's/ /%20/g'
@@ -177,7 +191,23 @@ HARI_YMD=()
 HARI_DASH=()
 _siapkan_hari() {
   [ "${#HARI_YMD[@]}" -gt 0 ] && return
-  local i=0 line
+  local i=0 line out
+  # Jalur cepat: SATU proses awk menghitung seluruh 32 tanggal sekaligus
+  # (mengganti ~32 fork `date` yang mahal di MSYS2). Jatuh ke loop portable
+  # bila awk tidak punya strftime/mktime (mis. BWK awk lama) atau hasil cacat.
+  if out="$(date +%s | awk '{
+        now=$1
+        t=mktime(strftime("%Y",now)" "strftime("%m",now)" "strftime("%d",now)" 12 0 0")
+        if (t<=0) exit 1
+        for (n=0;n<=31;n++) printf "%d %s\n", n, strftime("%Y%m%d %Y-%m-%d", t-n*86400)
+      }' 2>/dev/null)" \
+     && [ "$(printf '%s\n' "$out" | grep -c '^[0-9]\{1,2\} [0-9]\{8\} [0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}$')" -eq 32 ]; then
+    while IFS=' ' read -r i line; do
+      HARI_YMD[$i]="${line%% *}"
+      HARI_DASH[$i]="${line#* }"
+    done <<< "$out"
+    return
+  fi
   while [ "$i" -le 31 ]; do
     line="$(date_minus_days "$i" "+%Y%m%d %Y-%m-%d")"
     HARI_YMD[$i]="${line%% *}"
@@ -478,11 +508,12 @@ proses_sumber() { # folder nama label url tier jadwal ext
   # Substitusi token URL.
   url="${url//\{TODAY\}/$TODAY}"
   url="${url//\{TODAY_DASH\}/$TODAY_DASH}"
-  url="${url//\{FROM_ISO\}/$(iso_minus24)}"
   url="${url//\{TO_ISO\}/$NOW_ISO}"
-  url="${url//\{FROM_ISO_ENC\}/$(urlenc "$(iso_minus24_nvd)")}"
-  url="${url//\{TO_ISO_ENC\}/$(urlenc "$(date -u +%Y-%m-%dT%H:%M:%S.000)")}"
   url="${url//\{FIRMS_KEY\}/${FIRMS_KEY:-}}"
+  # Substitusi ber-fork hanya bila token memang ada di URL (hemat fork di MSYS2).
+  case "$url" in *'{FROM_ISO}'*)     url="${url//\{FROM_ISO\}/$(iso_minus24)}" ;; esac
+  case "$url" in *'{FROM_ISO_ENC}'*) url="${url//\{FROM_ISO_ENC\}/$(urlenc "$(iso_minus24_nvd)")}" ;; esac
+  case "$url" in *'{TO_ISO_ENC}'*)   url="${url//\{TO_ISO_ENC\}/$(urlenc "$(date -u +%Y-%m-%dT%H:%M:%S.000)")}" ;; esac
 
   mkdir -p "$DATA_DIR/$folder"
   local target="$DATA_DIR/$folder/${TODAY}-${nama}.${ext}"
@@ -899,7 +930,7 @@ build_manifest() {
         local ext="json"
         case "$folder" in
           ofac|usgs|firms) ext="csv" ;;
-          cisa) ext="$( [ "$nama" = "advisories" ] && echo xml || echo json )" ;;
+          cisa) if [ "$nama" = "advisories" ]; then ext="xml"; else ext="json"; fi ;;
         esac
         # Pencarian snapshot lewat glob bash (tanpa ls|grep|sort|tail) — jauh
         # lebih cepat di Windows; nama berkas diambil dari basename.
@@ -908,14 +939,26 @@ build_manifest() {
         local skor; skor="$(skor_kesehatan "$label")"
         local riwayat; riwayat="$(riwayat_30 "$folder" "$nama" "$ext")"
         local riwayat_arr="${riwayat// /,}"; riwayat_arr="${riwayat_arr#,}"
+        # Escape tanpa subshell (jescv) — hilangkan ~10 fork per sumber.
+        local jf jn jl jt js jh jsnap jdiff jpesan jsaran
+        jescv "$folder"; jf="$JESC_OUT"
+        jescv "$nama";   jn="$JESC_OUT"
+        jescv "$label";  jl="$JESC_OUT"
+        jescv "$tier";   jt="$JESC_OUT"
+        jescv "$status"; js="$JESC_OUT"
+        jescv "$http";   jh="$JESC_OUT"
+        jescv "$snap";   jsnap="$JESC_OUT"
+        jescv "${diff:-}";  jdiff="$JESC_OUT"
+        jescv "${pesan:-}"; jpesan="$JESC_OUT"
+        jescv "${saran:-}"; jsaran="$JESC_OUT"
         [ "$first" -eq 0 ] && printf ',\n'
         first=0
         printf '    { "folder":"%s","nama":"%s","label":"%s","tier":"%s","status":"%s","http":"%s","laten":%s,' \
-          "$(jesc "$folder")" "$(jesc "$nama")" "$(jesc "$label")" "$(jesc "$tier")" "$(jesc "$status")" "$(jesc "$http")" "${latenn:-0}"
+          "$jf" "$jn" "$jl" "$jt" "$js" "$jh" "${latenn:-0}"
         printf '"snapshot":"%s","jumlah_file":%s,"skor":%s,"riwayat":[%s],' \
-          "$(jesc "$snap")" "${jumlah:-0}" "${skor:-0}" "$riwayat_arr"
+          "$jsnap" "${jumlah:-0}" "${skor:-0}" "$riwayat_arr"
         printf '"diff":"%s","pesan_error":"%s","saran":"%s" }' \
-          "$(jesc "${diff:-}")" "$(jesc "${pesan:-}")" "$(jesc "${saran:-}")"
+          "$jdiff" "$jpesan" "$jsaran"
       done < "$STATE_FILE"
     fi
     printf '\n  ],\n'
@@ -998,7 +1041,8 @@ tabel_gempa() {
     mag="$(grep -o '"Magnitude":"[^"]*"' "$f" | head -1 | sed 's/.*:"//; s/"//')"
     wil="$(grep -o '"Wilayah":"[^"]*"' "$f" | head -1 | sed 's/.*:"//; s/"//')"
     tgl="$(grep -o '"Tanggal":"[^"]*"' "$f" | head -1 | sed 's/.*:"//; s/"//')"
-    printf ' {"sumber":"BMKG","magnitudo":"%s","lokasi":"%s","waktu":"%s"}' "$(jesc "$mag")" "$(jesc "$wil")" "$(jesc "$tgl")"
+    jescv "$mag"; local jm="$JESC_OUT"; jescv "$wil"; local jw="$JESC_OUT"; jescv "$tgl"; local jg="$JESC_OUT"
+    printf ' {"sumber":"BMKG","magnitudo":"%s","lokasi":"%s","waktu":"%s"}' "$jm" "$jw" "$jg"
     first=0
   fi
   local fu; fu="$(ambil_latest usgs m25hari csv)"
@@ -1013,7 +1057,8 @@ tabel_gempa() {
       # `place` adalah field ber-kutip (kolom 14) dan boleh memuat koma.
       place="$(printf '%s' "$row" | grep -o '"[^"]*"' | head -1 | sed 's/^"//; s/"$//')"
       [ "$first" -eq 0 ] && printf ','
-      printf ' {"sumber":"USGS","magnitudo":"%s","lokasi":"%s","waktu":"%s"}' "$(jesc "$m")" "$(jesc "$place")" "$(jesc "$t")"
+      jescv "$m"; local jm="$JESC_OUT"; jescv "$place"; local jp="$JESC_OUT"; jescv "$t"; local jt="$JESC_OUT"
+      printf ' {"sumber":"USGS","magnitudo":"%s","lokasi":"%s","waktu":"%s"}' "$jm" "$jp" "$jt"
       first=0
     done < <(tail -n +2 "$fu" | sort -t',' -k5 -g | tail -5)
   fi
@@ -1028,7 +1073,8 @@ tabel_cve() {
     while IFS= read -r id; do
       [ -z "$id" ] && continue
       [ "$first" -eq 0 ] && printf ','
-      printf ' {"id":"%s"}' "$(jesc "$id")"
+      jescv "$id"
+      printf ' {"id":"%s"}' "$JESC_OUT"
       first=0
     done < <(grep -o '"id":"CVE-[0-9][0-9-]*"' "$f" | sed 's/.*:"//; s/"//' | sort -u | head -40)
   fi
@@ -1049,7 +1095,8 @@ tabel_kev() {
     while IFS='|' read -r cid ven; do
       [ -z "$cid" ] && continue
       [ "$first" -eq 0 ] && printf ','
-      printf ' {"id":"%s","vendor":"%s"}' "$(jesc "$cid")" "$(jesc "$ven")"
+      jescv "$cid"; local jc="$JESC_OUT"; jescv "$ven"
+      printf ' {"id":"%s","vendor":"%s"}' "$jc" "$JESC_OUT"
       first=0
     done < <(paste -d'|' <(printf '%s\n' "$ids") <(printf '%s\n' "$vens"))
   fi
@@ -1062,12 +1109,13 @@ tabel_rss() {
   for nama in bbc aljazeera guardian cna cnbcindonesia cnnindonesia antara; do
     f="$(ambil_latest rss "rss_${nama}" json)"
     [ -n "$f" ] && [ -f "$f" ] || continue
+    jescv "$nama"; local jfeed="$JESC_OUT"
     # 5 item pertama per feed.
     while IFS= read -r it; do
       [ -z "$it" ] && continue
       [ "$first" -eq 0 ] && printf ','
       # `${it#\{}` sudah memuat kurung tutup milik item, jadi jangan ditambah '}'.
-      printf ' {"feed":"%s",%s' "$(jesc "$nama")" "${it#\{}"
+      printf ' {"feed":"%s",%s' "$jfeed" "${it#\{}"
       first=0
     done < <(grep -o '{"title":"[^"]*","link":"[^"]*","snippet":"[^"]*","wayback":"[^"]*"}' "$f" 2>/dev/null | head -5)
   done
@@ -1078,11 +1126,14 @@ tabel_rss() {
 #  BAGIAN 7 — FEED RSS TRACKER (docs/feed.xml)
 # =============================================================================
 build_feed() {
+  local jproj jsite
+  jescv "$PROJECT_NAME"; jproj="$JESC_OUT"
+  jescv "$SITE_BASE";    jsite="$JESC_OUT"
   {
     printf '<?xml version="1.0" encoding="UTF-8"?>\n'
     printf '<rss version="2.0"><channel>\n'
-    printf '  <title>%s — tracker perubahan</title>\n' "$(jesc "$PROJECT_NAME")"
-    printf '  <link>%s</link>\n' "$(jesc "$SITE_BASE")"
+    printf '  <title>%s — tracker perubahan</title>\n' "$jproj"
+    printf '  <link>%s</link>\n' "$jsite"
     printf '  <description>Ringkasan harian perubahan, kegagalan, anomali, dan kata kunci pemantauan.</description>\n'
     printf '  <language>id</language>\n'
     # Kumpulkan item dari CHANGES terbaru (maks RSS_MAX_ITEMS).
@@ -1101,8 +1152,9 @@ build_feed() {
           *" PERUBAHAN : "*|*" GAGAL : "*|*" ANOMALI : "*|*" WATCH : "*|*" RUSAK : "*)
             local jud="${line#*] }"
             printf '  <item>\n'
-            printf '    <title>%s</title>\n' "$(jesc "$jud")"
-            printf '    <link>%s#log</link>\n' "$(jesc "$SITE_BASE")"
+            jescv "$jud"
+            printf '    <title>%s</title>\n' "$JESC_OUT"
+            printf '    <link>%s#log</link>\n' "$jsite"
             printf '    <guid isPermaLink="false">%s-%s</guid>\n' "$d" "$emitted"
             printf '    <pubDate>%s</pubDate>\n' "$pub"
             printf '  </item>\n'
