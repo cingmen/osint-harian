@@ -26,8 +26,8 @@ set -u
 
 # --- Identitas (ubah hanya di sini) ---
 PROJECT_NAME="osint-harian"
-CONTACT="ganti-dengan-email-anda@example.com"          # dikirim di User-Agent
-SITE_BASE="https://username.github.io/osint-harian/"   # URL absolut untuk feed.xml
+CONTACT="https://cingmen.github.io/osint-harian"       # kontak di User-Agent (URL situs)
+SITE_BASE="https://cingmen.github.io/osint-harian"     # URL absolut untuk feed.xml
 USER_AGENT="${PROJECT_NAME}/1.0 (+https://github.com/${PROJECT_NAME}; kontak: ${CONTACT})"
 
 # --- Ambang & retensi ---

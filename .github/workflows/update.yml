@@ -1,9 +1,12 @@
 name: update
 
-# HANYA manual (workflow_dispatch). TANPA `schedule` — jalankan dari tab Actions
-# ("Run workflow"). Disiapkan untuk masa depan bila PC tidak selalu menyala.
+# Manual (workflow_dispatch) + otomatis harian pada 00:00 WIB (UTC+7) = 17:00 UTC.
+# Cron Actions bisa bergeser beberapa menit pada jam sibuk dan hanya berjalan bila
+# repo aktif; gunakan "Run workflow" untuk menjalankan kapan saja secara manual.
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '0 17 * * *'   # 00:00 WIB (UTC+7) = 17:00 UTC
 
 # Diperlukan agar langkah commit/push dapat menulis ke repo.
 permissions:
@@ -33,6 +36,7 @@ jobs:
           OPENSKY_PASS: ${{ secrets.OPENSKY_PASS }}
           FAA_CLIENT_ID: ${{ secrets.FAA_CLIENT_ID }}
           FAA_CLIENT_SECRET: ${{ secrets.FAA_CLIENT_SECRET }}
+          RANSOMWARE_API_KEY: ${{ secrets.RANSOMWARE_API_KEY }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
