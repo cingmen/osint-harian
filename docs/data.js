@@ -1,7 +1,7 @@
 window.DATA = {
     "proyek":  "osint-harian",
     "tanggal":  "2026-10-06",
-    "dibuat":  "2026-10-06T10:45:01Z",
+    "dibuat":  "2026-10-06T10:54:54Z",
     "situs":  "https://cingmen.github.io/osint-harian",
     "ringkasan":  {
                       "ok":  16,
@@ -20,7 +20,7 @@ window.DATA = {
                        "tier":  "full",
                        "status":  "OK",
                        "http":  "200",
-                       "laten":  0.367721,
+                       "laten":  0.414139,
                        "snapshot":  "20261006-autogempa.json",
                        "jumlah_file":  3,
                        "skor":  33,
@@ -67,7 +67,7 @@ window.DATA = {
                        "tier":  "full",
                        "status":  "OK",
                        "http":  "200",
-                       "laten":  0.236195,
+                       "laten":  0.222598,
                        "snapshot":  "20261006-gempadirasakan.json",
                        "jumlah_file":  3,
                        "skor":  33,
@@ -161,7 +161,7 @@ window.DATA = {
                        "tier":  "full",
                        "status":  "SAMA",
                        "http":  "200",
-                       "laten":  2.295711,
+                       "laten":  1.921212,
                        "snapshot":  "20261005-kev.json",
                        "jumlah_file":  2,
                        "skor":  66,
@@ -208,7 +208,7 @@ window.DATA = {
                        "tier":  "full",
                        "status":  "SAMA",
                        "http":  "200",
-                       "laten":  0.741141,
+                       "laten":  0.764354,
                        "snapshot":  "20261005-advisories.xml",
                        "jumlah_file":  1,
                        "skor":  66,
@@ -255,7 +255,7 @@ window.DATA = {
                        "tier":  "full",
                        "status":  "OK",
                        "http":  "200",
-                       "laten":  21.841444,
+                       "laten":  21.475221,
                        "snapshot":  "20261006-cve.json",
                        "jumlah_file":  3,
                        "skor":  33,
@@ -349,7 +349,7 @@ window.DATA = {
                        "tier":  "full",
                        "status":  "SAMA",
                        "http":  "200",
-                       "laten":  0.576467,
+                       "laten":  0.597329,
                        "snapshot":  "20261005-don.json",
                        "jumlah_file":  1,
                        "skor":  66,
@@ -396,7 +396,7 @@ window.DATA = {
                        "tier":  "full",
                        "status":  "OK",
                        "http":  "200",
-                       "laten":  1.161142,
+                       "laten":  1.03419,
                        "snapshot":  "20261006-m25hari.csv",
                        "jumlah_file":  3,
                        "skor":  33,
@@ -432,7 +432,7 @@ window.DATA = {
                                        1,
                                        1
                                    ],
-                       "diff":  "kejadian: 41 · magnitudo tertinggi: 5",
+                       "diff":  "kejadian: 40 · magnitudo tertinggi: 5",
                        "pesan_error":  "",
                        "saran":  ""
                    },
@@ -443,7 +443,7 @@ window.DATA = {
                        "tier":  "full",
                        "status":  "OK",
                        "http":  "200",
-                       "laten":  1.889075,
+                       "laten":  1.71576,
                        "snapshot":  "20261006-alerts.json",
                        "jumlah_file":  3,
                        "skor":  33,
@@ -479,7 +479,7 @@ window.DATA = {
                                        1,
                                        1
                                    ],
-                       "diff":  "baris 27710 → 29490 (+1780)",
+                       "diff":  "baris 27710 → 29718 (+2008)",
                        "pesan_error":  "",
                        "saran":  ""
                    },
@@ -584,7 +584,7 @@ window.DATA = {
                        "tier":  "full",
                        "status":  "OK",
                        "http":  "200",
-                       "laten":  0.706274,
+                       "laten":  0.823944,
                        "snapshot":  "20261006-dmca.json",
                        "jumlah_file":  2,
                        "skor":  33,
@@ -678,7 +678,7 @@ window.DATA = {
                        "tier":  "full",
                        "status":  "OK",
                        "http":  "200",
-                       "laten":  0.622896,
+                       "laten":  0.277487,
                        "snapshot":  "20261006-pageviews_Indonesia.json",
                        "jumlah_file":  3,
                        "skor":  0,
@@ -725,7 +725,7 @@ window.DATA = {
                        "tier":  "full",
                        "status":  "OK",
                        "http":  "200",
-                       "laten":  0.426993,
+                       "laten":  0.27457,
                        "snapshot":  "20261006-pageviews_Ibu_Kota_Nusantara.json",
                        "jumlah_file":  3,
                        "skor":  0,
@@ -772,7 +772,7 @@ window.DATA = {
                        "tier":  "full",
                        "status":  "OK",
                        "http":  "200",
-                       "laten":  0.39391,
+                       "laten":  0.247216,
                        "snapshot":  "20261006-pageviews_Bank_Central_Asia.json",
                        "jumlah_file":  3,
                        "skor":  0,
@@ -819,7 +819,7 @@ window.DATA = {
                        "tier":  "snippet",
                        "status":  "OK",
                        "http":  "200",
-                       "laten":  0.37091,
+                       "laten":  0.363809,
                        "snapshot":  "20261006-rss_bbc.json",
                        "jumlah_file":  3,
                        "skor":  0,
@@ -866,7 +866,7 @@ window.DATA = {
                        "tier":  "snippet",
                        "status":  "OK",
                        "http":  "200",
-                       "laten":  0.46668,
+                       "laten":  0.332073,
                        "snapshot":  "20261006-rss_aljazeera.json",
                        "jumlah_file":  3,
                        "skor":  0,
@@ -913,7 +913,7 @@ window.DATA = {
                        "tier":  "snippet",
                        "status":  "OK",
                        "http":  "200",
-                       "laten":  0.674868,
+                       "laten":  0.436423,
                        "snapshot":  "20261006-rss_guardian.json",
                        "jumlah_file":  3,
                        "skor":  0,
@@ -960,7 +960,7 @@ window.DATA = {
                        "tier":  "snippet",
                        "status":  "OK",
                        "http":  "200",
-                       "laten":  0.442448,
+                       "laten":  0.352042,
                        "snapshot":  "20261006-rss_cna.json",
                        "jumlah_file":  3,
                        "skor":  0,
@@ -1007,7 +1007,7 @@ window.DATA = {
                        "tier":  "snippet",
                        "status":  "OK",
                        "http":  "200",
-                       "laten":  0.511978,
+                       "laten":  0.438036,
                        "snapshot":  "20261006-rss_cnbcindonesia.json",
                        "jumlah_file":  2,
                        "skor":  0,
@@ -1054,7 +1054,7 @@ window.DATA = {
                        "tier":  "snippet",
                        "status":  "OK",
                        "http":  "200",
-                       "laten":  0.574061,
+                       "laten":  0.446738,
                        "snapshot":  "20261006-rss_cnnindonesia.json",
                        "jumlah_file":  3,
                        "skor":  0,
@@ -1101,7 +1101,7 @@ window.DATA = {
                        "tier":  "snippet",
                        "status":  "OK",
                        "http":  "200",
-                       "laten":  0.436596,
+                       "laten":  0.423772,
                        "snapshot":  "20261006-rss_antara.json",
                        "jumlah_file":  2,
                        "skor":  0,
@@ -1184,12 +1184,6 @@ window.DATA = {
                                 },
                                 {
                                     "sumber":  "USGS",
-                                    "magnitudo":  "5",
-                                    "lokasi":  "187 km ENE of Saipan",
-                                    "waktu":  "2026-10-05T10:52:09.844Z"
-                                },
-                                {
-                                    "sumber":  "USGS",
                                     "magnitudo":  "4.9",
                                     "lokasi":  "State of Yap",
                                     "waktu":  "2026-10-06T04:40:28.098Z"
@@ -1199,6 +1193,12 @@ window.DATA = {
                                     "magnitudo":  "4.9",
                                     "lokasi":  "55 km ESE of Kokopo",
                                     "waktu":  "2026-10-06T08:45:26.946Z"
+                                },
+                                {
+                                    "sumber":  "USGS",
+                                    "magnitudo":  "4.8",
+                                    "lokasi":  "146 km WNW of Panguna",
+                                    "waktu":  "2026-10-05T22:48:53.669Z"
                                 },
                                 {
                                     "sumber":  "USGS",
@@ -1484,7 +1484,7 @@ window.DATA = {
                               },
                               {
                                   "feed":  "guardian",
-                                  "title":  "Kenya confirms first Ebola case and says patient has died",
+                                  "title":  "Kenya confirms first Ebola case as virus ‘surges’ in DR Congo province",
                                   "link":  "https://www.theguardian.com/world/2026/oct/06/kenya-first-ebola-case-death-drc",
                                   "snippet":  "\u003cp\u003eHealth minister says 28 contacts identified after death of citizen who arrived from DRC on Saturday\u003c/p\u003e\u003cp\u003eKenya has reported its first-ever Ebola death, the health minister announced on Tuesday, after a Kenyan man who had been living in the Democratic Republic of the Congo (DRC) died after return",
                                   "wayback":  "https://web.archive.org/web/https://www.theguardian.com/world/2026/oct/06/kenya-first-ebola-case-death-drc"
@@ -1554,73 +1554,73 @@ window.DATA = {
                               },
                               {
                                   "feed":  "cnbcindonesia",
+                                  "title":  "Kupas Tuntas Peluang dan Tantangan Investasi di Industri Kesehatan RI",
+                                  "link":  "https://www.cnbcindonesia.com/news/20261006174350-4-773878/kupas-tuntas-peluang-dan-tantangan-investasi-di-industri-kesehatan-ri",
+                                  "snippet":  "Industri kesehatan Indonesia menghadapi tantangan, namun memiliki potensi besar. Health Summit 2026 akan bahas investasi dan inovasi di sektor ini.",
+                                  "wayback":  "https://web.archive.org/web/https://www.cnbcindonesia.com/news/20261006174350-4-773878/kupas-tuntas-peluang-dan-tantangan-investasi-di-industri-kesehatan-ri"
+                              },
+                              {
+                                  "feed":  "cnbcindonesia",
+                                  "title":  "Perluas Portofolio Energi, Danantara Investasi di Migas AS US$250 Juta",
+                                  "link":  "https://www.cnbcindonesia.com/market/20261006174222-17-773877/perluas-portofolio-energi-danantara-investasi-di-migas-as-us-250-juta",
+                                  "snippet":  "BPI Danantara Indonesia investasi US$ 250 juta di HighPeak Energy untuk pengembangan minyak di Permian Basin.",
+                                  "wayback":  "https://web.archive.org/web/https://www.cnbcindonesia.com/market/20261006174222-17-773877/perluas-portofolio-energi-danantara-investasi-di-migas-as-us-250-juta"
+                              },
+                              {
+                                  "feed":  "cnbcindonesia",
+                                  "title":  "Sukseskan BBM Bioetanol E20, Zulhas Bakal Tambah Kebun Tebu Cs",
+                                  "link":  "https://www.cnbcindonesia.com/news/20261006173347-4-773875/sukseskan-bbm-bioetanol-e20-zulhas-bakal-tambah-kebun-tebu-cs",
+                                  "snippet":  "Menko Pangan Zulkifli Hasan menyebutkan pemerintah akan menambah perkebunan baru untuk produksi etanol dalam negeri.",
+                                  "wayback":  "https://web.archive.org/web/https://www.cnbcindonesia.com/news/20261006173347-4-773875/sukseskan-bbm-bioetanol-e20-zulhas-bakal-tambah-kebun-tebu-cs"
+                              },
+                              {
+                                  "feed":  "cnbcindonesia",
+                                  "title":  "Kejayaan Karet RI Nyaris Hilang-Petani Sebut Jadi Anak Tiri, Ada Apa?",
+                                  "link":  "https://www.cnbcindonesia.com/news/20261006171034-4-773860/kejayaan-karet-ri-nyaris-hilang-petani-sebut-jadi-anak-tiri-ada-apa",
+                                  "snippet":  "Produksi dan ekspor karet Indonesia menurun drastis, petani beralih ke sawit. Intervensi pemerintah diperlukan untuk menyelamatkan industri karet.",
+                                  "wayback":  "https://web.archive.org/web/https://www.cnbcindonesia.com/news/20261006171034-4-773860/kejayaan-karet-ri-nyaris-hilang-petani-sebut-jadi-anak-tiri-ada-apa"
+                              },
+                              {
+                                  "feed":  "cnbcindonesia",
                                   "title":  "Video: Prabowo Puji Satgas PKH Sukses Selamatkan Triliunan Duit Negara",
                                   "link":  "https://www.cnbcindonesia.com/news/20261006160304-8-773830/video-prabowo-puji-satgas-pkh-sukses-selamatkan-triliunan-duit-negara",
                                   "snippet":  "Prabowo Saksikan Satgas PHK Setor Uang Denda dan Sitaan Rp 13,24 Triliun ke Negara",
                                   "wayback":  "https://web.archive.org/web/https://www.cnbcindonesia.com/news/20261006160304-8-773830/video-prabowo-puji-satgas-pkh-sukses-selamatkan-triliunan-duit-negara"
                               },
                               {
-                                  "feed":  "cnbcindonesia",
-                                  "title":  "Presiden Ini Janji Bagi Rp89 Juta per Warga Jika Partai Menang Pemilu",
-                                  "link":  "https://www.cnbcindonesia.com/news/20261006130645-4-773736/presiden-ini-janji-bagi-rp89-juta-per-warga-jika-partai-menang-pemilu",
-                                  "snippet":  "Presiden Trump menjanjikan pembayaran tunai US$5.000 (Rp 89 juta) untuk setiap warga dewasa AS jika Partai Republik menang di Kongres 2026.",
-                                  "wayback":  "https://web.archive.org/web/https://www.cnbcindonesia.com/news/20261006130645-4-773736/presiden-ini-janji-bagi-rp89-juta-per-warga-jika-partai-menang-pemilu"
-                              },
-                              {
-                                  "feed":  "cnbcindonesia",
-                                  "title":  "Kecelakaan Maut Bus Keluar Jalur hingga Terguling, Makan Korban Jiwa",
-                                  "link":  "https://www.cnbcindonesia.com/news/20261006145413-4-773807/kecelakaan-maut-bus-keluar-jalur-hingga-terguling-makan-korban-jiwa",
-                                  "snippet":  "Kecelakaan bus tingkat di Swedia menewaskan seorang pria 18 tahun dan melukai lebih dari 40 orang. Kejadian terjadi antara Vaxjo dan Alvesta.",
-                                  "wayback":  "https://web.archive.org/web/https://www.cnbcindonesia.com/news/20261006145413-4-773807/kecelakaan-maut-bus-keluar-jalur-hingga-terguling-makan-korban-jiwa"
-                              },
-                              {
-                                  "feed":  "cnbcindonesia",
-                                  "title":  "Danantara Soal Kinerja BUMN: 97% Dividen Hanya Dari 15 Perusahaan",
-                                  "link":  "https://www.cnbcindonesia.com/market/20261006141738-19-773795/danantara-soal-kinerja-bumn-97-dividen-hanya-dari-15-perusahaan",
-                                  "snippet":  "Danantara Soal Kinerja BUMN: 97% Dividen Hanya Dari 15 Perusahaan",
-                                  "wayback":  "https://web.archive.org/web/https://www.cnbcindonesia.com/market/20261006141738-19-773795/danantara-soal-kinerja-bumn-97-dividen-hanya-dari-15-perusahaan"
-                              },
-                              {
-                                  "feed":  "cnbcindonesia",
-                                  "title":  "Kerjaan Hacker Baik Hati Direbut, Penggantinya Tak Becus",
-                                  "link":  "https://www.cnbcindonesia.com/tech/20261006172255-37-773862/kerjaan-hacker-baik-hati-direbut-penggantinya-tak-becus",
-                                  "snippet":  "Google hentikan sementara penerimaan laporan kerentanan dari program OSS VRP akibat lonjakan laporan otomatis tidak valid.",
-                                  "wayback":  "https://web.archive.org/web/https://www.cnbcindonesia.com/tech/20261006172255-37-773862/kerjaan-hacker-baik-hati-direbut-penggantinya-tak-becus"
+                                  "feed":  "cnnindonesia",
+                                  "title":  "Prabowo Ungkap Berkali-kali Hendak Disogok",
+                                  "link":  "https://www.cnnindonesia.com/nasional/20261006174256-16-1412349/prabowo-ungkap-berkali-kali-hendak-disogok",
+                                  "snippet":  "Presiden Prabowo Subianto mengaku berkali-kali ditawari suap atau hendak disogok selama dua tahun masa kepemimpinannya.",
+                                  "wayback":  "https://web.archive.org/web/https://www.cnnindonesia.com/nasional/20261006174256-16-1412349/prabowo-ungkap-berkali-kali-hendak-disogok"
                               },
                               {
                                   "feed":  "cnnindonesia",
-                                  "title":  "Mendagri Dorong Percepatan Infrastruktur Perbatasan di Malinau",
-                                  "link":  "https://www.cnnindonesia.com/nasional/20261006171357-25-1412341/mendagri-dorong-percepatan-infrastruktur-perbatasan-di-malinau",
-                                  "snippet":  "Tito menilai, pembangunan infrastruktur di kawasan perbatasan tak hanya soal konektivitas dan pemerataan pembangunan, tetapi juga penguatan nasionalisme.",
-                                  "wayback":  "https://web.archive.org/web/https://www.cnnindonesia.com/nasional/20261006171357-25-1412341/mendagri-dorong-percepatan-infrastruktur-perbatasan-di-malinau"
+                                  "title":  "Rincian Penampakan Uang Rp13,2 T Diserahkan Satgas PKH ke Negara",
+                                  "link":  "https://www.cnnindonesia.com/nasional/20261006170216-12-1412338/rincian-penampakan-uang-rp132-t-diserahkan-satgas-pkh-ke-negara",
+                                  "snippet":  "Satuan Tugas Penertiban Kawasan Hutan akan menyerahkan Rp13,2 triliun hasil denda administratif dan 259.230,73 hektare lahan hutan ke Kemenkeu.",
+                                  "wayback":  "https://web.archive.org/web/https://www.cnnindonesia.com/nasional/20261006170216-12-1412338/rincian-penampakan-uang-rp132-t-diserahkan-satgas-pkh-ke-negara"
                               },
                               {
                                   "feed":  "cnnindonesia",
-                                  "title":  "Prabowo: Satgas PKH Sudah 8 kali Serahkan Uang ke Negara, Total Rp52 T",
-                                  "link":  "https://www.cnnindonesia.com/nasional/20261006171559-12-1412343/prabowo-satgas-pkh-sudah-8-kali-serahkan-uang-ke-negara-total-rp52-t",
-                                  "snippet":  "Prabowo mengungkapkan Satgas PKH telah menyerahkan dana sebanyak 8 kali, dengan total mencapai Rp52 triliun.",
-                                  "wayback":  "https://web.archive.org/web/https://www.cnnindonesia.com/nasional/20261006171559-12-1412343/prabowo-satgas-pkh-sudah-8-kali-serahkan-uang-ke-negara-total-rp52-t"
+                                  "title":  "Aleix Espargaro Gantikan Joan Mir di Pertamina MotoGP Mandalika",
+                                  "link":  "https://www.cnnindonesia.com/olahraga/20261006171637-156-1412342/aleix-espargaro-gantikan-joan-mir-di-pertamina-motogp-mandalika",
+                                  "snippet":  "Pembalap senior Aleix Espargaro menggantikan Joan Mir di tim Honda pada MotoGP Mandalika Pertamina Grand Prix of Indonesia 2026, 9-11 Oktober.",
+                                  "wayback":  "https://web.archive.org/web/https://www.cnnindonesia.com/olahraga/20261006171637-156-1412342/aleix-espargaro-gantikan-joan-mir-di-pertamina-motogp-mandalika"
                               },
                               {
                                   "feed":  "cnnindonesia",
-                                  "title":  "Cerita Prabowo Hendak Disogok",
-                                  "link":  "https://www.cnnindonesia.com/nasional/20261006173008-12-1412347/cerita-prabowo-hendak-disogok",
-                                  "snippet":  "Presiden RI Prabowo Subianto mengaku hendak disogok selama dua tahun menjabat sebagai Presiden RI.",
-                                  "wayback":  "https://web.archive.org/web/https://www.cnnindonesia.com/nasional/20261006173008-12-1412347/cerita-prabowo-hendak-disogok"
+                                  "title":  "Tak Perlu Beli, Merek Ini Beri Opsi Langganan Mesin Cuci",
+                                  "link":  "https://www.cnnindonesia.com/teknologi/20261006173952-185-1412348/tak-perlu-beli-merek-ini-beri-opsi-langganan-mesin-cuci",
+                                  "snippet":  "Modena menawarkan layanan berlangganan mesin cuci mulai Rp270 ribu/bulan, termasuk perawatan dan servis. Menyasar pasangan baru dan penghuni apartemen.",
+                                  "wayback":  "https://web.archive.org/web/https://www.cnnindonesia.com/teknologi/20261006173952-185-1412348/tak-perlu-beli-merek-ini-beri-opsi-langganan-mesin-cuci"
                               },
                               {
                                   "feed":  "cnnindonesia",
-                                  "title":  "Mendag Kejar Perjanjian Dagang RI-Uni Eropa Berlaku Januari 2027",
-                                  "link":  "https://www.cnnindonesia.com/ekonomi/20261006125711-92-1412200/mendag-kejar-perjanjian-dagang-ri-uni-eropa-berlaku-januari-2027",
-                                  "snippet":  "Mendag Budi Santoso menargetkan perjanjian dagang Indonesia-Uni Eropa (IEU-CEPA) ditandatangani pada akhir Oktober 2026 dan mulai berlaku Januari 2027.",
-                                  "wayback":  "https://web.archive.org/web/https://www.cnnindonesia.com/ekonomi/20261006125711-92-1412200/mendag-kejar-perjanjian-dagang-ri-uni-eropa-berlaku-januari-2027"
-                              },
-                              {
-                                  "feed":  "cnnindonesia",
-                                  "title":  "Daftar Provinsi Gelar Pemutihan Pajak Kendaraan Berakhir Oktober 2026",
-                                  "link":  "https://www.cnnindonesia.com/otomotif/20261005155910-579-1411859/daftar-provinsi-gelar-pemutihan-pajak-kendaraan-berakhir-oktober-2026",
-                                  "snippet":  "Sejumlah provinsi masih menggelar program pemutihan pajak kendaraan bermotor hingga Oktober 2026.",
-                                  "wayback":  "https://web.archive.org/web/https://www.cnnindonesia.com/otomotif/20261005155910-579-1411859/daftar-provinsi-gelar-pemutihan-pajak-kendaraan-berakhir-oktober-2026"
+                                  "title":  "Kelurahan Kelapa Gading Gelar Festival Jelang Final Benyamin S Award",
+                                  "link":  "https://www.cnnindonesia.com/nasional/20261006173500-20-1412350/kelurahan-kelapa-gading-gelar-festival-jelang-final-benyamin-s-award",
+                                  "snippet":  "Kelurahan Kelapa Gading Timur menggelar Street Fest menjelang Benyamin S Award. Festival ini meriah dengan olahraga, kesehatan, dan penampilan seni.",
+                                  "wayback":  "https://web.archive.org/web/https://www.cnnindonesia.com/nasional/20261006173500-20-1412350/kelurahan-kelapa-gading-gelar-festival-jelang-final-benyamin-s-award"
                               },
                               {
                                   "feed":  "antara",
