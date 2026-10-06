@@ -199,7 +199,7 @@ diduplikasi di dua skrip.
 
 | Berkas | Isi |
 |---|---|
-| `config/pengaturan.conf` | `KEY=value`: identitas, ambang, kata kunci, batas tabel |
+| `config/pengaturan.conf` | `KEY=value`: identitas, ambang, kata kunci, batas tabel, daftar blokir CI |
 | `config/sumber.tsv` | daftar sumber statis (`folder\|nama\|label\|url\|tier\|jadwal\|ext`) |
 | `config/wiki.tsv` | artikel pageviews (`label\|judul_artikel`) |
 | `config/rss.tsv` | umpan RSS (`nama\|url`; urutannya menentukan urutan tabel `rss`) |
@@ -216,6 +216,7 @@ Kunci pada `config/pengaturan.conf`:
 | `RSS_MAX_ITEMS` | Maks entri `docs/feed.xml` (default 50) |
 | `SNIPPET_MAX` | Panjang kutipan maksimum (default 300) |
 | `KEYWORDS_WATCH` | Kata kunci pemantauan, dipisah koma (default `sanction,eruption,zero-day`) |
+| `BLOKIR_CI` | Label sumber yang host-nya memblokir IP datacenter (dipisah koma). Saat berjalan di CI, HTTP 403/451 dari label ini dicatat `LEWAT` — bukan `GAGAL` — supaya `GAGAL` tetap bermakna |
 | `TABEL_CVE_LIMIT` / `TABEL_KEV_LIMIT` / `TABEL_RSS_LIMIT` / `TABEL_USGS_LIMIT` | Batas baris tiap tabel manifest (40 / 20 / 5 / 5) |
 | `WIKI_PROJECT` | Proyek Wikimedia (default `id.wikipedia`) |
 
@@ -376,6 +377,16 @@ diterjemahkan ke pesan + saran bahasa Indonesia:
 HTTP: `400` param salah · `401` butuh auth · `403` diblokir/User-Agent · `404`
 endpoint pindah · `429` rate limit · `5xx` masalah server.
 
+**Host yang memblokir IP datacenter.** Sebagian host menolak **semua** permintaan
+dari IP runner GitHub dengan `403`, apa pun User-Agent/headernya (terukur: CNBC &
+CNN di belakang Cloudflare, serta jalur CISA Advisories; endpoint alternatif pada
+host yang sama juga `403`). Label yang terdaftar di `BLOKIR_CI` dicatat **`LEWAT`**
+dengan alasan eksplisit selama berjalan di CI (`GITHUB_ACTIONS=true`), dan `--cek`
+menandainya **`LEWAT*`** — sehingga hitungan `GAGAL` tetap berarti. Di luar CI
+(jaringan lokal) sumber yang sama tetap diuji penuh dan tetap `GAGAL` bila memang
+gagal, jadi tidak ada kegagalan nyata yang tersembunyi. Ketiga sumber itu tetap
+terisi setiap hari oleh runner lokal (`jaga-harian`).
+
 Setiap `GAGAL`/`RUSAK` menulis entri ke `data/errors/<YYYYMMDD>.md` (folder ini
 **di-commit** sebagai riwayat kesehatan sumber — jangan dihapus manual).
 
@@ -424,6 +435,10 @@ butuh konfigurasi tambahan.
 Isi kredensial opsional lewat **Settings → Secrets and variables → Actions**
 (mis. `RANSOMWARE_API_KEY`, `FIRMS_KEY`, `OPENSKY_USER`). Bila Anda hanya ingin
 penjaga lokal (`jaga-harian`) yang berjalan, hapus blok `schedule` di workflow.
+
+**Catatan runner GitHub:** CISA Advisories, RSS CNBC, dan RSS CNN selalu `403`
+dari IP runner (blokir IP/ASN, bukan header) sehingga dicatat `LEWAT` di CI —
+lihat §11 dan `BLOKIR_CI` pada §7. Runner lokal mengisinya normal.
 
 ---
 
@@ -486,7 +501,7 @@ Lock dihapus saat skrip selesai.
 
 ---
 
-## 17. Riwayat perbaikan (2026-10-05)
+## 17. Riwayat perbaikan (2026-10-05 → 2026-10-06)
 
 Diperbaiki dari laporan error run nyata `data/errors/2026-10-04.md`:
 
@@ -504,6 +519,9 @@ Diperbaiki dari laporan error run nyata `data/errors/2026-10-04.md`:
 | **`docs/data.json` tidak valid** saat data banyak | Tabel (`gempa`/`cve`/`kev`/`rss`) tidak menulis koma pemisah (flag `first` hilang di subshell pipa) | Loop memakai process substitution; koma ditulis benar |
 | Tabel `rss` / `kev` kosong walau data ada | Bug di atas + regex JSON padat | Lihat dua baris sebelumnya |
 | **Konfigurasi terduplikasi** di dua skrip (rawan divergen) | `SOURCES`/`WIKI_ARTICLES`/`RSS_FEEDS`/ambang/kata kunci/batas tabel ditulis dua kali (bash + PowerShell) | Diekstrak ke **`config/`** (satu sumber kebenaran); kedua skrip memuatnya. `RSS_NAMES` & batas tabel kini berasal dari config |
+| **`github` (GitHub DMCA) → `exit 22, HTTP 000`** di Actions | Header `Authorization:Bearer <token>` disusun sebagai string lalu dipecah IFS/spasi → token menjadi argumen terpisah dan curl menganggapnya URL | Header kini dibawa sebagai **array** (`EXTRA_ARGS` / `$script:EXTRA_ARGS`) di kedua skrip; berlaku juga untuk `NVD_API_KEY` & `RANSOMWARE_API_KEY` |
+| **Data harian hilang tanpa pesan** (3 commit lokal tertinggal di belakang commit Actions) | Job Actions sudah push lebih dulu → push lokal ditolak non-fast-forward dan hanya tercatat sebagai peringatan | `git_push_sinkron` / `Invoke-GitPushSynced`: coba push, bila ditolak lakukan `fetch` + `rebase --autostash` lalu push ulang; bila rebase konflik, dibatalkan bersih dan push manual diimbau |
+| **3 `GAGAL` palsu setiap run CI** (CISA Advisories, RSS CNBC, RSS CNN) | Host memblokir IP/ASN runner GitHub: semua variasi User-Agent tetap `403`, endpoint alternatif juga `403` | `BLOKIR_CI` di `config/pengaturan.conf`: saat CI dicatat `LEWAT` dengan alasan jelas (`LEWAT*` di `--cek`), di luar CI tetap `GAGAL` |
 | **Manifest lambat** (bash 88 dtk; PowerShell 1,6 dtk) | Bash: ratusan fork subshell `$(jesc …)` per field + 32 fork `date`; PowerShell: `Get-ChildItem`/`Test-Path` diulang per sumber | Bash: helper `jescv` tanpa-fork, `_siapkan_hari` satu-proses awk (dengan fallback portable), substitusi token URL ber-fork hanya bila perlu; PowerShell: cache daftar berkas + himpunan nama + cache state. **Manifest+feed: bash 88→24 dtk, PowerShell 1,6→1,35 dtk**, keluaran identik |
 
 ---
