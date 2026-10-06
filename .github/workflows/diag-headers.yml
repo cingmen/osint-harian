@@ -1,0 +1,55 @@
+name: diag-headers
+
+# SEMENTARA — hanya untuk mendiagnosis sumber yang 403 dari runner GitHub.
+# Dijalankan manual; dihapus setelah penyebab dipastikan.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  diag:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Probe User-Agent & header
+        run: |
+          UA='osint-harian/1.0 (+https://github.com/osint-harian; kontak: https://cingmen.github.io/osint-harian)'
+          BR='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36'
+          probe() {
+            printf '%-18s' "$1"
+            printf ' default=%s' "$(curl -s -o /dev/null -w '%{http_code}' --max-time 25 "$2")"
+            printf ' projUA=%s' "$(curl -s -o /dev/null -w '%{http_code}' --max-time 25 -A "$UA" "$2")"
+            printf ' browser=%s' "$(curl -s -o /dev/null -w '%{http_code}' --max-time 25 -A "$BR" "$2")"
+            printf ' br+accept+lang+ref=%s' "$(curl -s -o /dev/null -w '%{http_code}' --max-time 25 -A "$BR" \
+              -H 'Accept: application/rss+xml,application/xml,text/xml,*/*;q=0.8' \
+              -H 'Accept-Language: id-ID,id;q=0.9,en;q=0.8' \
+              -e 'https://www.google.com/' "$2")"
+            printf ' http1.1=%s\n' "$(curl -s -o /dev/null -w '%{http_code}' --http1.1 --max-time 25 -A "$UA" "$2")"
+          }
+          probe cisa-advisories 'https://www.cisa.gov/cybersecurity-advisories/all.xml'
+          probe cisa-kev 'https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json'
+          probe cnbcindonesia 'https://www.cnbcindonesia.com/rss'
+          probe cnnindonesia 'https://www.cnnindonesia.com/rss'
+          probe antara 'https://www.antaranews.com/rss/top-news'
+
+      - name: Header respons untuk kasus 403
+        run: |
+          UA='osint-harian/1.0 (+https://github.com/osint-harian; kontak: https://cingmen.github.io/osint-harian)'
+          echo '--- CISA advisories (projUA) ---'
+          curl -s -o /dev/null -D - --max-time 25 -A "$UA" 'https://www.cisa.gov/cybersecurity-advisories/all.xml' | head -25
+          echo '--- CNBC (projUA) ---'
+          curl -s -o /dev/null -D - --max-time 25 -A "$UA" 'https://www.cnbcindonesia.com/rss' | head -25
+          echo '--- CNN (projUA) ---'
+          curl -s -o /dev/null -D - --max-time 25 -A "$UA" 'https://www.cnnindonesia.com/rss' | head -25
+
+      - name: Cek semua sumber lewat skrip (header token terbaru)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          chmod +x tracker-harian.sh
+          ./tracker-harian.sh --cek || true
