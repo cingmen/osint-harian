@@ -78,6 +78,7 @@ muat_konfigurasi() {
       TABEL_RSS_LIMIT)   TABEL_RSS_LIMIT="$v" ;;
       TABEL_USGS_LIMIT)  TABEL_USGS_LIMIT="$v" ;;
       KEYWORDS_WATCH)    IFS=',' read -r -a KEYWORDS_WATCH <<< "$v" ;;
+      BLOKIR_CI)         BLOKIR_CI="$v" ;;
     esac
   done < "$conf"
 
@@ -250,6 +251,16 @@ ambil_lock() {
   printf '%s\n' "$$" > "$LOCK_FILE"
 }
 lepas_lock() { rm -f "$LOCK_FILE"; }
+
+# Sumber yang host-nya memblokir IP datacenter (mis. runner CI) dicatat LEWAT,
+# bukan GAGAL, agar hitungan GAGAL tetap bermakna. Daftar label ada di config/.
+diblokir_ci() { # $1=label $2=kode HTTP -> 0 bila harus diperlakukan LEWAT
+  [ "${GITHUB_ACTIONS:-}" = "true" ] || return 1
+  case "$2" in 403|451) ;; *) return 1 ;; esac
+  [ -n "${BLOKIR_CI:-}" ] || return 1
+  case ",${BLOKIR_CI}," in *",$1,"*) return 0 ;; esac
+  return 1
+}
 
 # =============================================================================
 #  BAGIAN 6 — HTTP + TERJEMAHAN ERROR
@@ -534,6 +545,15 @@ proses_sumber() { # folder nama label url tier jadwal ext
     ter="$(terjemah_error "$CURL_EXIT" "$CURL_HTTP")"
     pesan="${ter%%|*}"; saran="${ter##*|}"
     rm -f "$target"
+    # Host yang memblokir IP datacenter (runner CI): LEWAT, bukan GAGAL.
+    if diblokir_ci "$label" "$CURL_HTTP"; then
+      pesan="host memblokir IP CI (HTTP $CURL_HTTP)"
+      saran="Jalankan tracker dari jaringan lokal (IP residensial tidak diblokir host ini)."
+      warn "LEWAT : $label — $pesan"
+      changes "LEWAT" "$label" "$pesan"
+      simpan_state "$folder" "$nama" "$label" "$tier" "LEWAT" "$CURL_HTTP" "$CURL_TIME" "" "$pesan" "$saran"
+      return
+    fi
     warn "GAGAL : $label (exit $CURL_EXIT, HTTP $CURL_HTTP) — $pesan"
     changes "GAGAL" "$label" "$pesan (HTTP $CURL_HTTP, exit $CURL_EXIT)"
     catat_error "$label" "$url" "$CURL_EXIT" "$CURL_HTTP" "$pesan" "$saran"
@@ -776,6 +796,14 @@ proses_rss() {
       local ter pesan saran; ter="$(terjemah_error "$CURL_EXIT" "$CURL_HTTP")"
       pesan="${ter%%|*}"; saran="${ter##*|}"
       rm -f "$raw"
+      if diblokir_ci "RSS $nama" "$CURL_HTTP"; then
+        pesan="host memblokir IP CI (HTTP $CURL_HTTP)"
+        saran="Jalankan tracker dari jaringan lokal (IP residensial tidak diblokir host ini)."
+        warn "LEWAT : RSS $nama — $pesan"
+        changes "LEWAT" "RSS $nama" "$pesan"
+        simpan_state "$folder" "rss_${nama}" "RSS: $nama" "snippet" "LEWAT" "$CURL_HTTP" "$CURL_TIME" "" "$pesan" "$saran"
+        continue
+      fi
       changes "GAGAL" "RSS $nama" "$pesan (HTTP $CURL_HTTP)"
       catat_error "RSS $nama" "$url" "$CURL_EXIT" "$CURL_HTTP" "$pesan" "$saran"
       simpan_state "$folder" "rss_${nama}" "RSS: $nama" "snippet" "GAGAL" "$CURL_HTTP" "$CURL_TIME" "" "$pesan" "$saran"
@@ -1295,6 +1323,7 @@ do_cek() {
   printf '%-32s %-10s %-6s %-8s %s\n' "SUMBER" "STATUS" "HTTP" "LATEN(s)" "SKOR30"
   printf '%s\n' "------------------------------------------------------------------------"
   local laporan="$ERRORS_DIR/cek-${TODAY}.md"
+  local ada_lewat=0
   printf '# Diagnostik %s\n\n' "$TODAY_DASH" > "$laporan"
   local baris; baris="$(printf '%s\n' "$SOURCES" | grep -v '^[[:space:]]*$')"
   local IFS_OLD="$IFS"; IFS='
@@ -1326,12 +1355,17 @@ do_cek() {
     curl_get "$url" "$out" ""
     local status="OK"
     [ "$CURL_EXIT" -ne 0 ] && status="GAGAL"
+    # Host yang memblokir IP CI ditandai LEWAT*, bukan GAGAL (lihat BLOKIR_CI).
+    if [ "$status" = "GAGAL" ] && diblokir_ci "$label" "$CURL_HTTP"; then status="LEWAT*"; ada_lewat=1; fi
     local skor; skor="$(skor_kesehatan "$label")"
     printf '%-32s %-10s %-6s %-8s %s%%\n' "$label" "$status" "$CURL_HTTP" "$CURL_TIME" "$skor"
     printf -- '- %s: %s (HTTP %s, %ss, skor %s%%)\n' "$label" "$status" "$CURL_HTTP" "$CURL_TIME" "$skor" >> "$laporan"
     rm -f "$out"
   done
   IFS="$IFS_OLD"
+  if [ "$ada_lewat" = "1" ]; then
+    info "LEWAT* = host memblokir IP CI (daftar BLOKIR_CI di config/pengaturan.conf)."
+  fi
   info "Laporan diagnostik: $laporan (tidak di-commit)."
   info "Selesai --cek. Tidak ada snapshot/commit."
 }
