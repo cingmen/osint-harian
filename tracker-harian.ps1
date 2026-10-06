@@ -192,27 +192,36 @@ function Lepas-Lock { Remove-Item -LiteralPath $LOCK_FILE -Force -ErrorAction Si
 # =============================================================================
 #  BAGIAN 6 — HTTP + TERJEMAHAN ERROR
 # =============================================================================
-function Get-ExtraCurl {
+# Header tambahan per folder (auth API key dsb).
+# Mengisi ARRAY script-scope $EXTRA_ARGS — bukan string: nilai header boleh memuat
+# spasi ("Authorization:Bearer <token>"). String yang dipecah spasi akan memecah
+# token menjadi argumen terpisah sehingga curl.exe menganggapnya URL → exit 22,
+# HTTP 000 (gejala yang sama seperti pada tracker-harian.sh).
+$script:EXTRA_ARGS = @()
+function Set-ExtraCurl {
   param([string]$Folder)
+  $r = @()
   switch ($Folder) {
-    'nvd'    { if ($env:NVD_API_KEY) { return "-H apiKey:$($env:NVD_API_KEY)" } }
+    'nvd' {
+      if ($env:NVD_API_KEY) { $r = @('-H', "apiKey:$($env:NVD_API_KEY)") }
+    }
     'github' {
-      $h = '-H Accept:application/vnd.github+json'
-      if ($env:GITHUB_TOKEN) { $h = "$h -H Authorization:Bearer $($env:GITHUB_TOKEN)" }
-      return $h
+      $r = @('-H', 'Accept:application/vnd.github+json')
+      if ($env:GITHUB_TOKEN) { $r += @('-H', "Authorization:Bearer $($env:GITHUB_TOKEN)") }
     }
     'ransomware' {
-      if ($env:RANSOMWARE_API_KEY) { return "-H X-API-KEY:$($env:RANSOMWARE_API_KEY)" }
+      if ($env:RANSOMWARE_API_KEY) { $r = @('-H', "X-API-KEY:$($env:RANSOMWARE_API_KEY)") }
     }
   }
-  return ''
+  $script:EXTRA_ARGS = $r
 }
 
 # curl_get: menjalankan curl.exe dan mengisi $script:CURL_EXIT/HTTP/TIME.
+# Header tambahan diambil dari $script:EXTRA_ARGS (lihat Set-ExtraCurl).
 function Invoke-CurlGet {
-  param([string]$Url, [string]$Out, [string]$Extra = '', [string]$Auth = '')
+  param([string]$Url, [string]$Out, [string]$Auth = '')
   $a = @('-fsSL', '--retry', '3', '--retry-delay', '5', '--max-time', '90', '-A', $USER_AGENT)
-  if ($Extra) { foreach ($x in ($Extra -split '\s+')) { if ($x) { $a += $x } } }
+  foreach ($x in @($script:EXTRA_ARGS)) { if ($x) { $a += $x } }
   if ($Auth) { $a += @('-u', $Auth) }
   $a += @('-o', $Out, '-w', '%{http_code}|%{time_total}', $Url)
   $w = & curl.exe @a 2>$null
@@ -634,12 +643,12 @@ function Process-Source {
 
   New-Item -ItemType Directory -Force -Path (Join-Path $DATA_DIR $Folder) | Out-Null
   $target = Join-Path (Join-Path $DATA_DIR $Folder) "$TODAY-$Nama.$Ext"
-  $extra = Get-ExtraCurl $Folder
+  Set-ExtraCurl $Folder
   $auth = ''
   if ($Folder -eq 'opensky' -and $env:OPENSKY_USER -and $env:OPENSKY_PASS) { $auth = "$($env:OPENSKY_USER):$($env:OPENSKY_PASS)" }
 
   Info "AMBIL : $Label ..."
-  Invoke-CurlGet $Url $target $extra $auth
+  Invoke-CurlGet $Url $target $auth
 
   if ($script:CURL_EXIT -ne 0) {
     $ter = Get-TerjemahError $script:CURL_EXIT $script:CURL_HTTP
@@ -706,7 +715,8 @@ function Process-Wiki {
     New-Item -ItemType Directory -Force -Path (Join-Path $DATA_DIR $folder) | Out-Null
     $target = Join-Path (Join-Path $DATA_DIR $folder) "$TODAY-$nama.json"
     Info "AMBIL : Wikipedia pageviews ($label) ..."
-    Invoke-CurlGet $url $target '' ''
+    Set-ExtraCurl 'wiki'
+    Invoke-CurlGet $url $target ''
     if ($script:CURL_EXIT -ne 0) {
       $ter = Get-TerjemahError $script:CURL_EXIT $script:CURL_HTTP
       $pesan = $ter.Split('|')[0]; $saran = $ter.Split('|')[1]
@@ -755,7 +765,8 @@ function Process-Rss {
     New-Item -ItemType Directory -Force -Path (Join-Path $DATA_DIR $folder) | Out-Null
     Info "AMBIL : RSS $nama (tier snippet) ..."
     $raw = Join-Path $TMPD "rss_$nama.xml"
-    Invoke-CurlGet $url $raw '' ''
+    Set-ExtraCurl ''
+    Invoke-CurlGet $url $raw ''
     if ($script:CURL_EXIT -ne 0) {
       $ter = Get-TerjemahError $script:CURL_EXIT $script:CURL_HTTP
       $pesan = $ter.Split('|')[0]; $saran = $ter.Split('|')[1]
@@ -1081,6 +1092,40 @@ function New-MonthTag {
 # =============================================================================
 #  BAGIAN 5 — GIT FINALIZE
 # =============================================================================
+# Dorong commit ke remote, sinkronkan lebih dulu bila push ditolak.
+# Job Actions bisa sudah push lebih dulu sehingga push lokal ditolak
+# non-fast-forward — tanpa ini data hari itu diam-diam tidak sampai ke GitHub.
+function Invoke-GitPushSynced {
+  param([string]$Remote = 'origin')
+  $br = (& git rev-parse --abbrev-ref HEAD 2>$null | Select-Object -First 1)
+  $br = "$br".Trim()
+  if (-not $br -or $br -eq 'HEAD') { $br = 'main' }
+
+  & git push $Remote HEAD 2>$null | Out-Null
+  if ($LASTEXITCODE -eq 0) { return $true }
+
+  Warn "GIT: push ditolak $DASH sinkronkan dulu dengan $Remote/$br (rebase)."
+  & git fetch $Remote $br 2>$null | Out-Null
+  if ($LASTEXITCODE -ne 0) {
+    Warn "GIT: fetch $Remote/$br gagal $DASH push manual diperlukan."
+    return $false
+  }
+  & git rebase --autostash "$Remote/$br" 2>$null | Out-Null
+  if ($LASTEXITCODE -ne 0) {
+    & git rebase --abort 2>$null | Out-Null
+    Warn "GIT: rebase gagal $DASH dibatalkan agar tidak meninggalkan state setengah jalan."
+    return $false
+  }
+  Info "GIT: rebase di atas $Remote/$br berhasil."
+  & git push $Remote HEAD 2>$null | Out-Null
+  if ($LASTEXITCODE -eq 0) {
+    Info "GIT: push $Remote HEAD berhasil setelah sinkronisasi."
+    return $true
+  }
+  Warn 'GIT: push tetap gagal setelah rebase.'
+  return $false
+}
+
 function Invoke-GitFinalize {
   Set-Location $BASE_DIR
   $gitPath = Join-Path $BASE_DIR '.git'
@@ -1099,8 +1144,7 @@ function Invoke-GitFinalize {
   $msg = "Update harian $TODAY_DASH`n`n$ringkas`n`n$stat"
   & git commit -q -m $msg 2>$null
   if ($LASTEXITCODE -eq 0) { Info 'GIT: commit dibuat.' }
-  & git push origin HEAD 2>$null | Out-Null
-  if ($LASTEXITCODE -eq 0) {
+  if (Invoke-GitPushSynced 'origin') {
     Info 'GIT: push origin HEAD berhasil.'
   } else {
     Warn 'GIT: push gagal. Lakukan login lalu push manual:'
@@ -1108,8 +1152,7 @@ function Invoke-GitFinalize {
     Warn '  git push origin HEAD'
   }
   if ($env:REMOTE_EXTRA) {
-    & git push $env:REMOTE_EXTRA HEAD 2>$null | Out-Null
-    if ($LASTEXITCODE -eq 0) { Info "GIT: push $($env:REMOTE_EXTRA) berhasil." } else { Warn "GIT: push $($env:REMOTE_EXTRA) gagal." }
+    if (Invoke-GitPushSynced $env:REMOTE_EXTRA) { Info "GIT: push $($env:REMOTE_EXTRA) berhasil." } else { Warn "GIT: push $($env:REMOTE_EXTRA) gagal." }
   }
   New-MonthTag
 }
@@ -1142,7 +1185,8 @@ function Do-Cek {
       }
     }
     $out = Join-Path $TMPD "cek_$nama"
-    Invoke-CurlGet $url $out (Get-ExtraCurl $folder) ''
+    Set-ExtraCurl $folder
+    Invoke-CurlGet $url $out ''
     $status = 'OK'; if ($script:CURL_EXIT -ne 0) { $status = 'GAGAL' }
     $skor = Get-HealthScore $label
     '{0,-32} {1,-10} {2,-6} {3,-8} {4}%' -f $label, $status, $script:CURL_HTTP, $script:CURL_TIME, $skor | Write-Host
@@ -1162,7 +1206,8 @@ function Do-UjiError {
   Log 'Menyuntik SATU URL palsu lewat pipeline yang sama (tanpa menulis file commit).'
   $url = 'https://sumber-palsu.invalid/tidak-ada.json'
   $out = Join-Path $TMPD 'uji_error.json'
-  Invoke-CurlGet $url $out '' ''
+  Set-ExtraCurl ''
+  Invoke-CurlGet $url $out ''
   $ter = Get-TerjemahError $script:CURL_EXIT $script:CURL_HTTP
   $pesan = $ter.Split('|')[0]; $saran = $ter.Split('|')[1]
   Log "exit code : $($script:CURL_EXIT)"

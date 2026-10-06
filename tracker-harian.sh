@@ -255,35 +255,40 @@ lepas_lock() { rm -f "$LOCK_FILE"; }
 #  BAGIAN 6 — HTTP + TERJEMAHAN ERROR
 # =============================================================================
 
-# Header tambahan per folder (auth API key dsb). Mengembalikan string argumen curl.
-extra_curl() { # $1=folder
+# Header tambahan per folder (auth API key dsb).
+# Mengisi ARRAY global EXTRA_ARGS — bukan string: nilai header boleh memuat spasi
+# ("Authorization:Bearer <token>"). String yang dipecah IFS akan memecah token
+# menjadi argumen terpisah sehingga curl menganggapnya URL → exit 22, HTTP 000.
+EXTRA_ARGS=()
+extra_curl() { # $1=folder → isi EXTRA_ARGS di atas
+  EXTRA_ARGS=()
   case "$1" in
     nvd)
-      [ -n "${NVD_API_KEY:-}" ] && printf '%s' "-H apiKey:${NVD_API_KEY}"
+      [ -n "${NVD_API_KEY:-}" ] && EXTRA_ARGS=(-H "apiKey:${NVD_API_KEY}")
       ;;
     github)
-      local h="-H Accept:application/vnd.github+json"
-      [ -n "${GITHUB_TOKEN:-}" ] && h="$h -H Authorization:Bearer ${GITHUB_TOKEN}"
-      printf '%s' "$h"
+      EXTRA_ARGS=(-H "Accept:application/vnd.github+json")
+      [ -n "${GITHUB_TOKEN:-}" ] && EXTRA_ARGS+=(-H "Authorization:Bearer ${GITHUB_TOKEN}")
       ;;
     ransomware)
-      [ -n "${RANSOMWARE_API_KEY:-}" ] && printf '%s' "-H X-API-KEY:${RANSOMWARE_API_KEY}"
+      [ -n "${RANSOMWARE_API_KEY:-}" ] && EXTRA_ARGS=(-H "X-API-KEY:${RANSOMWARE_API_KEY}")
       ;;
   esac
+  return 0
 }
 
 # curl_get: menjalankan curl dan mengisi CURL_EXIT, CURL_HTTP, CURL_TIME.
-# $1=url $2=outfile $3=extra-args(string) $4=userpass
+# $1=url $2=outfile $3=userpass  (header tambahan diambil dari EXTRA_ARGS)
 curl_get() {
-  local url="$1" out="$2" extra="${3:-}" auth="${4:-}"
+  local url="$1" out="$2" auth="${3:-}"
   local w
   if [ -n "$auth" ]; then
     w=$(curl -fsSL --retry 3 --retry-delay 5 --max-time 90 \
-          -A "$USER_AGENT" -u "$auth" $extra \
+          -A "$USER_AGENT" -u "$auth" "${EXTRA_ARGS[@]}" \
           -o "$out" -w '%{http_code}|%{time_total}' "$url" 2>/dev/null)
   else
     w=$(curl -fsSL --retry 3 --retry-delay 5 --max-time 90 \
-          -A "$USER_AGENT" $extra \
+          -A "$USER_AGENT" "${EXTRA_ARGS[@]}" \
           -o "$out" -w '%{http_code}|%{time_total}' "$url" 2>/dev/null)
   fi
   CURL_EXIT=$?
@@ -514,14 +519,14 @@ proses_sumber() { # folder nama label url tier jadwal ext
 
   mkdir -p "$DATA_DIR/$folder"
   local target="$DATA_DIR/$folder/${TODAY}-${nama}.${ext}"
-  local extra auth=""
-  extra="$(extra_curl "$folder")"
+  local auth=""
+  extra_curl "$folder"
   if [ "$folder" = "opensky" ] && [ -n "${OPENSKY_USER:-}" ] && [ -n "${OPENSKY_PASS:-}" ]; then
     auth="${OPENSKY_USER}:${OPENSKY_PASS}"
   fi
 
   info "AMBIL : $label …"
-  curl_get "$url" "$target" "$extra" "$auth"
+  curl_get "$url" "$target" "$auth"
 
   # Gagal koneksi / HTTP error.
   if [ "$CURL_EXIT" -ne 0 ]; then
@@ -672,7 +677,8 @@ proses_wiki() {
     mkdir -p "$DATA_DIR/$folder"
     local target="$DATA_DIR/$folder/${TODAY}-${nama}.json"
     info "AMBIL : Wikipedia pageviews ($label) …"
-    curl_get "$url" "$target" "$(extra_curl wiki)" ""
+    extra_curl wiki
+    curl_get "$url" "$target" ""
     if [ "$CURL_EXIT" -ne 0 ]; then
       local ter pesan saran; ter="$(terjemah_error "$CURL_EXIT" "$CURL_HTTP")"
       pesan="${ter%%|*}"; saran="${ter##*|}"
@@ -764,7 +770,8 @@ proses_rss() {
     mkdir -p "$DATA_DIR/$folder"
     info "AMBIL : RSS $nama (tier snippet) …"
     local raw="$TMPD/rss_${nama}.xml"
-    curl_get "$url" "$raw" "" ""
+    extra_curl ""
+    curl_get "$url" "$raw" ""
     if [ "$CURL_EXIT" -ne 0 ]; then
       local ter pesan saran; ter="$(terjemah_error "$CURL_EXIT" "$CURL_HTTP")"
       pesan="${ter%%|*}"; saran="${ter##*|}"
@@ -1209,6 +1216,38 @@ tag_bulanan() {
 # =============================================================================
 #  BAGIAN 5 — GIT FINALIZE
 # =============================================================================
+
+# Dorong commit ke remote, sinkronkan lebih dulu bila push ditolak.
+# Job Actions bisa sudah push lebih dulu sehingga push lokal ditolak
+# non-fast-forward — tanpa ini data hari itu diam-diam tidak sampai ke GitHub.
+# $1=remote (default origin) → 0 bila berhasil.
+git_push_sinkron() {
+  local remote="${1:-origin}" br
+  br="$(git rev-parse --abbrev-ref HEAD 2>/dev/null)"
+  if [ -z "$br" ] || [ "$br" = "HEAD" ]; then br="main"; fi
+
+  if git push "$remote" HEAD 2>/dev/null; then return 0; fi
+
+  warn "GIT: push ditolak — sinkronkan dulu dengan $remote/$br (rebase)."
+  if ! git fetch "$remote" "$br" 2>/dev/null; then
+    warn "GIT: fetch $remote/$br gagal — push manual diperlukan."
+    return 1
+  fi
+  if git rebase --autostash "$remote/$br" 2>/dev/null; then
+    info "GIT: rebase di atas $remote/$br berhasil."
+  else
+    git rebase --abort 2>/dev/null
+    warn "GIT: rebase gagal — dibatalkan agar tidak meninggalkan state setengah jalan."
+    return 1
+  fi
+  if git push "$remote" HEAD 2>/dev/null; then
+    info "GIT: push $remote HEAD berhasil setelah sinkronisasi."
+    return 0
+  fi
+  warn "GIT: push tetap gagal setelah rebase."
+  return 1
+}
+
 git_finalize() {
   cd "$BASE_DIR" || return
   # Pengaman: hanya urus repo MILIK folder ini. Jika tidak ada .git di sini
@@ -1233,7 +1272,7 @@ ${ringkas}
 
 ${stat}" 2>/dev/null && info "GIT: commit dibuat."
 
-  if git push origin HEAD 2>/dev/null; then
+  if git_push_sinkron origin; then
     info "GIT: push origin HEAD berhasil."
   else
     warn "GIT: push gagal. Lakukan login lalu push manual:"
@@ -1243,7 +1282,7 @@ ${stat}" 2>/dev/null && info "GIT: commit dibuat."
 
   # REMOTE_EXTRA opsional.
   if [ -n "${REMOTE_EXTRA:-}" ]; then
-    git push "$REMOTE_EXTRA" HEAD 2>/dev/null && info "GIT: push $REMOTE_EXTRA berhasil." || warn "GIT: push $REMOTE_EXTRA gagal."
+    git_push_sinkron "$REMOTE_EXTRA" && info "GIT: push $REMOTE_EXTRA berhasil." || warn "GIT: push $REMOTE_EXTRA gagal."
   fi
   tag_bulanan
 }
@@ -1283,7 +1322,8 @@ do_cek() {
       fi
     fi
     local out="$TMPD/cek_${nama}"
-    curl_get "$url" "$out" "$(extra_curl "$folder")" ""
+    extra_curl "$folder"
+    curl_get "$url" "$out" ""
     local status="OK"
     [ "$CURL_EXIT" -ne 0 ] && status="GAGAL"
     local skor; skor="$(skor_kesehatan "$label")"
@@ -1305,7 +1345,8 @@ do_uji_error() {
   log "Menyuntik SATU URL palsu lewat pipeline yang sama (tanpa menulis file commit)."
   local url="https://sumber-palsu.invalid/tidak-ada.json"
   local out="$TMPD/uji_error.json"
-  curl_get "$url" "$out" "" ""
+  extra_curl ""
+  curl_get "$url" "$out" ""
   local ter pesan saran; ter="$(terjemah_error "$CURL_EXIT" "$CURL_HTTP")"
   pesan="${ter%%|*}"; saran="${ter##*|}"
   log "exit code : $CURL_EXIT"
