@@ -36,6 +36,16 @@ jobs:
           probe cnbcindonesia 'https://www.cnbcindonesia.com/rss'
           probe cnnindonesia 'https://www.cnnindonesia.com/rss'
           probe antara 'https://www.antaranews.com/rss/top-news'
+          echo '--- kandidat endpoint alternatif ---'
+          probe alt-cisa-json 'https://www.cisa.gov/sites/default/files/feeds/cybersecurity-advisories.json'
+          probe alt-cisa-xml 'https://www.cisa.gov/sites/default/files/feeds/all.xml'
+          probe alt-cisa-news 'https://www.cisa.gov/news.xml'
+          probe alt-cnbc-news 'https://www.cnbcindonesia.com/news/rss'
+          probe alt-cnbc-market 'https://www.cnbcindonesia.com/market/rss'
+          probe alt-cnn-nasional 'https://www.cnnindonesia.com/nasional/rss'
+          probe alt-cnn-ekonomi 'https://www.cnnindonesia.com/ekonomi/rss'
+          probe alt-cnn-terbaru 'https://www.cnnindonesia.com/terbaru/rss'
+          probe alt-antara-terkini 'https://www.antaranews.com/rss/terkini'
 
       - name: Header respons untuk kasus 403
         run: |
