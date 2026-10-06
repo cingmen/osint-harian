@@ -88,6 +88,7 @@ function Load-SharedConfig {
       'TABEL_RSS_LIMIT'   { $script:TABEL_RSS_LIMIT = [int]$v }
       'TABEL_USGS_LIMIT'  { $script:TABEL_USGS_LIMIT = [int]$v }
       'KEYWORDS_WATCH'    { $script:KEYWORDS_WATCH = @($v -split ',') }
+      'BLOKIR_CI'         { $script:BLOKIR_CI = $v }
     }
   }
   $readTs = {
@@ -198,6 +199,17 @@ function Lepas-Lock { Remove-Item -LiteralPath $LOCK_FILE -Force -ErrorAction Si
 # token menjadi argumen terpisah sehingga curl.exe menganggapnya URL → exit 22,
 # HTTP 000 (gejala yang sama seperti pada tracker-harian.sh).
 $script:EXTRA_ARGS = @()
+# Sumber yang host-nya memblokir IP datacenter (mis. runner CI) dicatat LEWAT,
+# bukan GAGAL, agar hitungan GAGAL tetap bermakna. Daftar label ada di config/.
+function Test-DiblokirCi {
+  param([string]$Label, [string]$Http)
+  if ($env:GITHUB_ACTIONS -ne 'true') { return $false }
+  if ($Http -ne '403' -and $Http -ne '451') { return $false }
+  if (-not $script:BLOKIR_CI) { return $false }
+  foreach ($x in @($script:BLOKIR_CI -split ',')) { if ($x -eq $Label) { return $true } }
+  return $false
+}
+
 function Set-ExtraCurl {
   param([string]$Folder)
   $r = @()
@@ -654,6 +666,14 @@ function Process-Source {
     $ter = Get-TerjemahError $script:CURL_EXIT $script:CURL_HTTP
     $pesan = $ter.Split('|')[0]; $saran = $ter.Split('|')[1]
     Remove-Item -LiteralPath $target -Force -ErrorAction SilentlyContinue
+    if (Test-DiblokirCi $Label $script:CURL_HTTP) {
+      $pesan = "host memblokir IP CI (HTTP $($script:CURL_HTTP))"
+      $saran = 'Jalankan tracker dari jaringan lokal (IP residensial tidak diblokir host ini).'
+      Warn "LEWAT : $Label $DASH $pesan"
+      Write-Change 'LEWAT' $Label $pesan
+      Save-State $Folder $Nama $Label $Tier 'LEWAT' $script:CURL_HTTP $script:CURL_TIME '' $pesan $saran
+      return
+    }
     Warn "GAGAL : $Label (exit $($script:CURL_EXIT), HTTP $($script:CURL_HTTP)) $DASH $pesan"
     Write-Change 'GAGAL' $Label "$pesan (HTTP $($script:CURL_HTTP), exit $($script:CURL_EXIT))"
     Write-ErrorEntry $Label $Url $script:CURL_EXIT $script:CURL_HTTP $pesan $saran
@@ -771,6 +791,13 @@ function Process-Rss {
       $ter = Get-TerjemahError $script:CURL_EXIT $script:CURL_HTTP
       $pesan = $ter.Split('|')[0]; $saran = $ter.Split('|')[1]
       Remove-Item -LiteralPath $raw -Force -ErrorAction SilentlyContinue
+      if (Test-DiblokirCi "RSS $nama" $script:CURL_HTTP) {
+        $pesan = "host memblokir IP CI (HTTP $($script:CURL_HTTP))"
+        Warn "LEWAT : RSS $nama $DASH $pesan"
+        Write-Change 'LEWAT' "RSS $nama" $pesan
+        Save-State $folder "rss_$nama" "RSS: $nama" 'snippet' 'LEWAT' $script:CURL_HTTP $script:CURL_TIME '' $pesan 'Jalankan tracker dari jaringan lokal.'
+        continue
+      }
       Write-Change 'GAGAL' "RSS $nama" "$pesan (HTTP $($script:CURL_HTTP))"
       Write-ErrorEntry "RSS $nama" $url $script:CURL_EXIT $script:CURL_HTTP $pesan $saran
       Save-State $folder "rss_$nama" "RSS: $nama" 'snippet' 'GAGAL' $script:CURL_HTTP $script:CURL_TIME '' $pesan $saran
@@ -1165,6 +1192,7 @@ function Do-Cek {
   '{0,-32} {1,-10} {2,-6} {3,-8} {4}' -f 'SUMBER', 'STATUS', 'HTTP', 'LATEN(s)', 'SKOR30' | Write-Host
   Write-Host ('-' * 72)
   $laporan = Join-Path $ERRORS_DIR "cek-$TODAY.md"
+  $adaLewat = $false
   [System.IO.File]::WriteAllText($laporan, "# Diagnostik $TODAY_DASH`n", $UTF8NB)
   foreach ($ent in $SOURCES) {
     $ent = $ent.TrimEnd("`r"); if (-not $ent.Trim()) { continue }
@@ -1188,11 +1216,14 @@ function Do-Cek {
     Set-ExtraCurl $folder
     Invoke-CurlGet $url $out ''
     $status = 'OK'; if ($script:CURL_EXIT -ne 0) { $status = 'GAGAL' }
+    # Host yang memblokir IP CI ditandai LEWAT*, bukan GAGAL (lihat BLOKIR_CI).
+    if ($status -eq 'GAGAL' -and (Test-DiblokirCi $label $script:CURL_HTTP)) { $status = 'LEWAT*'; $adaLewat = $true }
     $skor = Get-HealthScore $label
     '{0,-32} {1,-10} {2,-6} {3,-8} {4}%' -f $label, $status, $script:CURL_HTTP, $script:CURL_TIME, $skor | Write-Host
     Add-Content -LiteralPath $laporan -Value "- $label`: $status (HTTP $($script:CURL_HTTP), $($script:CURL_TIME)s, skor $skor%)" -Encoding UTF8
     Remove-Item -LiteralPath $out -Force -ErrorAction SilentlyContinue
   }
+  if ($adaLewat) { Info 'LEWAT* = host memblokir IP CI (daftar BLOKIR_CI di config/pengaturan.conf).' }
   Info "Laporan diagnostik: $laporan (tidak di-commit)."
   Info 'Selesai -cek. Tidak ada snapshot/commit.'
 }

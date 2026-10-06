@@ -1,7 +1,7 @@
 name: diag-headers
 
-# SEMENTARA — hanya untuk mendiagnosis sumber yang 403 dari runner GitHub.
-# Dijalankan manual; dihapus setelah penyebab dipastikan.
+# SEMENTARA — hanya untuk memverifikasi sumber yang diblokir dari runner GitHub.
+# Dijalankan manual; dihapus setelah penyebab dan penanganannya dipastikan.
 
 on:
   workflow_dispatch:
@@ -36,26 +36,27 @@ jobs:
           probe cnbcindonesia 'https://www.cnbcindonesia.com/rss'
           probe cnnindonesia 'https://www.cnnindonesia.com/rss'
           probe antara 'https://www.antaranews.com/rss/top-news'
-          echo '--- kandidat endpoint alternatif ---'
-          probe alt-cisa-json 'https://www.cisa.gov/sites/default/files/feeds/cybersecurity-advisories.json'
-          probe alt-cisa-xml 'https://www.cisa.gov/sites/default/files/feeds/all.xml'
-          probe alt-cisa-news 'https://www.cisa.gov/news.xml'
-          probe alt-cnbc-news 'https://www.cnbcindonesia.com/news/rss'
-          probe alt-cnbc-market 'https://www.cnbcindonesia.com/market/rss'
-          probe alt-cnn-nasional 'https://www.cnnindonesia.com/nasional/rss'
-          probe alt-cnn-ekonomi 'https://www.cnnindonesia.com/ekonomi/rss'
-          probe alt-cnn-terbaru 'https://www.cnnindonesia.com/terbaru/rss'
-          probe alt-antara-terkini 'https://www.antaranews.com/rss/terkini'
 
-      - name: Header respons untuk kasus 403
+      - name: Uji klasifikasi BLOKIR_CI (unit)
         run: |
-          UA='osint-harian/1.0 (+https://github.com/osint-harian; kontak: https://cingmen.github.io/osint-harian)'
-          echo '--- CISA advisories (projUA) ---'
-          curl -s -o /dev/null -D - --max-time 25 -A "$UA" 'https://www.cisa.gov/cybersecurity-advisories/all.xml' | head -25
-          echo '--- CNBC (projUA) ---'
-          curl -s -o /dev/null -D - --max-time 25 -A "$UA" 'https://www.cnbcindonesia.com/rss' | head -25
-          echo '--- CNN (projUA) ---'
-          curl -s -o /dev/null -D - --max-time 25 -A "$UA" 'https://www.cnnindonesia.com/rss' | head -25
+          sed '/^main "\$@"$/d' tracker-harian.sh > ./strip-ci.sh
+          bash -c '
+            . ./strip-ci.sh
+            echo "GITHUB_ACTIONS=$GITHUB_ACTIONS"
+            echo "BLOKIR_CI=$BLOKIR_CI"
+            for c in "CISA Advisories|403|LEWAT" "RSS cnbcindonesia|403|LEWAT" "RSS cnnindonesia|403|LEWAT" "RSS bbc|403|GAGAL" "CISA Advisories|200|GAGAL" "NVD CVE 24 jam|403|GAGAL"; do
+              l=${c%%|*}; sisa=${c#*|}; h=${sisa%%|*}; harap=${sisa##*|}
+              if diblokir_ci "$l" "$h"; then dapat=LEWAT; else dapat=GAGAL; fi
+              if [ "$dapat" = "$harap" ]; then tanda=PASS; else tanda=GAGAL-UJI; fi
+              printf "%-10s label=%-20s http=%-4s dapat=%-6s harap=%s\n" "$tanda" "$l" "$h" "$dapat" "$harap"
+            done'
+
+      - name: Uji jalur RSS nyata (harus LEWAT, bukan GAGAL)
+        run: |
+          bash -c '
+            . ./strip-ci.sh
+            mkdir -p data/rss
+            proses_rss 2>&1 | grep -E "RSS (cnbcindonesia|cnnindonesia|bbc)|LEWAT|GAGAL|Selesai" | head -20'
 
       - name: Cek semua sumber lewat skrip (header token terbaru)
         env:
