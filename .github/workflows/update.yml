@@ -20,11 +20,22 @@ concurrency:
 jobs:
   update:
     runs-on: ubuntu-latest
+    # Zona proyek dipaksa eksplisit di level job. Skrip sudah memakai ZONA dari
+    # config/pengaturan.conf, tetapi menyetel TZ membuat setiap pemakaian `date`
+    # lain di job ini (termasuk langkah di bawah) ikut sepakat. Cron berjalan
+    # 00:00 WIB = 17:00 UTC — tanpa ini runner (UTC) melabeli hari yang sudah
+    # lewat dan snapshot bisa menimpa folder hari baru.
+    env:
+      TZ: Asia/Jakarta
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
+      - name: Catat HEAD sebelum run
+        id: sebelum
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
       - name: Jalankan tracker harian
         env:
@@ -53,6 +64,44 @@ jobs:
           if git diff --cached --quiet; then
             echo "Tidak ada perubahan — tidak ada yang di-commit."
           else
-            git commit -m "Update harian $(date -u +%F) [actions]"
+            # Hari WIB diambil dari skrip yang sama dengan yang menulis nama
+            # snapshot — workflow TIDAK menghitung tanggal sendiri.
+            git commit -m "Update harian $(./tracker-harian.sh --tanggal dash) [actions]"
             git push
           fi
+
+      # Penjaga: menggagalkan job bila hari zona proyek tidak sepakat dengan
+      # snapshot yang ditulis, atau bila ada snapshot yang terhapus.
+      - name: Penjaga hari WIB & integritas snapshot
+        run: |
+          hari="$(./tracker-harian.sh --tanggal)"
+          echo "hari zona proyek (WIB): $hari"
+          echo "hari UTC runner        : $(date -u +%F)"
+          if [ ! -f "data/CHANGES-$hari.md" ]; then
+            echo "::error::data/CHANGES-$hari.md tidak ada — run ini menulis dengan hari lain."
+            exit 1
+          fi
+
+          sek="${{ steps.sebelum.outputs.sha }}"
+          if [ "$sek" = "$(git rev-parse HEAD)" ]; then
+            echo "Tidak ada commit baru pada run ini — tidak ada snapshot baru untuk diperiksa."
+            exit 0
+          fi
+
+          # 1) Setiap snapshot yang ditulis/diubah pada commit run ini harus
+          #    berawalan hari zona proyek.
+          lain="$(git diff --name-only --diff-filter=AM "$sek" HEAD -- data \
+                  | sed -nE 's#^data/[^/]+/([0-9]{8})-.*#\1#p' | sort -u | grep -v "^$hari$" || true)"
+          # 2) Tidak boleh ada snapshot lama yang terhapus.
+          hapus="$(git diff --name-only --diff-filter=D "$sek" HEAD -- data || true)"
+
+          if [ -n "$lain" ]; then
+            echo "::error::snapshot ditulis dengan hari selain $hari: $lain"
+          fi
+          if [ -n "$hapus" ]; then
+            echo "::error::snapshot lama terhapus oleh run ini:"; echo "$hapus"
+          fi
+          if [ -n "$lain" ] || [ -n "$hapus" ]; then
+            exit 1
+          fi
+          echo "OK: semua snapshot run ini berhari $hari dan tidak ada yang terhapus."

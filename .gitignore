@@ -12,6 +12,10 @@ data/news-full/
 # --- Laporan --cek tidak di-commit (riwayat error harian tetap di-commit) ---
 data/errors/cek-*.md
 
+# --- Berkas sementara unduhan (dibersihkan otomatis; jangan pernah di-commit) ---
+data/*/*.tmp.*
+data/*.tmp.*
+
 # --- Log lokal ---
 *.log
 data/cron.log

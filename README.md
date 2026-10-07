@@ -162,7 +162,8 @@ powershell -ExecutionPolicy Bypass -File tracker-harian.ps1
 |---|---|---|---|
 | Run harian | `./tracker-harian.sh` | `tracker-harian.ps1` | Snapshot + diff + manifest + feed + commit + push |
 | Diagnostik | `./tracker-harian.sh --cek` | `tracker-harian.ps1 -Cek` | Tes semua sumber (GET ringan), tabel kesehatan, **tanpa snapshot/commit** |
-| Uji error | `./tracker-harian.sh --uji-error` | `tracker-harian.ps1 -UjiError` | Suntik 1 URL palsu, tampilkan penangkapan/terjemahan/pelaporan, **tanpa file yang di-commit** |
+| Uji error + self-test | `./tracker-harian.sh --uji-error` | `tracker-harian.ps1 -UjiError` | Suntik 1 URL palsu, tampilkan penangkapan/terjemahan/pelaporan, lalu **self-test zona & snapshot non-destruktif** (di sandbox, **tanpa file yang di-commit**). Keluar dengan kode 1 bila ada pemeriksaan gagal |
+| Hari zona proyek | `./tracker-harian.sh --tanggal` (atau `--tanggal dash`) | `tracker-harian.ps1 -Tanggal` | Cetak hari yang **dipakai run ini** untuk nama snapshot: `YYYYMMDD` (`dash` → `YYYY-MM-DD`). Dipakai workflow untuk pesan commit + penjaga |
 
 ---
 
@@ -217,6 +218,8 @@ Kunci pada `config/pengaturan.conf`:
 | `SNIPPET_MAX` | Panjang kutipan maksimum (default 300) |
 | `KEYWORDS_WATCH` | Kata kunci pemantauan, dipisah koma (default `sanction,eruption,zero-day`) |
 | `BLOKIR_CI` | Label sumber yang host-nya memblokir IP datacenter (dipisah koma). Saat berjalan di CI, HTTP 403/451 dari label ini dicatat `LEWAT` — bukan `GAGAL` — supaya `GAGAL` tetap bermakna |
+| `ZONA` | Zona waktu proyek untuk **nama snapshot, `CHANGES`, retensi, dan label hari di manifest/feed** (default `Asia/Jakarta`). Pakai hari zona ini, bukan zona mesin/runner. Lihat §14 |
+| `ZONA_MENIT` | Offset tetap `ZONA` dalam menit (default `420` = `+07:00`). Dipakai hanya bila database zona sistem tidak tersedia (MSYS/Windows, container minimal). Asia/Jakarta tanpa DST |
 | `TABEL_CVE_LIMIT` / `TABEL_KEV_LIMIT` / `TABEL_RSS_LIMIT` / `TABEL_USGS_LIMIT` | Batas baris tiap tabel manifest (40 / 20 / 5 / 5) |
 | `WIKI_PROJECT` | Proyek Wikimedia (default `id.wikipedia`) |
 
@@ -436,6 +439,25 @@ Isi kredensial opsional lewat **Settings → Secrets and variables → Actions**
 (mis. `RANSOMWARE_API_KEY`, `FIRMS_KEY`, `OPENSKY_USER`). Bila Anda hanya ingin
 penjaga lokal (`jaga-harian`) yang berjalan, hapus blok `schedule` di workflow.
 
+**Zona waktu (penting).** Cron berjalan `00:00 WIB`, yaitu `17:00 UTC` **hari
+sebelumnya**. Karena itu job menyetel `TZ: Asia/Jakarta`, dan skrip memakai
+`ZONA`/`ZONA_MENIT` dari `config/pengaturan.conf` sebagai satu-satunya sumber
+hari untuk nama snapshot, `CHANGES`, retensi, serta label hari di manifest/feed.
+Dulu nama snapshot memakai zona mesin/runner (UTC di CI) sehingga folder lama
+bisa ditulis ulang setelah hari baru ada — urutan manifest jadi terbalik.
+
+**Tiga penjaga di `update.yml`** (job gagal bila dilanggar):
+
+1. `TZ: Asia/Jakarta` di level job, agar setiap pemakaian `date` ikut sepakat.
+2. Pesan commit memakai `./tracker-harian.sh --tanggal dash` — workflow **tidak**
+   menghitung tanggalnya sendiri (dulu `date -u +%F` = hari UTC).
+3. Langkah **Penjaga hari WIB & integritas snapshot**: gagal bila
+   `data/CHANGES-<hari>.md` tidak ada, bila ada snapshot run ini yang berawalan
+   hari selain hari WIB, atau bila **ada snapshot lama yang terhapus**.
+
+`.github/workflows/uji.yml` menjalankan self-test yang sama pada setiap PR/push,
+selalu dengan `TZ=UTC` untuk meniru runner — hasilnya harus tetap hari WIB.
+
 **Catatan runner GitHub:** CISA Advisories, RSS CNBC, dan RSS CNN selalu `403`
 dari IP runner (blokir IP/ASN, bukan header) sehingga dicatat `LEWAT` di CI —
 lihat §11 dan `BLOKIR_CI` pada §7. Runner lokal mengisinya normal.
@@ -498,10 +520,39 @@ Lock dihapus saat skrip selesai.
 - **Validasi `RUSAK`**: berkas sah yang berakhir newline tetap diterima (spasi
   ujung diabaikan), dan JSON kosong yang sah (`[]` / `{}`) berarti "tidak ada
   hasil", **bukan** rusak — sehingga hasil kosong tidak lagi salah dilaporkan.
+- **Zona waktu**: nama snapshot memakai hari `ZONA` (default WIB). Bila Anda
+  mengganti `ZONA` ke zona ber-DST, pastikan database zona sistem tersedia
+  (tzdata) — jika tidak, `ZONA_MENIT` dipakai sebagai offset tetap.
+- **Penulisan snapshot tidak destruktif**: unduhan selalu mendarat di berkas
+  sementara `<target>.tmp.<pid>` dan berkas final hanya ditulis lewat `mv`
+  setelah isinya valid & benar-benar baru. Jalur `GAGAL`/`LEWAT`/`RUSAK` hanya
+  menghapus berkas sementara, sehingga snapshot hari yang sama tidak pernah
+  terhapus oleh kegagalan unduhan. Sisa `.tmp.` dari run yang terhenti
+  dibersihkan otomatis di awal run dan sudah masuk `.gitignore`.
 
 ---
 
-## 17. Riwayat perbaikan (2026-10-05 → 2026-10-06)
+## 17. Riwayat perbaikan (2026-10-07)
+
+Ditemukan dari pola commit run CI (label hari mundur satu hari, snapshot hari
+sebelumnya terhapus):
+
+| Gejala | Akar masalah | Perbaikan |
+|---|---|---|
+| Snapshot CI berlabel hari yang sudah lewat (`20261006` ditulis setelah `20261007` ada); urutan `docs/data.json` terbalik | `TODAY`/`TODAY_DASH`/`NOW_JAM`/`THISMONTH` memakai `date` zona **lokal runner** (UTC di CI), padahal cron = `00:00 WIB` = `17:00 UTC` hari sebelumnya | Satu sumber kebenaran: `tanggal_hari_ini()` + `ZONA`/`ZONA_MENIT` di config; PS1 memakai `Get-ZonaNow` (IANA bila ada, fallback offset tetap) |
+| Deret 32 hari & label manifest bergeser satu hari di CI | `_siapkan_hari` memakai `awk` `mktime`/`strftime` zona lokal proses | Deret dihitung dari `TODAY` dengan aritmetika tanggal murni bash (tanpa `date`), lalu diverifikasi self-test |
+| Gating `khusus Senin` salah hari di CI | `date +%u` memakai zona runner | Memakai hari zona proyek (`HARI_INI_U`) |
+| Rentang 7 hari pageviews bergeser | `akhir="$(date +%Y%m%d)"` | Memakai `TODAY` dan `tanggal_minus_hari` |
+| **`data/cisa/20261006-advisories.xml` & `data/rss/20261006-rss_antara.json` terhapus** di commit `[actions]` | Jalur gagal/`LEWAT`/`RUSAK` menjalankan `rm -f "$target"` pada **path final** hari yang sama | Unduh ke `$tmp`, validasi, baru `mv` atomik; jalur gagal hanya menghapus `$tmp` (bash + PS1) |
+| Pesan commit CI memakai tanggal ketiga | `date -u +%F` di `update.yml` | `./tracker-harian.sh --tanggal dash` (hari yang sama dengan nama snapshot) + langkah penjaga |
+
+Regresi dikunci oleh `--uji-error` (self-test 17 pemeriksaan: zona, deret hari,
+gating Senin/`env:*`, dan snapshot non-destruktif untuk `GAGAL`/`LEWAT`/`RUSAK`/
+`SUKSES`) dan dijalankan di CI oleh `.github/workflows/uji.yml`.
+
+---
+
+## 18. Riwayat perbaikan (2026-10-05 → 2026-10-06)
 
 Diperbaiki dari laporan error run nyata `data/errors/2026-10-04.md`:
 
