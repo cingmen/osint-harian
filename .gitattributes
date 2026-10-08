@@ -1,0 +1,9 @@
+# Berkas yang dibaca atau dijalankan skrip WAJIB LF di semua checkout.
+# Tanpa ini `core.autocrlf=true` (umum di Windows) menyuntikkan CR ke nilai
+# konfigurasi dan URL feed, sehingga aritmetika zona waktu gagal
+# ("420\r: syntax error: invalid arithmetic operator").
+*.sh   text eol=lf
+*.tsv  text eol=lf
+*.conf text eol=lf
+*.yml  text eol=lf
+*.ps1  text eol=lf
