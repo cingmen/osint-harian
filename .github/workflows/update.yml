@@ -58,10 +58,10 @@ jobs:
 
       - name: Pastikan commit & push
         run: |
-          # Email noreply GitHub pemilik repo: agar commit harian teratribusi ke akun
-          # yang benar, bukan ke nama tanpa profil yang tidak bisa dikaitkan.
-          git config user.name  "Joesavat D"
-          git config user.email "19355589+cingmen@users.noreply.github.com"
+          # Email pemilik repo (terverifikasi di akun GitHub-nya): commit harian
+          # teratribusi ke akun yang benar, bukan ke nama tanpa profil.
+          git config user.name  "Joesavat Donovan"
+          git config user.email "joesavat@gmail.com"
           git add -A
           if git diff --cached --quiet; then
             echo "Tidak ada perubahan — tidak ada yang di-commit."

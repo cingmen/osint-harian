@@ -28,29 +28,18 @@ else
 fi
 
 # Identitas commit (config LOKAL — menimpa identitas global Anda untuk repo ini).
-# GitHub mengaitkan commit ke sebuah akun lewat EMAIL, dan format noreply yang
-# benar adalah "<id>+<username>@users.noreply.github.com". Alamat seperti
-# "<username>@users.noreply.github.com" tidak cocok dengan akun mana pun, jadi
-# commit hanya tampil sebagai nama tanpa profil dan tidak masuk contribution
-# graph. Karena itu identitas di sini diambil dari akun GitHub via `gh`, bukan
-# ditulis sebagai bot.
+# GitHub mengaitkan commit ke sebuah akun lewat EMAIL. Alamat di bawah sudah
+# terverifikasi pada akun GitHub pemilik repo, jadi commit dari repo ini
+# teratribusi dengan benar.
+#
+# Hindari menulis "<username>@users.noreply.github.com": format noreply yang sah
+# selalu memakai id numerik ("<id>+<username>@users.noreply.github.com"), jadi
+# alamat tanpa id tidak cocok dengan akun mana pun dan commit-nya hanya tampil
+# tanpa profil serta tidak masuk contribution graph.
 if [ -z "$(git config user.name 2>/dev/null)" ] || [ -z "$(git config user.email 2>/dev/null)" ]; then
-  gh_login=""; gh_name=""; gh_id=""
-  if command -v gh >/dev/null 2>&1 && gh auth status >/dev/null 2>&1; then
-    gh_login="$(gh api user --jq .login 2>/dev/null || true)"
-    gh_name="$(gh api user --jq '.name // .login' 2>/dev/null || true)"
-    gh_id="$(gh api user --jq .id 2>/dev/null || true)"
-  fi
-  if [ -n "$gh_login" ] && [ -n "$gh_id" ]; then
-    gh_email="${gh_id}+${gh_login}@users.noreply.github.com"
-    git config user.name  "${gh_name:-$gh_login}"
-    git config user.email "$gh_email"
-    echo "[INFO] Identitas commit repo → ${gh_name:-$gh_login} <$gh_email>"
-  else
-    echo "[WARN] Identitas commit belum ada dan gh tidak tersedia. Atur manual:"
-    echo "         git config user.name  \"Nama Anda\""
-    echo "         git config user.email \"<id>+<username>@users.noreply.github.com\""
-  fi
+  git config user.name  "Joesavat Donovan"
+  git config user.email "joesavat@gmail.com"
+  echo "[INFO] Identitas commit repo → Joesavat Donovan <joesavat@gmail.com>"
 fi
 
 if [ -n "$REMOTE_URL" ]; then
