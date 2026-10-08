@@ -1625,7 +1625,9 @@ _uji_pasang_stub_curl() {
       *'/blokir'*)     CURL_EXIT=22; CURL_HTTP=403 ;;
       *'/rusak'*)      CURL_EXIT=0;  CURL_HTTP=200; printf 'x' > "$2" ;;
       *'/metrics/'*)   CURL_EXIT=0;  CURL_HTTP=200; printf 'x' > "$2" ;;   # wiki → RUSAK
-      *konten*|*rss*)  CURL_EXIT=0;  CURL_HTTP=200
+      *rss*|*feed*)    CURL_EXIT=0;  CURL_HTTP=200
+        printf '%b' '<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0">\n<channel>\n<title>Uji</title>\n<item>\n<title>Judul Uji RSS</title>\n<link>https://uji.local/artikel-1</link>\n<description>Deskripsi uji RSS yang cukup panjang untuk lolos ambang minimum berkas.</description>\n</item>\n</channel>\n</rss>\n' > "$2" ;;
+      *konten*)        CURL_EXIT=0;  CURL_HTTP=200
         printf '%s' '{"uji":"konten","pad":"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"}' > "$2" ;;
       *)               CURL_EXIT=6;  CURL_HTTP=000; rm -f "$2" ;;
     esac
@@ -1681,6 +1683,7 @@ _uji_tulis_wiki_rss() {
   # Dua situs penulisan snapshot lain (wiki & RSS) memakai pola non-destruktif
   # yang sama; keduanya dijalankan di sini dengan stub jaringan di sandbox.
   _uji_pasang_stub_curl
+  local stub_def; stub_def="$(declare -f curl_get)"   # untuk memulihkan stub di tengah uji
 
   local art nama berkas
   art="$(printf '%s\n' "$WIKI_ARTICLES" | grep -v '^[[:space:]]*$' | head -1)"
@@ -1701,9 +1704,20 @@ _uji_tulis_wiki_rss() {
   mkdir -p "$DATA_DIR/rss"
   berkas="$DATA_DIR/rss/${TODAY}-rss_${feed}.json"
   printf '%s' '{"lama":"rss hari yang sama"}' > "$berkas"
+  local awal_rss; awal_rss="$(cksum < "$berkas")"
+
+  # (1) GAGAL: seluruh feed gagal DNS → snapshot hari yang sama TIDAK terhapus.
+  #     (Ini inti bug destruktif: kegagalan unduh dulu menghapus snapshot lama.)
+  curl_get() { CURL_TIME="0.01"; : > "$2"; CURL_EXIT=6; CURL_HTTP=000; rm -f "$2"; }
+  proses_rss >/dev/null 2>&1
+  _uji_tegas "GAGAL di jalur RSS: snapshot hari yang sama TIDAK terhapus" \
+    "$([ -f "$berkas" ] && [ "$(cksum < "$berkas")" = "$awal_rss" ] && echo 0 || echo 1)"
+
+  # (2) SUKSES: feed valid → snapshot hari yang sama ditulis ulang dengan isi baru.
+  eval "$stub_def"
   proses_rss >/dev/null 2>&1
   _uji_tegas "RSS: snapshot hari yang sama ditulis ulang dengan isi baru (bukan dihapus)" \
-    "$(grep -q '"uji":"konten"' "$berkas" 2>/dev/null && echo 0 || echo 1)"
+    "$(grep -q 'Judul Uji RSS' "$berkas" 2>/dev/null && ! grep -q '"lama"' "$berkas" 2>/dev/null && echo 0 || echo 1)"
   _uji_tegas "wiki & RSS: tidak ada sisa berkas .tmp. di sandbox" \
     "$([ "$(find "$DATA_DIR" -name '*.tmp.*' 2>/dev/null | wc -l | tr -d '[:space:]')" -eq 0 ] && echo 0 || echo 1)"
 
