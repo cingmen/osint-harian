@@ -5,11 +5,21 @@ name: uji
 #   2) berkas final snapshot TIDAK PERNAH terhapus oleh jalur gagal/LEWAT/rusak.
 # Sengaja dijalankan sebagai `TZ=UTC` untuk meniru runner: hasilnya harus tetap
 # hari WIB. Self-test berjalan di sandbox dan tidak menulis apa pun ke repo.
+# Penjaga ini juga dijalankan dari selesainya workflow `update`.
+#
+# Alasannya: commit harian di-push memakai GITHUB_TOKEN bawaan, dan event yang
+# dibuat GITHUB_TOKEN tidak memicu workflow lain. Akibatnya commit otomatis --
+# justru yang paling mungkin merusak kedua invariant di atas -- tidak pernah
+# divalidasi oleh workflow ini. `workflow_run` dipicu oleh SELESAINYA sebuah run,
+# bukan oleh push, jadi batasan itu tidak berlaku di sini.
 on:
   push:
     branches: [main]
   pull_request:
   workflow_dispatch:
+  workflow_run:
+    workflows: [update]
+    types: [completed]
 
 permissions:
   contents: read
@@ -17,11 +27,22 @@ permissions:
 jobs:
   self-test:
     runs-on: ubuntu-latest
+    # Saat dipicu oleh workflow_run, lanjut hanya bila run `update` berhasil --
+    # kalau run harian gagal, tidak ada commit baru yang perlu divalidasi.
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     env:
       TZ: UTC
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      # Jejak audit: memastikan commit yang divalidasi memang kepala default
+      # branch saat run ini dipicu (termasuk saat dipicu workflow_run harian).
+      - name: Catat commit yang divalidasi
+        run: |
+          echo "kejadian : ${{ github.event_name }}"
+          echo "commit   : $(git rev-parse HEAD)"
+          echo "pesan    : $(git log -1 --pretty=%s)"
 
       - name: Cek sintaks skrip bash
         run: |
