@@ -79,6 +79,8 @@ muat_konfigurasi() {
       TABEL_USGS_LIMIT)  TABEL_USGS_LIMIT="$v" ;;
       KEYWORDS_WATCH)    IFS=',' read -r -a KEYWORDS_WATCH <<< "$v" ;;
       BLOKIR_CI)         BLOKIR_CI="$v" ;;
+      ZONA)              ZONA="$v" ;;
+      ZONA_MENIT)        ZONA_MENIT="$v" ;;
     esac
   done < "$conf"
 
@@ -99,17 +101,121 @@ muat_konfigurasi() {
 }
 muat_konfigurasi
 
+# =============================================================================
+#  BAGIAN 3.5 — WAKTU: SATU SUMBER KEBENARAN
+#  Nama snapshot, berkas CHANGES, retensi, dan label hari pada manifest/feed
+#  memakai hari ZONA PROYEK (ZONA di config/pengaturan.conf), BUKAN zona
+#  mesin/runner. Stempel waktu untuk API tetap UTC (NOW_ISO).
+# =============================================================================
+
+_IS_GNU_DATE=""
+_deteksi_date() {
+  [ -n "$_IS_GNU_DATE" ] && return
+  if date -v-1d +%s >/dev/null 2>&1; then _IS_GNU_DATE=0; else _IS_GNU_DATE=1; fi
+}
+
+# Epoch detik "sekarang". UJI_EPOCH hanya dipakai mode self-test (--uji-error)
+# agar perilaku zona dan gating hari bisa diuji tanpa menunggu jam asli.
+_sekarang_epoch() {
+  printf '%s' "${UJI_EPOCH:-$(date -u +%s)}"
+}
+
+_zona_tersedia() { # 0 bila database zona sistem benar-benar mengenali ZONA
+  local z="${ZONA:-Asia/Jakarta}" off
+  off="$(TZ="$z" date +%z 2>/dev/null)"
+  case "$off" in
+    [+-][0-9][0-9][0-9][0-9]) ;;
+    *) return 1 ;;
+  esac
+  # Tanpa database zona, `date` diam-diam memakai UTC. ZONA di sini bukan UTC,
+  # jadi hasil +0000 berarti zona tidak tersedia dan jalur aritmetika dipakai.
+  if [ "$off" = "+0000" ] && [ "$z" != "UTC" ] && [ "$z" != "Etc/UTC" ]; then
+    return 1
+  fi
+  return 0
+}
+
+_zona_date() { # $1=format `date` → waktu sekarang menurut zona proyek
+  local fmt="$1" epoch menit
+  if [ -z "${UJI_EPOCH:-}" ] && _zona_tersedia; then
+    TZ="${ZONA:-Asia/Jakarta}" date "$fmt"
+    return
+  fi
+  # Jalur aritmetika: geser epoch UTC sebesar offset tetap ZONA_MENIT lalu cetak
+  # di UTC. Tidak butuh tzdata (MSYS/Windows, container minimal) dan deterministik
+  # saat UJI_EPOCH dipakai.
+  epoch="$(_sekarang_epoch)"; menit="${ZONA_MENIT:-420}"
+  _deteksi_date
+  if [ "$_IS_GNU_DATE" = "1" ]; then
+    date -u -d "@$(( epoch + menit * 60 ))" "$fmt"
+  else
+    date -u -r "$(( epoch + menit * 60 ))" "$fmt"
+  fi
+}
+
+# SATU pintu untuk semua waktu berzona proyek.
+tanggal_hari_ini() { # $1=format (default +%Y%m%d)
+  _zona_date "${1:-+%Y%m%d}"
+}
+
+# --- Aritmetika tanggal (tanpa memanggil `date` sama sekali) -----------------
+# Nomor hari ↔ tanggal sipil (algoritma Howard Hinnant). Deret 32 hari dan
+# gating "khusus Senin" memakai ini: murni aritmetika bash, jadi tidak memicu
+# fork `date` per hari (mahal di MSYS2) dan tidak bergantung zona runner.
+tanggal_ke_hari() { # $1=YYYYMMDD → nomor hari sejak 1970-01-01
+  local y="${1:0:4}" m="${1:4:2}" d="${1:6:2}"
+  y=$((10#$y)); m=$((10#$m)); d=$((10#$d))
+  (( y -= (m <= 2) ))
+  local era=$(( (y >= 0 ? y : y - 399) / 400 ))
+  local yoe=$(( y - era * 400 ))
+  local doy=$(( (153 * (m + (m > 2 ? -3 : 9)) + 2) / 5 + d - 1 ))
+  local doe=$(( yoe * 365 + yoe / 4 - yoe / 100 + doy ))
+  printf '%d' $(( era * 146097 + doe - 719468 ))
+}
+
+# Variasi TANPA subshell (pola sama dengan JESC_OUT di bawah): hasil disimpan ke
+# HARI_YMD_OUT/HARI_DASH_OUT agar deret 32 hari tidak memicu 32 subshell.
+HARI_YMD_OUT=""
+HARI_DASH_OUT=""
+hari_ke_tanggal() { # $1=nomor hari → HARI_YMD_OUT + HARI_DASH_OUT
+  local z=$(( $1 + 719468 ))
+  local era=$(( z / 146097 ))
+  local doe=$(( z - era * 146097 ))
+  local yoe=$(( (doe - doe / 1460 + doe / 36524 - doe / 146096) / 365 ))
+  local y=$(( yoe + era * 400 ))
+  local doy=$(( doe - (365 * yoe + yoe / 4 - yoe / 100) ))
+  local mp=$(( (5 * doy + 2) / 153 ))
+  local d=$(( doy - (153 * mp + 2) / 5 + 1 ))
+  local m=$(( mp < 10 ? mp + 3 : mp - 9 ))
+  (( y += (m <= 2) ))
+  printf -v HARI_YMD_OUT '%04d%02d%02d' "$y" "$m" "$d"
+  printf -v HARI_DASH_OUT '%04d-%02d-%02d' "$y" "$m" "$d"
+}
+
+# Kurangi N hari dari hari proyek hari ini, format ymd|dash.
+tanggal_minus_hari() { # $1=N $2=ymd|dash
+  local hari
+  hari="$(tanggal_ke_hari "$TODAY")"
+  hari_ke_tanggal $(( hari - $1 ))
+  case "${2:-ymd}" in
+    dash) printf '%s' "$HARI_DASH_OUT" ;;
+    *)    printf '%s' "$HARI_YMD_OUT" ;;
+  esac
+}
+
 MODE="harian"
 [ "${1:-}" = "--cek" ] && MODE="cek"
 [ "${1:-}" = "--uji-error" ] && MODE="uji"
+[ "${1:-}" = "--tanggal" ] && MODE="tanggal"
 
-# --- Waktu (lokal untuk nama file, UTC untuk API) ---
-TODAY="$(date +%Y%m%d)"
-TODAY_DASH="$(date +%Y-%m-%d)"
+# --- Waktu (hari ZONA PROYEK untuk nama file, UTC untuk API) ---
+TODAY="$(tanggal_hari_ini +%Y%m%d)"
+TODAY_DASH="$(tanggal_hari_ini +%Y-%m-%d)"
 NOW_ISO="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
-NOW_JAM="$(date +%H:%M:%S)"
+NOW_JAM="$(tanggal_hari_ini +%H:%M:%S)"
 CHANGES_FILE="$DATA_DIR/CHANGES-${TODAY}.md"
-THISMONTH="$(date +%Y-%m)"
+THISMONTH="$(tanggal_hari_ini +%Y-%m)"
+HARI_INI_U="$(tanggal_hari_ini +%u)"   # 1=Senin, untuk gating "khusus Senin"
 
 # =============================================================================
 #  UTILITAS
@@ -147,12 +253,6 @@ urlenc() {
 
 # Deteksi keluarga `date` (GNU/BSD) SEKALI saja. Di Windows (MSYS2) setiap
 # fork proses memakan ~0,2 detik, jadi deteksi berulang sangat mahal.
-_IS_GNU_DATE=""
-_deteksi_date() {
-  [ -n "$_IS_GNU_DATE" ] && return
-  if date -v-1d +%s >/dev/null 2>&1; then _IS_GNU_DATE=0; else _IS_GNU_DATE=1; fi
-}
-
 # `date` portabel: kurangi N hari, format GNU/BSD.
 date_minus_days() { # $1=hari $2=format (format memakai '+')
   local n="$1" fmt="$2"
@@ -184,34 +284,32 @@ iso_minus24_nvd() {
 }
 
 # Deret tanggal (0..31 hari ke belakang) dihitung SEKALI lalu dipakai berulang,
-# agar manifest & feed tidak memanggil `date` ratusan kali.
+# agar manifest & feed tidak memanggil `date` ratusan kali. Ancor-nya adalah
+# TODAY (hari zona proyek), jadi deret ini tidak bisa bergeser zona lagi.
 HARI_YMD=()
 HARI_DASH=()
 _siapkan_hari() {
   [ "${#HARI_YMD[@]}" -gt 0 ] && return
-  local i=0 line out
-  # Jalur cepat: SATU proses awk menghitung seluruh 32 tanggal sekaligus
-  # (mengganti ~32 fork `date` yang mahal di MSYS2). Jatuh ke loop portable
-  # bila awk tidak punya strftime/mktime (mis. BWK awk lama) atau hasil cacat.
-  if out="$(date +%s | awk '{
-        now=$1
-        t=mktime(strftime("%Y",now)" "strftime("%m",now)" "strftime("%d",now)" 12 0 0")
-        if (t<=0) exit 1
-        for (n=0;n<=31;n++) printf "%d %s\n", n, strftime("%Y%m%d %Y-%m-%d", t-n*86400)
-      }' 2>/dev/null)" \
-     && [ "$(printf '%s\n' "$out" | grep -c '^[0-9]\{1,2\} [0-9]\{8\} [0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}$')" -eq 32 ]; then
-    while IFS=' ' read -r i line; do
-      HARI_YMD[$i]="${line%% *}"
-      HARI_DASH[$i]="${line#* }"
-    done <<< "$out"
-    return
-  fi
-  while [ "$i" -le 31 ]; do
-    line="$(date_minus_days "$i" "+%Y%m%d %Y-%m-%d")"
-    HARI_YMD[$i]="${line%% *}"
-    HARI_DASH[$i]="${line#* }"
-    i=$((i+1))
+  local i=0 base
+  base="$(tanggal_ke_hari "$TODAY")"
+  # Murni aritmetika bash: tanpa fork `date` per hari dan tanpa bergantung
+  # strftime/mktime awk yang memakai zona lokal proses.
+  for (( i = 0; i <= 31; i++ )); do
+    hari_ke_tanggal $(( base - i ))
+    HARI_YMD[$i]="$HARI_YMD_OUT"
+    HARI_DASH[$i]="$HARI_DASH_OUT"
   done
+  # Penjaga: bila aritmetika di atas cacat, jatuhkan ke `date` di zona proyek.
+  case "${HARI_YMD[0]}|${HARI_DASH[0]}|${HARI_YMD[31]}|${HARI_DASH[31]}" in
+    [0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]\|[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]\|[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]\|[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]) ;;
+    *)
+      warn "Deret tanggal aritmetika cacat — memakai fallback \`date\` zona proyek."
+      for (( i = 0; i <= 31; i++ )); do
+        HARI_YMD[$i]="$(date_minus_days "$i" "+%Y%m%d")"
+        HARI_DASH[$i]="$(date_minus_days "$i" "+%Y-%m-%d")"
+      done
+      ;;
+  esac
 }
 
 # Menulis log ke layar + mengumpulkan baris untuk CHANGES.
@@ -502,7 +600,7 @@ proses_sumber() { # folder nama label url tier jadwal ext
   # Gating jadwal.
   case "$jadwal" in
     senin)
-      if [ "$(date +%u)" != "1" ]; then
+      if [ "$HARI_INI_U" != "1" ]; then
         info "LEWAT : $label (khusus Senin)"
         simpan_state "$folder" "$nama" "$label" "$tier" "LEWAT" "000" "0" "" "khusus Senin" ""
         return
@@ -530,6 +628,10 @@ proses_sumber() { # folder nama label url tier jadwal ext
 
   mkdir -p "$DATA_DIR/$folder"
   local target="$DATA_DIR/$folder/${TODAY}-${nama}.${ext}"
+  # Unduhan selalu mendarat di berkas sementara; berkas final baru ditulis SETELAH
+  # isinya terbukti valid & benar-benar baru. Berkas final yang sudah ada (mis.
+  # dari run sebelumnya di hari yang sama) tidak boleh pernah terhapus.
+  local tmp="$target.tmp.$$"
   local auth=""
   extra_curl "$folder"
   if [ "$folder" = "opensky" ] && [ -n "${OPENSKY_USER:-}" ] && [ -n "${OPENSKY_PASS:-}" ]; then
@@ -537,14 +639,14 @@ proses_sumber() { # folder nama label url tier jadwal ext
   fi
 
   info "AMBIL : $label …"
-  curl_get "$url" "$target" "$auth"
+  curl_get "$url" "$tmp" "$auth"
 
   # Gagal koneksi / HTTP error.
   if [ "$CURL_EXIT" -ne 0 ]; then
     local ter pesan saran
     ter="$(terjemah_error "$CURL_EXIT" "$CURL_HTTP")"
     pesan="${ter%%|*}"; saran="${ter##*|}"
-    rm -f "$target"
+    rm -f "$tmp"
     # Host yang memblokir IP datacenter (runner CI): LEWAT, bukan GAGAL.
     if diblokir_ci "$label" "$CURL_HTTP"; then
       pesan="host memblokir IP CI (HTTP $CURL_HTTP)"
@@ -562,11 +664,11 @@ proses_sumber() { # folder nama label url tier jadwal ext
   fi
 
   # Validasi konten.
-  if ! validasi_konten "$target" "$ext"; then
+  if ! validasi_konten "$tmp" "$ext"; then
     warn "RUSAK : $label (konten <100B atau rusak/tidak lengkap)"
     changes "RUSAK" "$label" "konten rusak atau tidak lengkap (HTTP $CURL_HTTP)"
     catat_error "$label" "$url" "$CURL_EXIT" "$CURL_HTTP" "Konten rusak/tidak lengkap" "Cek endpoint; mungkin butuh header/auth atau server mengirim halaman error."
-    rm -f "$target"
+    rm -f "$tmp"
     simpan_state "$folder" "$nama" "$label" "$tier" "RUSAK" "$CURL_HTTP" "$CURL_TIME" "" "konten rusak" "cek endpoint/auth"
     return
   fi
@@ -574,13 +676,17 @@ proses_sumber() { # folder nama label url tier jadwal ext
   # Dedup.
   local prev
   prev="$(snapshot_terakhir "$folder" "$nama")"
-  if [ -n "$prev" ] && cmp -s "$prev" "$target"; then
-    rm -f "$target"
+  if [ -n "$prev" ] && cmp -s "$prev" "$tmp"; then
+    rm -f "$tmp"
     info "SAMA  : $label"
     changes "SAMA" "$label" "identik dengan snapshot terakhir"
     simpan_state "$folder" "$nama" "$label" "$tier" "SAMA" "$CURL_HTTP" "$CURL_TIME" "" "" ""
     return
   fi
+
+  # Snapshot valid & baru → baru sekarang berkas final ditulis. Sampai titik ini
+  # berkas final yang sudah ada tidak pernah disentuh walau unduhan gagal/rusak.
+  mv -f "$tmp" "$target" || { warn "GAGAL : $label — tidak bisa menulis $target"; rm -f "$tmp"; return; }
 
   # Ada perubahan → jalankan mesin diff.
   local ringkasan="snapshot baru"
@@ -681,8 +787,8 @@ catat_error() { # label url exit http pesan saran
 # =============================================================================
 proses_wiki() {
   local mulai akhir
-  mulai="$(date_minus_days 7 +%Y%m%d)"
-  akhir="$(date +%Y%m%d)"
+  mulai="$(tanggal_minus_hari 7 ymd)"
+  akhir="$TODAY"
   local baris
   baris="$(printf '%s\n' "$WIKI_ARTICLES" | grep -v '^[[:space:]]*$')"
   local IFS_OLD="$IFS"
@@ -696,31 +802,34 @@ proses_wiki() {
     local url="https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/${WIKI_PROJECT}/all-access/user/${art}/daily/${mulai}/${akhir}"
     mkdir -p "$DATA_DIR/$folder"
     local target="$DATA_DIR/$folder/${TODAY}-${nama}.json"
+    local tmp="$target.tmp.$$"
     info "AMBIL : Wikipedia pageviews ($label) …"
     extra_curl wiki
-    curl_get "$url" "$target" ""
+    curl_get "$url" "$tmp" ""
     if [ "$CURL_EXIT" -ne 0 ]; then
       local ter pesan saran; ter="$(terjemah_error "$CURL_EXIT" "$CURL_HTTP")"
       pesan="${ter%%|*}"; saran="${ter##*|}"
-      rm -f "$target"
+      rm -f "$tmp"
       changes "GAGAL" "Wikipedia $label" "$pesan (HTTP $CURL_HTTP)"
       catat_error "Wikipedia $label" "$url" "$CURL_EXIT" "$CURL_HTTP" "$pesan" "$saran"
       simpan_state "$folder" "$nama" "Wikipedia: $label" "full" "GAGAL" "$CURL_HTTP" "$CURL_TIME" "" "$pesan" "$saran"
       continue
     fi
-    if ! validasi_konten "$target" json; then
+    if ! validasi_konten "$tmp" json; then
       changes "RUSAK" "Wikipedia $label" "respons pageviews rusak"
       catat_error "Wikipedia $label" "$url" "$CURL_EXIT" "$CURL_HTTP" "Konten rusak" "Cek judul artikel & rentang tanggal."
-      rm -f "$target"
+      rm -f "$tmp"
       simpan_state "$folder" "$nama" "Wikipedia: $label" "full" "RUSAK" "$CURL_HTTP" "$CURL_TIME" "" "rusak" "cek judul"
       continue
     fi
     local prev; prev="$(snapshot_terakhir "$folder" "$nama")"
-    if [ -n "$prev" ] && cmp -s "$prev" "$target"; then
-      rm -f "$target"; changes "SAMA" "Wikipedia $label" "identik"
+    if [ -n "$prev" ] && cmp -s "$prev" "$tmp"; then
+      rm -f "$tmp"; changes "SAMA" "Wikipedia $label" "identik"
       simpan_state "$folder" "$nama" "Wikipedia: $label" "full" "SAMA" "$CURL_HTTP" "$CURL_TIME" "" "" ""
       continue
     fi
+    # Valid & baru → baru sekarang berkas final ditulis (tidak destruktif).
+    mv -f "$tmp" "$target" || { warn "GAGAL : Wikipedia $label — tidak bisa menulis $target"; rm -f "$tmp"; continue; }
     local ring="snapshot pertama"
     if [ -n "$prev" ]; then
       ring="$(diff_pageviews "$prev" "$target")"
@@ -788,6 +897,7 @@ proses_rss() {
     # sehingga dedup, diff, dan pencarian snapshot menemukan berkasnya.
     local target="$DATA_DIR/$folder/${TODAY}-rss_${nama}.json"
     mkdir -p "$DATA_DIR/$folder"
+    # Berkas final hanya ditulis lewat `mv` dari berkas sementara (lihat proses_sumber).
     info "AMBIL : RSS $nama (tier snippet) …"
     local raw="$TMPD/rss_${nama}.xml"
     extra_curl ""
@@ -816,20 +926,23 @@ proses_rss() {
       simpan_state "$folder" "rss_${nama}" "RSS: $nama" "snippet" "RUSAK" "$CURL_HTTP" "$CURL_TIME" "" "feed rusak" "verifikasi URL"
       continue
     fi
-    rss_ke_json "$raw" "$nama" > "$target"
+    local tmp="$target.tmp.$$"
+    rss_ke_json "$raw" "$nama" > "$tmp"
     rm -f "$raw"
 
     # TIER-LOKAL: opsional unduh teks penuh ke data/news-full/ (gitignored).
     if [ "${FETCH_FULL_TEXT:-0}" = "1" ]; then
-      unduh_teks_penuh "$nama" "$target"
+      unduh_teks_penuh "$nama" "$tmp"
     fi
 
     local prev; prev="$(snapshot_terakhir "$folder" "rss_${nama}")"
-    if [ -n "$prev" ] && cmp -s "$prev" "$target"; then
-      rm -f "$target"; changes "SAMA" "RSS $nama" "identik"
+    if [ -n "$prev" ] && cmp -s "$prev" "$tmp"; then
+      rm -f "$tmp"; changes "SAMA" "RSS $nama" "identik"
       simpan_state "$folder" "rss_${nama}" "RSS: $nama" "snippet" "SAMA" "$CURL_HTTP" "$CURL_TIME" "" "" ""
       continue
     fi
+    # Valid & baru → baru sekarang berkas final ditulis (tidak destruktif).
+    mv -f "$tmp" "$target" || { warn "GAGAL : RSS $nama — tidak bisa menulis $target"; rm -f "$tmp"; continue; }
     local ring="snapshot pertama"
     if [ -n "$prev" ]; then
       ring="$(diff_rss "$prev" "$target")"
@@ -840,6 +953,18 @@ proses_rss() {
     simpan_state "$folder" "rss_${nama}" "RSS: $nama" "snippet" "OK" "$CURL_HTTP" "$CURL_TIME" "$ring" "" ""
   done
   IFS="$IFS_OLD"
+}
+
+# Sisa berkas sementara unduhan dari run yang terhenti (mis. proses dibunuh saat
+# unduh) dibersihkan agar tidak ikut ter-commit oleh git add -A di git_finalize.
+bersihkan_tmp_sisa() {
+  local f n=0
+  for f in "$DATA_DIR"/*/*.tmp.* "$DATA_DIR"/*.tmp.*; do
+    [ -e "$f" ] || continue
+    rm -f "$f"; n=$((n + 1))
+  done
+  [ "$n" -gt 0 ] && info "BERSIH: menghapus $n berkas sementara sisa run sebelumnya."
+  return 0
 }
 
 # TIER-LOKAL: unduh halaman artikel ke data/news-full/ (TIDAK pernah di-commit).
@@ -1371,6 +1496,264 @@ do_cek() {
 }
 
 # =============================================================================
+#  BAGIAN 6 — MODE --tanggal (dipakai workflow Actions)
+# =============================================================================
+do_tanggal() { # $2 (opsional): 'dash' → YYYY-MM-DD, selain itu YYYYMMDD
+  # Hari ZONA PROYEK yang DIPAKAI RUN INI. Sengaja mencetak TODAY/TODAY_DASH —
+  # bukan menghitung ulang — supaya workflow melihat persis hari yang dipakai
+  # untuk nama snapshot. Tanggal jadi hanya punya satu sumber (dulu workflow
+  # menghitung sendiri dengan `date -u` = hari UTC).
+  case "${2:-}" in
+    dash) printf '%s\n' "$TODAY_DASH" ;;
+    *)    printf '%s\n' "$TODAY" ;;
+  esac
+}
+
+# =============================================================================
+#  SELF-TEST zona waktu & snapshot non-destruktif (bagian dari --uji-error)
+# =============================================================================
+UJI_GAGAL=0
+_uji_tegas() { # $1=deskripsi $2=0 bila lulus
+  if [ "$2" -eq 0 ]; then log "  OK    : $1"; else log "  GAGAL : $1"; UJI_GAGAL=$((UJI_GAGAL + 1)); fi
+}
+
+_uji_deret_ok() { # 0 bila deret 32 hari menurun tepat satu hari per langkah
+  local i a b
+  [ "${#HARI_YMD[@]}" -eq 32 ] || return 1
+  for (( i = 1; i <= 31; i++ )); do
+    a="$(tanggal_ke_hari "${HARI_YMD[$((i - 1))]}")"
+    b="$(tanggal_ke_hari "${HARI_YMD[$i]}")"
+    [ "$((a - b))" -eq 1 ] || return 1
+  done
+  return 0
+}
+
+uji_zona_dan_snapshot() {
+  log ""
+  log "== UJI ZONA WAKTU & SNAPSHOT NON-DESTRUKTIF =="
+  local sandbox
+  sandbox="$(mktemp -d 2>/dev/null || mktemp -d -t osint-uji)"
+  if [ -z "$sandbox" ] || [ ! -d "$sandbox" ]; then
+    warn "Tidak bisa membuat sandbox uji — uji dilewati."
+    return
+  fi
+
+  # Semua tulisan uji terjadi di sandbox ini; data/ asli tidak pernah disentuh,
+  # dan tidak ada berkas yang di-commit.
+  local DATA_ASLI="$DATA_DIR"
+  DATA_DIR="$sandbox/data"
+  ERRORS_DIR="$DATA_DIR/errors"
+  HISTORY_DIR="$DATA_DIR/history"
+  NEWSFULL_DIR="$DATA_DIR/news-full"
+  CHANGES_FILE="$DATA_DIR/CHANGES-${TODAY}.md"
+  mkdir -p "$DATA_DIR" "$ERRORS_DIR"
+
+  _uji_hari_dan_zona
+  _uji_deret_hari
+  _uji_snapshot_non_destruktif
+  _uji_tulis_wiki_rss
+  _uji_pemicu_jadwal
+
+  # Pulihkan jalur asli lalu bersihkan sandbox.
+  DATA_DIR="$DATA_ASLI"
+  ERRORS_DIR="$DATA_DIR/errors"
+  HISTORY_DIR="$DATA_DIR/history"
+  NEWSFULL_DIR="$DATA_DIR/news-full"
+  CHANGES_FILE="$DATA_DIR/CHANGES-${TODAY}.md"
+  [ -n "$sandbox" ] && [ -d "$sandbox" ] && rm -rf "$sandbox"
+}
+
+_uji_hari_dan_zona() {
+  # 2026-10-04T17:00:00Z = 2026-10-05 00:00 WIB (Senin). Itu tepat jam cron:
+  # runner UTC akan melabeli 20261004, zona proyek harus melabeli 20261005.
+  local epoch_uji=1791133200 stamp
+  stamp="$(_uji_utc_iso "$epoch_uji")"
+  if [ "$stamp" != "2026-10-04T17:00:00Z" ]; then
+    log "  INFO  : konstanta epoch uji tidak terverifikasi di sistem ini ($stamp) — cek zona dilewati."
+    return
+  fi
+
+  # Perkawatan (wiring) diuji lewat PROSES ANAK: hanya proses baru yang benar-
+  # benar menjalankan jalur startup (TODAY, CHANGES, nama snapshot). Cek ini
+  # menangkap TODAY yang dikembalikan ke `date` zona lokal runner.
+  local hari_proses_anak
+  hari_proses_anak="$(TZ=UTC UJI_EPOCH="$epoch_uji" bash "$0" --tanggal 2>/dev/null | tr -d '[:space:]')"
+  _uji_tegas "proses baru di jam cron: nama snapshot = 20261005 (hari WIB)" \
+    "$([ "$hari_proses_anak" = "20261005" ] && echo 0 || echo 1)"
+
+  UJI_EPOCH="$epoch_uji"
+  _uji_tegas "hari zona proyek = 20261005 saat UTC masih 20261004 (bug lama)" \
+    "$([ "$(tanggal_hari_ini +%Y%m%d)" = "20261005" ] && echo 0 || echo 1)"
+  _uji_tegas "gating Senin membaca 1 (hari proyek Senin, bukan Minggu UTC)" \
+    "$([ "$(tanggal_hari_ini +%u)" = "1" ] && echo 0 || echo 1)"
+  _uji_tegas "hari UTC saat yang sama tetap 20261004 (bukti dua zona memang beda)" \
+    "$([ "$(_uji_utc_ymd "$epoch_uji")" = "20261004" ] && echo 0 || echo 1)"
+  _uji_tegas "jam proyek = 00:00:00 di batas hari (cron 17:00 UTC)" \
+    "$([ "$(tanggal_hari_ini +%H:%M:%S)" = "00:00:00" ] && echo 0 || echo 1)"
+  UJI_EPOCH=""
+}
+
+_uji_utc_iso() { # $1=epoch → ISO UTC (GNU/BSD)
+  _deteksi_date
+  if [ "$_IS_GNU_DATE" = "1" ]; then date -u -d "@$1" +%Y-%m-%dT%H:%M:%SZ; else date -u -r "$1" +%Y-%m-%dT%H:%M:%SZ; fi
+}
+
+_uji_utc_ymd() { # $1=epoch → YYYYMMDD UTC
+  _deteksi_date
+  if [ "$_IS_GNU_DATE" = "1" ]; then date -u -d "@$1" +%Y%m%d; else date -u -r "$1" +%Y%m%d; fi
+}
+
+_uji_deret_hari() {
+  _siapkan_hari
+  _uji_tegas "deret 32 hari berisi tepat 32 tanggal" \
+    "$([ "${#HARI_YMD[@]}" -eq 32 ] && echo 0 || echo 1)"
+  _uji_tegas "deret 32 hari dimulai dari hari proyek ($TODAY_DASH)" \
+    "$([ "${HARI_YMD[0]}" = "$TODAY" ] && [ "${HARI_DASH[0]}" = "$TODAY_DASH" ] && echo 0 || echo 1)"
+  _uji_tegas "deret 32 hari menurun tepat satu hari per langkah (tanpa lompatan zona)" \
+    "$(_uji_deret_ok && echo 0 || echo 1)"
+}
+
+# Stub jaringan: TIDAK ada proses/port yang dibuka dan hasilnya deterministik,
+# sehingga jalur GAGAL/LEWAT/RUSAK/SUKSES bisa dipaksa tanpa internet.
+_UJI_CURL_ASLI=""
+_uji_pasang_stub_curl() {
+  _UJI_CURL_ASLI="$(declare -f curl_get)"
+  curl_get() { # $1=url $2=out $3=auth → mengisi CURL_* seperti curl asli
+    CURL_TIME="0.01"
+    : > "$2"
+    case "$1" in
+      *'/blokir'*)     CURL_EXIT=22; CURL_HTTP=403 ;;
+      *'/rusak'*)      CURL_EXIT=0;  CURL_HTTP=200; printf 'x' > "$2" ;;
+      *'/metrics/'*)   CURL_EXIT=0;  CURL_HTTP=200; printf 'x' > "$2" ;;   # wiki → RUSAK
+      *rss*|*feed*)    CURL_EXIT=0;  CURL_HTTP=200
+        printf '%b' '<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0">\n<channel>\n<title>Uji</title>\n<item>\n<title>Judul Uji RSS</title>\n<link>https://uji.local/artikel-1</link>\n<description>Deskripsi uji RSS yang cukup panjang untuk lolos ambang minimum berkas.</description>\n</item>\n</channel>\n</rss>\n' > "$2" ;;
+      *konten*)        CURL_EXIT=0;  CURL_HTTP=200
+        printf '%s' '{"uji":"konten","pad":"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"}' > "$2" ;;
+      *)               CURL_EXIT=6;  CURL_HTTP=000; rm -f "$2" ;;
+    esac
+  }
+}
+
+_uji_pulihkan_curl() {
+  [ -n "$_UJI_CURL_ASLI" ] && eval "$_UJI_CURL_ASLI"
+  _UJI_CURL_ASLI=""
+  return 0
+}
+
+_uji_snapshot_non_destruktif() {
+  _uji_pasang_stub_curl
+
+  local folder="uji" nama="snapshot" ext="json"
+  local berkas="$DATA_DIR/$folder/${TODAY}-${nama}.${ext}"
+  mkdir -p "$DATA_DIR/$folder"
+  # Snapshot "hari ini" yang sudah ada (mis. hasil run sebelumnya hari ini).
+  printf '%s' '{"isi":"snapshot lama yang sudah ter-commit di hari yang sama"}' > "$berkas"
+  local awal; awal="$(cksum < "$berkas")"
+
+  local t="$TODAY_DASH"
+  GITHUB_ACTIONS="" BLOKIR_CI="UJI Blokir" proses_sumber "$folder" "$nama" "UJI Gagal" \
+    "https://sumber-palsu.invalid/x.$ext" "snippet" "harian" "$ext" >/dev/null 2>&1
+  _uji_tegas "GAGAL ($t): snapshot hari yang sama TIDAK terhapus" \
+    "$([ -f "$berkas" ] && [ "$(cksum < "$berkas")" = "$awal" ] && echo 0 || echo 1)"
+
+  GITHUB_ACTIONS=true BLOKIR_CI="UJI Blokir" proses_sumber "$folder" "$nama" "UJI Blokir" \
+    "http://127.0.0.1:9/blokir" "snippet" "harian" "$ext" >/dev/null 2>&1
+  _uji_tegas "LEWAT (403 dari IP CI): snapshot hari yang sama TIDAK terhapus" \
+    "$([ -f "$berkas" ] && [ "$(cksum < "$berkas")" = "$awal" ] && echo 0 || echo 1)"
+
+  GITHUB_ACTIONS="" BLOKIR_CI="UJI Blokir" proses_sumber "$folder" "$nama" "UJI Rusak" \
+    "http://uji.local/rusak" "snippet" "harian" "$ext" >/dev/null 2>&1
+  _uji_tegas "RUSAK (konten <100B): snapshot hari yang sama TIDAK terhapus" \
+    "$([ -f "$berkas" ] && [ "$(cksum < "$berkas")" = "$awal" ] && echo 0 || echo 1)"
+
+  _uji_tegas "tidak ada sisa berkas .tmp. setelah ketiga kegagalan" \
+    "$([ "$(ls "$DATA_DIR/$folder"/*.tmp.* 2>/dev/null | wc -l | tr -d '[:space:]')" -eq 0 ] && echo 0 || echo 1)"
+
+  GITHUB_ACTIONS="" BLOKIR_CI="UJI Blokir" proses_sumber "$folder" "$nama" "UJI Konten" \
+    "http://uji.local/konten" "snippet" "harian" "$ext" >/dev/null 2>&1
+  _uji_tegas "SUKSES: snapshot hari yang sama diganti isi yang baru" \
+    "$(grep -q '"uji":"konten"' "$berkas" 2>/dev/null && [ "$(cksum < "$berkas")" != "$awal" ] && echo 0 || echo 1)"
+  _uji_tegas "SUKSES: berkas final satu-satunya di folder uji (tanpa berkas temp)" \
+    "$([ "$(ls "$DATA_DIR/$folder" | wc -l | tr -d '[:space:]')" -eq 1 ] && echo 0 || echo 1)"
+
+  _uji_pulihkan_curl
+}
+
+_uji_tulis_wiki_rss() {
+  # Dua situs penulisan snapshot lain (wiki & RSS) memakai pola non-destruktif
+  # yang sama; keduanya dijalankan di sini dengan stub jaringan di sandbox.
+  _uji_pasang_stub_curl
+  local stub_def; stub_def="$(declare -f curl_get)"   # untuk memulihkan stub di tengah uji
+
+  local art nama berkas
+  art="$(printf '%s\n' "$WIKI_ARTICLES" | grep -v '^[[:space:]]*$' | head -1)"
+  art="${art##*|}"
+  [ -z "$art" ] && art="Uji"
+  nama="pageviews_${art}"
+  mkdir -p "$DATA_DIR/wiki"
+  berkas="$DATA_DIR/wiki/${TODAY}-${nama}.json"
+  printf '%s' '{"lama":"wiki hari yang sama"}' > "$berkas"
+  local awal_wiki; awal_wiki="$(cksum < "$berkas")"
+  proses_wiki >/dev/null 2>&1
+  _uji_tegas "RUSAK di jalur Wikipedia: snapshot hari yang sama TIDAK terhapus" \
+    "$([ -f "$berkas" ] && [ "$(cksum < "$berkas")" = "$awal_wiki" ] && echo 0 || echo 1)"
+
+  local feed; feed="$(printf '%s\n' "$RSS_FEEDS" | grep -v '^[[:space:]]*$' | head -1)"
+  feed="${feed%%|*}"
+  [ -z "$feed" ] && feed="uji"
+  mkdir -p "$DATA_DIR/rss"
+  berkas="$DATA_DIR/rss/${TODAY}-rss_${feed}.json"
+  printf '%s' '{"lama":"rss hari yang sama"}' > "$berkas"
+  local awal_rss; awal_rss="$(cksum < "$berkas")"
+
+  # (1) GAGAL: seluruh feed gagal DNS → snapshot hari yang sama TIDAK terhapus.
+  #     (Ini inti bug destruktif: kegagalan unduh dulu menghapus snapshot lama.)
+  curl_get() { CURL_TIME="0.01"; : > "$2"; CURL_EXIT=6; CURL_HTTP=000; rm -f "$2"; }
+  proses_rss >/dev/null 2>&1
+  _uji_tegas "GAGAL di jalur RSS: snapshot hari yang sama TIDAK terhapus" \
+    "$([ -f "$berkas" ] && [ "$(cksum < "$berkas")" = "$awal_rss" ] && echo 0 || echo 1)"
+
+  # (2) SUKSES: feed valid → snapshot hari yang sama ditulis ulang dengan isi baru.
+  eval "$stub_def"
+  proses_rss >/dev/null 2>&1
+  _uji_tegas "RSS: snapshot hari yang sama ditulis ulang dengan isi baru (bukan dihapus)" \
+    "$(grep -q 'Judul Uji RSS' "$berkas" 2>/dev/null && ! grep -q '"lama"' "$berkas" 2>/dev/null && echo 0 || echo 1)"
+  _uji_tegas "wiki & RSS: tidak ada sisa berkas .tmp. di sandbox" \
+    "$([ "$(find "$DATA_DIR" -name '*.tmp.*' 2>/dev/null | wc -l | tr -d '[:space:]')" -eq 0 ] && echo 0 || echo 1)"
+
+  _uji_pulihkan_curl
+}
+
+_uji_pemicu_jadwal() {
+  # Regresi gating jadwal: "senin" hanya jalan bila hari proyek = Senin, dan
+  # env:* hanya jalan bila variabelnya terisi. Keduanya dicek lewat state run.
+  _uji_pasang_stub_curl
+  curl_get() { CURL_EXIT=0; CURL_HTTP=200; CURL_TIME="0.01";
+    printf '%s' '{"uji":"konten","pad":"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"}' > "$2"; }
+
+  local folder="uji" ext="json" asli_u="$HARI_INI_U"
+  mkdir -p "$DATA_DIR/$folder"
+  [ -f "$STATE_FILE" ] || : > "$STATE_FILE"
+
+  HARI_INI_U=3   # Rabu
+  GITHUB_ACTIONS="" proses_sumber "$folder" "jadwal1" "UJI Senin" "http://uji.local/konten" "snippet" "senin" "$ext" >/dev/null 2>&1
+  _uji_tegas "gating Senin: sumber 'senin' dilewati di hari non-Senin" \
+    "$(grep -q '^uji|jadwal1|UJI Senin|snippet|LEWAT' "$STATE_FILE" && echo 0 || echo 1)"
+
+  HARI_INI_U=1   # Senin
+  GITHUB_ACTIONS="" proses_sumber "$folder" "jadwal2" "UJI Senin" "http://uji.local/konten" "snippet" "senin" "$ext" >/dev/null 2>&1
+  _uji_tegas "gating Senin: sumber 'senin' tetap diambil saat hari proyek Senin" \
+    "$(grep -q '^uji|jadwal2|UJI Senin|snippet|OK' "$STATE_FILE" && echo 0 || echo 1)"
+
+  HARI_INI_U="$asli_u"
+  GITHUB_ACTIONS="" proses_sumber "$folder" "jadwal3" "UJI Env" "http://uji.local/konten" "snippet" "env:UJI_VAR_TIDAK_ADA" "$ext" >/dev/null 2>&1
+  _uji_tegas "gating env:*: sumber dilewati saat variabelnya kosong" \
+    "$(grep -q '^uji|jadwal3|UJI Env|snippet|LEWAT' "$STATE_FILE" && echo 0 || echo 1)"
+
+  _uji_pulihkan_curl
+}
+
+# =============================================================================
 #  BAGIAN 6 — MODE --uji-error
 # =============================================================================
 do_uji_error() {
@@ -1396,6 +1779,17 @@ do_uji_error() {
   log "- Pesan: $pesan"
   log "- Saran: $saran"
   rm -f "$out"
+
+  # Bagian kedua: self-test zona waktu & snapshot non-destruktif.
+  uji_zona_dan_snapshot
+
+  log ""
+  if [ "$UJI_GAGAL" -gt 0 ]; then
+    warn "Self-test: $UJI_GAGAL pemeriksaan GAGAL."
+    info "Tidak ada file yang di-commit."
+    exit 1
+  fi
+  info "Self-test: semua pemeriksaan lulus (zona + snapshot non-destruktif)."
   info "Selesai --uji-error. Tidak ada file yang di-commit."
 }
 
@@ -1424,9 +1818,11 @@ main() {
   case "$MODE" in
     cek) do_cek; return ;;
     uji) do_uji_error; return ;;
+    tanggal) do_tanggal "$@"; return ;;
   esac
 
   mkdir -p "$DATA_DIR" "$ERRORS_DIR" "$HISTORY_DIR" "$NEWSFULL_DIR" "$DOCS_DIR"
+  bersihkan_tmp_sisa
   : > "$STATE_FILE"; : > "$ANOMALI_FILE"; : > "$WATCH_FILE"; : > "$RINGKAS_FILE"
   printf '# Perubahan & status — %s\n\n' "$TODAY_DASH" > "$CHANGES_FILE"
 

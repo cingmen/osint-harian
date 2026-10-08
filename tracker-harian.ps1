@@ -8,7 +8,8 @@
 #  Penggunaan:
 #    powershell -ExecutionPolicy Bypass -File tracker-harian.ps1            # harian
 #    powershell -ExecutionPolicy Bypass -File tracker-harian.ps1 -Cek       # diagnostik
-#    powershell -ExecutionPolicy Bypass -File tracker-harian.ps1 -UjiError  # uji error
+#    powershell -ExecutionPolicy Bypass -File tracker-harian.ps1 -UjiError  # uji error (termasuk self-test)
+#    powershell -ExecutionPolicy Bypass -File tracker-harian.ps1 -Tanggal    # hari zona proyek (YYYYMMDD)
 #
 #  Prinsip (Bagian 1): hanya data publik resmi; tanpa login; tanpa bypass
 #  paywall; tanpa data pribadi perorangan (UU PDP). Berita TIGA TIER:
@@ -21,7 +22,8 @@
 [CmdletBinding()]
 param(
   [switch]$Cek,
-  [switch]$UjiError
+  [switch]$UjiError,
+  [switch]$Tanggal
 )
 
 $ErrorActionPreference = 'Continue'
@@ -89,6 +91,8 @@ function Load-SharedConfig {
       'TABEL_USGS_LIMIT'  { $script:TABEL_USGS_LIMIT = [int]$v }
       'KEYWORDS_WATCH'    { $script:KEYWORDS_WATCH = @($v -split ',') }
       'BLOKIR_CI'         { $script:BLOKIR_CI = $v }
+      'ZONA'              { $script:ZONA = $v }
+      'ZONA_MENIT'        { $script:ZONA_MENIT = [int]$v }
     }
   }
   $readTs = {
@@ -104,13 +108,31 @@ function Load-SharedConfig {
 }
 Load-SharedConfig
 
-# --- Waktu ---
-$TODAY      = (Get-Date).ToString('yyyyMMdd')
-$TODAY_DASH = (Get-Date).ToString('yyyy-MM-dd')
+# --- Waktu -------------------------------------------------------------------
+# Nama snapshot & label hari memakai ZONA PROYEK (ZONA di config/pengaturan.conf),
+# BUKAN zona mesin. Cron Actions berjalan 00:00 WIB = 17:00 UTC; memakai zona
+# mesin (UTC) membuat snapshot berlabel hari yang sudah lewat.
+function Get-ZonaNow {
+  # .NET 6+ / PowerShell 7 mengenali id IANA (Asia/Jakarta). Windows PowerShell
+  # 5.1 hanya mengenal id Windows, jadi fallback-nya offset tetap ZONA_MENIT
+  # (Asia/Jakarta = +07:00 dan tanpa DST).
+  if ($env:UJI_EPOCH) {
+    return [DateTimeOffset]::FromUnixTimeSeconds([long]$env:UJI_EPOCH).UtcDateTime.AddMinutes($script:ZONA_MENIT)
+  }
+  try {
+    $tz = [System.TimeZoneInfo]::FindSystemTimeZoneById($script:ZONA)
+    return [System.TimeZoneInfo]::ConvertTimeFromUtc([DateTime]::UtcNow, $tz)
+  } catch {
+    return [DateTime]::UtcNow.AddMinutes($script:ZONA_MENIT)
+  }
+}
+
+$TODAY      = (Get-ZonaNow).ToString('yyyyMMdd')
+$TODAY_DASH = (Get-ZonaNow).ToString('yyyy-MM-dd')
 $NOW_ISO    = (Get-Date).ToUniversalTime().ToString("yyyy-MM-dd'T'HH:mm:ss'Z'")
-$NOW_JAM    = (Get-Date).ToString('HH:mm:ss')
+$NOW_JAM    = (Get-ZonaNow).ToString('HH:mm:ss')
 $CHANGES_FILE = Join-Path $DATA_DIR ("CHANGES-$TODAY.md")
-$THISMONTH  = (Get-Date).ToString('yyyy-MM')
+$THISMONTH  = (Get-ZonaNow).ToString('yyyy-MM')
 
 # =============================================================================
 #  UTILITAS
@@ -154,8 +176,9 @@ function Init-Hari {
   if ($script:HARI_YMD.Count -gt 0) { return }
   $script:HARI_YMD  = @()
   $script:HARI_DASH = @()
+  # Ancor hari proyek (bukan zona mesin), sama dengan sisi bash.
   for ($i = 0; $i -le 31; $i++) {
-    $d = (Get-Date).AddDays(-$i)
+    $d = (Get-ZonaNow).AddDays(-$i)
     $script:HARI_YMD  += $d.ToString('yyyyMMdd')
     $script:HARI_DASH += $d.ToString('yyyy-MM-dd')
   }
@@ -163,7 +186,7 @@ function Init-Hari {
 
 function Get-DateMinusDays {
   param([int]$N, [string]$Fmt)
-  return (Get-Date).AddDays(-$N).ToString($Fmt)
+  return (Get-ZonaNow).AddDays(-$N).ToString($Fmt)
 }
 
 function Get-Iso24Jam { return (Get-Date).ToUniversalTime().AddHours(-24).ToString("yyyy-MM-dd'T'HH:mm:ss'Z'") }
@@ -630,7 +653,7 @@ function Process-Source {
 
   switch -Regex ($Jadwal) {
     '^senin$' {
-      if ((Get-Date).DayOfWeek.value__ -ne 1) {
+      if ((Get-ZonaNow).DayOfWeek.value__ -ne 1) {
         Info "LEWAT : $Label (khusus Senin)"
         Save-State $Folder $Nama $Label $Tier 'LEWAT' '000' '0' '' 'khusus Senin' ''
         return
@@ -655,17 +678,20 @@ function Process-Source {
 
   New-Item -ItemType Directory -Force -Path (Join-Path $DATA_DIR $Folder) | Out-Null
   $target = Join-Path (Join-Path $DATA_DIR $Folder) "$TODAY-$Nama.$Ext"
+  # Unduhan selalu mendarat di berkas sementara; berkas final baru ditulis SETELAH
+  # isinya terbukti valid & benar-benar baru (paritas dengan tracker-harian.sh).
+  $tmp = "$target.tmp.$PID"
   Set-ExtraCurl $Folder
   $auth = ''
   if ($Folder -eq 'opensky' -and $env:OPENSKY_USER -and $env:OPENSKY_PASS) { $auth = "$($env:OPENSKY_USER):$($env:OPENSKY_PASS)" }
 
   Info "AMBIL : $Label ..."
-  Invoke-CurlGet $Url $target $auth
+  Invoke-CurlGet $Url $tmp $auth
 
   if ($script:CURL_EXIT -ne 0) {
     $ter = Get-TerjemahError $script:CURL_EXIT $script:CURL_HTTP
     $pesan = $ter.Split('|')[0]; $saran = $ter.Split('|')[1]
-    Remove-Item -LiteralPath $target -Force -ErrorAction SilentlyContinue
+    Remove-Item -LiteralPath $tmp -Force -ErrorAction SilentlyContinue
     if (Test-DiblokirCi $Label $script:CURL_HTTP) {
       $pesan = "host memblokir IP CI (HTTP $($script:CURL_HTTP))"
       $saran = 'Jalankan tracker dari jaringan lokal (IP residensial tidak diblokir host ini).'
@@ -681,11 +707,11 @@ function Process-Source {
     return
   }
 
-  if (-not (Test-Konten $target $Ext)) {
+  if (-not (Test-Konten $tmp $Ext)) {
     Warn "RUSAK : $Label (konten <100B atau rusak/tidak lengkap)"
     Write-Change 'RUSAK' $Label "konten rusak atau tidak lengkap (HTTP $($script:CURL_HTTP))"
     Write-ErrorEntry $Label $Url $script:CURL_EXIT $script:CURL_HTTP 'Konten rusak/tidak lengkap' 'Cek endpoint; mungkin butuh header/auth atau server mengirim halaman error.'
-    Remove-Item -LiteralPath $target -Force -ErrorAction SilentlyContinue
+    Remove-Item -LiteralPath $tmp -Force -ErrorAction SilentlyContinue
     Save-State $Folder $Nama $Label $Tier 'RUSAK' $script:CURL_HTTP $script:CURL_TIME '' 'konten rusak' 'cek endpoint/auth'
     return
   }
@@ -693,15 +719,18 @@ function Process-Source {
   $prev = Get-SnapshotBeforeToday $Folder $Nama
   if ($prev -and (Test-Path -LiteralPath $prev)) {
     $h1 = (Get-FileHash -LiteralPath $prev -Algorithm SHA256).Hash
-    $h2 = (Get-FileHash -LiteralPath $target -Algorithm SHA256).Hash
+    $h2 = (Get-FileHash -LiteralPath $tmp -Algorithm SHA256).Hash
     if ($h1 -eq $h2) {
-      Remove-Item -LiteralPath $target -Force -ErrorAction SilentlyContinue
+      Remove-Item -LiteralPath $tmp -Force -ErrorAction SilentlyContinue
       Info "SAMA  : $Label"
       Write-Change 'SAMA' $Label 'identik dengan snapshot terakhir'
       Save-State $Folder $Nama $Label $Tier 'SAMA' $script:CURL_HTTP $script:CURL_TIME '' '' ''
       return
     }
   }
+
+  # Valid & baru → baru sekarang berkas final ditulis (tidak destruktif).
+  Move-Item -LiteralPath $tmp -Destination $target -Force -ErrorAction Stop
 
   $ringkasan = 'snapshot baru'
   if ($prev) {
@@ -724,7 +753,7 @@ function Process-Source {
 # =============================================================================
 function Process-Wiki {
   $mulai = Get-DateMinusDays 7 'yyyyMMdd'
-  $akhir = (Get-Date).ToString('yyyyMMdd')
+  $akhir = $TODAY
   foreach ($ent in $WIKI_ARTICLES) {
     $ent = $ent.TrimEnd("`r"); if (-not $ent.Trim()) { continue }
     $label = $ent.Split('|')[0]
@@ -734,32 +763,34 @@ function Process-Wiki {
     $url = "https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/$WIKI_PROJECT/all-access/user/$art/daily/$mulai/$akhir"
     New-Item -ItemType Directory -Force -Path (Join-Path $DATA_DIR $folder) | Out-Null
     $target = Join-Path (Join-Path $DATA_DIR $folder) "$TODAY-$nama.json"
+    $tmp = "$target.tmp.$PID"
     Info "AMBIL : Wikipedia pageviews ($label) ..."
     Set-ExtraCurl 'wiki'
-    Invoke-CurlGet $url $target ''
+    Invoke-CurlGet $url $tmp ''
     if ($script:CURL_EXIT -ne 0) {
       $ter = Get-TerjemahError $script:CURL_EXIT $script:CURL_HTTP
       $pesan = $ter.Split('|')[0]; $saran = $ter.Split('|')[1]
-      Remove-Item -LiteralPath $target -Force -ErrorAction SilentlyContinue
+      Remove-Item -LiteralPath $tmp -Force -ErrorAction SilentlyContinue
       Write-Change 'GAGAL' "Wikipedia $label" "$pesan (HTTP $($script:CURL_HTTP))"
       Write-ErrorEntry "Wikipedia $label" $url $script:CURL_EXIT $script:CURL_HTTP $pesan $saran
       Save-State $folder $nama "Wikipedia: $label" 'full' 'GAGAL' $script:CURL_HTTP $script:CURL_TIME '' $pesan $saran
       continue
     }
-    if (-not (Test-Konten $target 'json')) {
+    if (-not (Test-Konten $tmp 'json')) {
       Write-Change 'RUSAK' "Wikipedia $label" 'respons pageviews rusak'
       Write-ErrorEntry "Wikipedia $label" $url $script:CURL_EXIT $script:CURL_HTTP 'Konten rusak' 'Cek judul artikel & rentang tanggal.'
-      Remove-Item -LiteralPath $target -Force -ErrorAction SilentlyContinue
+      Remove-Item -LiteralPath $tmp -Force -ErrorAction SilentlyContinue
       Save-State $folder $nama "Wikipedia: $label" 'full' 'RUSAK' $script:CURL_HTTP $script:CURL_TIME '' 'rusak' 'cek judul'
       continue
     }
     $prev = Get-SnapshotBeforeToday $folder $nama
-    if ($prev -and ((Get-FileHash -LiteralPath $prev -Algorithm SHA256).Hash -eq (Get-FileHash -LiteralPath $target -Algorithm SHA256).Hash)) {
-      Remove-Item -LiteralPath $target -Force -ErrorAction SilentlyContinue
+    if ($prev -and ((Get-FileHash -LiteralPath $prev -Algorithm SHA256).Hash -eq (Get-FileHash -LiteralPath $tmp -Algorithm SHA256).Hash)) {
+      Remove-Item -LiteralPath $tmp -Force -ErrorAction SilentlyContinue
       Write-Change 'SAMA' "Wikipedia $label" 'identik'
       Save-State $folder $nama "Wikipedia: $label" 'full' 'SAMA' $script:CURL_HTTP $script:CURL_TIME '' '' ''
       continue
     }
+    Move-Item -LiteralPath $tmp -Destination $target -Force -ErrorAction Stop
     $ring = 'snapshot pertama'
     if ($prev) {
       $ring = Diff-Pageviews $prev $target
@@ -782,6 +813,8 @@ function Process-Rss {
     $folder = 'rss'
     # Awalan rss_ agar nama berkas = `nama` di state/manifest (dedup/diff cocok).
     $target = Join-Path (Join-Path $DATA_DIR $folder) "$TODAY-rss_$nama.json"
+    # Berkas final hanya ditulis lewat Move-Item dari berkas sementara.
+    $tmp = "$target.tmp.$PID"
     New-Item -ItemType Directory -Force -Path (Join-Path $DATA_DIR $folder) | Out-Null
     Info "AMBIL : RSS $nama (tier snippet) ..."
     $raw = Join-Path $TMPD "rss_$nama.xml"
@@ -813,18 +846,19 @@ function Process-Rss {
       continue
     }
     $json = Convert-RssToJson $raw $nama
-    [System.IO.File]::WriteAllText($target, $json)
+    [System.IO.File]::WriteAllText($tmp, $json)
     Remove-Item -LiteralPath $raw -Force -ErrorAction SilentlyContinue
 
-    if ($env:FETCH_FULL_TEXT -eq '1') { Download-FullText $nama $target }
+    if ($env:FETCH_FULL_TEXT -eq '1') { Download-FullText $nama $tmp }
 
     $prev = Get-SnapshotBeforeToday $folder "rss_$nama"
-    if ($prev -and ((Get-FileHash -LiteralPath $prev -Algorithm SHA256).Hash -eq (Get-FileHash -LiteralPath $target -Algorithm SHA256).Hash)) {
-      Remove-Item -LiteralPath $target -Force -ErrorAction SilentlyContinue
+    if ($prev -and ((Get-FileHash -LiteralPath $prev -Algorithm SHA256).Hash -eq (Get-FileHash -LiteralPath $tmp -Algorithm SHA256).Hash)) {
+      Remove-Item -LiteralPath $tmp -Force -ErrorAction SilentlyContinue
       Write-Change 'SAMA' "RSS $nama" 'identik'
       Save-State $folder "rss_$nama" "RSS: $nama" 'snippet' 'SAMA' $script:CURL_HTTP $script:CURL_TIME '' '' ''
       continue
     }
+    Move-Item -LiteralPath $tmp -Destination $target -Force -ErrorAction Stop
     $ring = 'snapshot pertama'
     if ($prev) {
       $ring = Diff-Rss $prev $target
@@ -1269,8 +1303,19 @@ function Process-All {
   }
 }
 
+function Remove-TmpSisa {
+  # Sisa berkas sementara unduhan dari run yang terhenti dibersihkan agar tidak
+  # ikut ter-commit (paritas dengan bersihkan_tmp_sisa di sisi bash).
+  $sisa = @(Get-ChildItem -Path (Join-Path $DATA_DIR '*') -Filter '*.tmp.*' -Recurse -File -ErrorAction SilentlyContinue)
+  if ($sisa.Count -gt 0) {
+    $sisa | Remove-Item -Force -ErrorAction SilentlyContinue
+    Info "BERSIH: menghapus $($sisa.Count) berkas sementara sisa run sebelumnya."
+  }
+}
+
 function Main {
   New-Item -ItemType Directory -Force -Path $DATA_DIR, $ERRORS_DIR, $HISTORY_DIR, $NEWSFULL_DIR, $DOCS_DIR | Out-Null
+  Remove-TmpSisa
   [System.IO.File]::WriteAllText($STATE_FILE, '', $UTF8NB)
   [System.IO.File]::WriteAllText($ANOMALI_FILE, '', $UTF8NB)
   [System.IO.File]::WriteAllText($WATCH_FILE, '', $UTF8NB)
@@ -1298,6 +1343,9 @@ function Main {
   }
 }
 
-if ($UjiError) { Do-UjiError }
-elseif ($Cek)  { Do-Cek }
-else           { Main }
+# -Tanggal mencetak hari ZONA PROYEK yang dipakai run ini (paritas dengan
+# `tracker-harian.sh --tanggal`, dipakai workflow untuk pesan commit + penjaga).
+if ($Tanggal)     { Write-Output $TODAY }
+elseif ($UjiError) { Do-UjiError }
+elseif ($Cek)      { Do-Cek }
+else               { Main }

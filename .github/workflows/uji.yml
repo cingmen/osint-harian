@@ -1,0 +1,42 @@
+name: uji
+
+# Penjaga regresi untuk dua invariant yang mudah rusak tanpa ketahuan:
+#   1) nama snapshot/manifest memakai HARI ZONA PROYEK (WIB), bukan zona runner;
+#   2) berkas final snapshot TIDAK PERNAH terhapus oleh jalur gagal/LEWAT/rusak.
+# Sengaja dijalankan sebagai `TZ=UTC` untuk meniru runner: hasilnya harus tetap
+# hari WIB. Self-test berjalan di sandbox dan tidak menulis apa pun ke repo.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  self-test:
+    runs-on: ubuntu-latest
+    env:
+      TZ: UTC
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Cek sintaks skrip bash
+        run: |
+          chmod +x tracker-harian.sh
+          bash -n tracker-harian.sh
+          echo "Sintaks tracker-harian.sh OK."
+
+      - name: Self-test zona WIB & snapshot non-destruktif
+        run: ./tracker-harian.sh --uji-error
+
+      - name: Pastikan self-test tidak menyentuh berkas repo
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "::error::self-test meninggalkan perubahan di repo:"
+            git status --porcelain
+            exit 1
+          fi
+          echo "Repo tetap bersih setelah self-test."
