@@ -61,6 +61,7 @@ muat_konfigurasi() {
   # KEY=value → variabel global (daftar eksplisit agar aman dari salah ketik).
   local line k v
   while IFS= read -r line || [ -n "$line" ]; do
+    line="${line%$'\r'}"   # buang CR bila berkas tersimpan CRLF (checkout Windows)
     case "$line" in ''|\#*) continue ;; esac
     k="${line%%=*}"; v="${line#*=}"
     case "$k" in
@@ -85,15 +86,18 @@ muat_konfigurasi() {
   done < "$conf"
 
   # Daftar statis (baris komentar dibuang; pemakai lain sudah membuang baris kosong).
-  SOURCES="$(grep -v '^[[:space:]]*#' "$CONFIG_DIR/sumber.tsv")"
-  WIKI_ARTICLES="$(grep -v '^[[:space:]]*#' "$CONFIG_DIR/wiki.tsv")"
-  RSS_FEEDS="$(grep -v '^[[:space:]]*#' "$CONFIG_DIR/rss.tsv")"
+  # Buang CR bila checkout Windows (core.autocrlf=true) menyuntikkannya; tanpa
+  # ini nilai konfigurasi & URL feed membawa CR dan aritmetika zona waktu gagal.
+  # Memakai parameter expansion bash (tanpa subprocess `tr`).
+  SOURCES="$(grep -v '^[[:space:]]*#' "$CONFIG_DIR/sumber.tsv")"; SOURCES="${SOURCES//$'\r'/}"
+  WIKI_ARTICLES="$(grep -v '^[[:space:]]*#' "$CONFIG_DIR/wiki.tsv")"; WIKI_ARTICLES="${WIKI_ARTICLES//$'\r'/}"
+  RSS_FEEDS="$(grep -v '^[[:space:]]*#' "$CONFIG_DIR/rss.tsv")"; RSS_FEEDS="${RSS_FEEDS//$'\r'/}"
 
   # Nama feed berurutan (untuk tabel `rss` pada manifest).
   RSS_NAMES=()
   local rn _ru
   while IFS='|' read -r rn _ru; do
-    [ -z "$rn" ] && continue
+    rn="${rn%$'\r'}"; [ -z "$rn" ] && continue
     RSS_NAMES+=("$rn")
   done < <(grep -v '^[[:space:]]*#' "$CONFIG_DIR/rss.tsv")
 
