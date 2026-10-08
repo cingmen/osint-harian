@@ -24,4 +24,3 @@ time,latitude,longitude,depth,mag,magType,nst,gap,dmin,rms,net,id,updated,place,
 2026-10-07T22:14:07.895Z,36.3615,140.7431,79.542,4.3,mb,20,169,2.051,0.73,us,us6000u0v0,2026-10-08T00:45:55.040Z,"15 km ENE of Ōarai, Japan",earthquake,8.43,10.349,0.177,9,reviewed,us,us
 2026-10-07T20:56:51.318Z,12.6946,-86.9041,206.277,4.6,mb,114,129,1.583,0.72,us,us6000u0uq,2026-10-08T14:56:28.040Z,"18 km NNE of Posoltega, Nicaragua",earthquake,8.22,7.95,0.047,143,reviewed,us,us
 2026-10-07T19:36:46.284Z,36.5238,139.3334,95.624,4.6,mb,27,130,0.906,1.15,us,us6000u0uc,2026-10-08T14:37:33.040Z,"9 km NNE of Midori, Japan",earthquake,24.73,12.372,0.129,18,reviewed,us,us
-2026-10-07T19:13:50.830Z,35.6751,140.3957,73.037,4.9,mww,105,109,1.971,0.57,us,us6000u0u7,2026-10-08T18:31:04.779Z,"3 km WSW of Shibayama, Japan",earthquake,8.82,5.361,0.08,15,reviewed,us,us
