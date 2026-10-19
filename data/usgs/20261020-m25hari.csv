@@ -1,0 +1,52 @@
+time,latitude,longitude,depth,mag,magType,nst,gap,dmin,rms,net,id,updated,place,type,horizontalError,depthError,magError,magNst,status,locationSource,magSource
+2026-10-19T16:27:45.503Z,51.5183,178.3686,52.174,4.2,mb,64,163,0.432,0.89,us,us6000u3de,2026-10-19T16:53:58.040Z,"Rat Islands, Aleutian Islands, Alaska",earthquake,7.51,6.792,0.068,60,reviewed,us,us
+2026-10-19T16:13:53.665Z,-23.5497,179.8713,536.111,4.6,mb,35,126,6.021,0.69,us,us6000u3db,2026-10-19T16:29:35.040Z,"south of the Fiji Islands",earthquake,15.38,9.86,0.097,33,reviewed,us,us
+2026-10-19T15:35:36.914Z,37.838,73.1842,10,4.9,mb,33,102,1.963,0.81,us,us6000u3d2,2026-10-19T15:55:18.040Z,"77 km WSW of Murghob, Tajikistan",earthquake,10.2,1.905,0.08,49,reviewed,us,us
+2026-10-19T14:47:45.038Z,14.4536,-91.373,109.709,4.6,mb,115,156,1.961,0.69,us,us6000u3cu,2026-10-19T16:19:13.990Z,"5 km E of San José El Ídolo, Guatemala",earthquake,9.26,8.116,0.039,198,reviewed,us,us
+2026-10-19T14:44:24.015Z,64.5774,-17.5136,10,5.3,mww,95,70,1.649,0.75,us,us6000u3ct,2026-10-19T14:59:53.040Z,"116 km WNW of Höfn, Iceland",earthquake,9.86,1.756,0.052,36,reviewed,us,us
+2026-10-19T12:06:01.884Z,-8.1042,120.378,10,4.8,mb,25,130,3.132,1.13,us,us6000u3ch,2026-10-19T12:22:21.040Z,"56 km N of Ruteng, Indonesia",earthquake,14.39,1.911,0.121,21,reviewed,us,us
+2026-10-19T11:52:37.111Z,-13.9927,165.419,10,4.8,mb,34,109,6.611,1.16,us,us6000u3ce,2026-10-19T12:10:09.040Z,"212 km WNW of Port-Olry, Vanuatu",earthquake,7.72,1.871,0.088,40,reviewed,us,us
+2026-10-19T11:44:29.888Z,52.009,-169.632,23,3.6,ml,50,216,0.8,0.9,ak,aka2026usjwdz,2026-10-19T16:44:19.953Z,"115 km SSW of Nikolski, Alaska",earthquake,10.3,5.6962,0.2,36,reviewed,ak,ak
+2026-10-19T11:10:24.188Z,-7.4544,128.3818,152.73,4.1,mb,15,173,6.001,0.43,us,us6000u3ca,2026-10-19T11:29:15.040Z,"192 km NE of Lospalos, Timor Leste",earthquake,10.76,10.308,0.185,8,reviewed,us,us
+2026-10-19T10:57:08.127Z,31.948,104.4577,10,5,mb,65,69,4.048,0.94,us,us6000u3c7,2026-10-19T11:18:55.040Z,"31 km NW of Jiangyou, China",earthquake,9.33,1.809,0.058,102,reviewed,us,us
+2026-10-19T10:40:21.108Z,-14.0378,165.5687,10,5.4,mb,47,72,6.591,1.38,us,us6000u3c6,2026-10-19T12:46:20.260Z,"196 km NW of Port-Olry, Vanuatu",earthquake,9.04,1.876,0.074,63,reviewed,us,us
+2026-10-19T10:10:56.335Z,-8.0866,120.1454,10,4.7,mb,32,107,11.296,1.32,us,us6000u3c5,2026-10-19T11:00:26.040Z,"53 km NNE of Labuan Bajo, Indonesia",earthquake,6.83,1.89,0.101,30,reviewed,us,us
+2026-10-19T09:52:07.326Z,28.818,-98.95,7.2619,2.5,ml,17,86,0.2,0.2,tx,tx2026uoxyjy,2026-10-19T15:18:10.359Z,"16 km ESE of Pearsall, Texas",earthquake,1.2147595547805,1.0825735289527,0.1,19,reviewed,tx,tx
+2026-10-19T09:45:56.107Z,-8.1064,120.1872,10,4.9,mb,50,90,11.26,0.92,us,us6000u3c1,2026-10-19T10:13:09.040Z,"54 km NE of Labuan Bajo, Indonesia",earthquake,10.37,1.874,0.087,42,reviewed,us,us
+2026-10-19T09:25:14.552Z,-12.9533,167.046,10,4.9,mb,34,113,8.003,1.09,us,us6000u3bz,2026-10-19T10:17:25.040Z,"115 km NNW of Sola, Vanuatu",earthquake,12.4,1.922,0.102,30,reviewed,us,us
+2026-10-19T09:00:39.067Z,2.4339,126.7168,49.006,4.7,mb,36,101,14.489,0.61,us,us6000u3bv,2026-10-19T10:25:25.040Z,"163 km WNW of Tobelo, Indonesia",earthquake,12.3,7.529,0.087,40,reviewed,us,us
+2026-10-19T08:54:18.185Z,-13.9561,165.5558,10,4.9,mb,68,73,6.669,0.64,us,us6000u3bu,2026-10-19T10:21:40.040Z,"202 km NW of Port-Olry, Vanuatu",earthquake,10.58,1.88,0.074,57,reviewed,us,us
+2026-10-19T08:51:57.571Z,45.481,26.2168,124.754,4.5,mb,134,33,1.864,0.56,us,us6000u3bs,2026-10-19T16:24:09.301Z,"2 km W of Lunca Jariștei, Romania",earthquake,5.54,6.657,0.042,170,reviewed,us,us
+2026-10-19T08:21:47.100Z,-14.155,165.3343,10,5.2,mb,62,63,6.438,0.9,us,us6000u3bk,2026-10-19T08:41:07.040Z,"211 km WNW of Port-Olry, Vanuatu",earthquake,7.97,1.855,0.049,137,reviewed,us,us
+2026-10-19T08:12:38.235Z,-14.1387,165.6383,10,5.4,mb,72,64,6.506,0.52,us,us6000u3bi,2026-10-19T10:17:09.760Z,"184 km WNW of Port-Olry, Vanuatu",earthquake,9.49,1.865,0.04,212,reviewed,us,us
+2026-10-19T08:03:46.713Z,59.821,-153.177,125.8,3.5,ml,206,62,0.1,0.7,ak,aka2026uscmes,2026-10-19T08:08:17.811Z,"52 km E of Pedro Bay, Alaska",earthquake,2.3,1.1606,0.3,134,automatic,ak,ak
+2026-10-19T07:55:36.888Z,-13.9824,165.6995,10,5.3,mww,65,64,6.67,0.88,us,us6000u3be,2026-10-19T08:12:11.040Z,"188 km NW of Port-Olry, Vanuatu",earthquake,9.47,1.857,0.103,9,reviewed,us,us
+2026-10-19T07:49:04.900Z,-14.0533,165.6761,10,6,mww,82,63,6.596,1.01,us,us6000u3bc,2026-10-19T12:08:37.509Z,"186 km NW of Port-Olry, Vanuatu",earthquake,9.27,1.857,0.044,50,reviewed,us,us
+2026-10-19T07:20:52.028Z,-14.042,165.4874,10,4.9,mb,29,118,6.573,0.52,us,us6000u3b8,2026-10-19T08:52:58.040Z,"203 km WNW of Port-Olry, Vanuatu",earthquake,9.25,1.885,0.129,19,reviewed,us,us
+2026-10-19T07:00:02.899Z,-13.9517,165.384,10,4.9,mb,45,111,6.646,0.47,us,us6000u3b4,2026-10-19T11:11:19.040Z,"218 km WNW of Port-Olry, Vanuatu",earthquake,11.06,1.886,0.09,39,reviewed,us,us
+2026-10-19T06:25:02.366Z,40.7483,-119.2894,1.5109,2.54,ml,10,134,0.338,0.1571,nn,nn00925943,2026-10-19T16:49:12.016Z,"5 km WSW of Burning Man Earth, Nevada",earthquake,,2.3747,0.25,7,reviewed,nn,nn
+2026-10-19T06:15:13.394Z,-6.3365,129.9289,157.774,4.5,mb,42,115,6.574,0.72,us,us6000u3ar,2026-10-19T06:46:54.040Z,"Banda Sea",earthquake,13.88,8.792,0.09,36,reviewed,us,us
+2026-10-19T05:18:36.003Z,11.1229,-86.4815,44.017,4.9,mb,108,146,1.163,0.74,us,us6000u3a8,2026-10-19T06:08:11.040Z,"68 km WSW of San Juan del Sur, Nicaragua",earthquake,6.73,5.729,0.026,460,reviewed,us,us
+2026-10-19T05:08:40.403Z,51.5152,-168.422,10,4,mb,48,185,1.483,0.99,us,us6000u3a4,2026-10-19T16:31:22.465Z,"161 km S of Nikolski, Alaska",earthquake,7.84,1.971,0.07,54,reviewed,us,us
+2026-10-19T04:57:59.150Z,18.1555,-67.410666666667,5.93,2.91,md,19,175,0.2369,0.29,pr,pr71537203,2026-10-19T05:35:20.510Z,"25 km WNW of Puerto Real, Puerto Rico",earthquake,0.59,0.83,0.14962130334158,12,reviewed,pr,pr
+2026-10-19T04:51:34.510Z,56.656,-156.187,13.1,2.7,ml,30,154,1,0.8,ak,aka2026urwcep,2026-10-19T04:55:19.768Z,"120 km SE of Ugashik, Alaska",earthquake,5.2,3.832,0.3,22,automatic,ak,ak
+2026-10-19T03:42:27.258Z,31.981,-103.306,6.3049,2.6,ml,31,46,0,0.1,tx,tx2026uolqqc,2026-10-19T15:13:06.607Z,"18 km SW of Jal, New Mexico",earthquake,0.43370561156645,0.63887599098249,0.2,31,reviewed,tx,tx
+2026-10-19T01:49:06.081Z,19.833,-155.8175,32.539,2.8,ml,24,160,0.149,0.21,us,us6000u39d,2026-10-19T04:52:51.040Z,"12 km SSW of Waikoloa, Hawaii",earthquake,3.75,7.976,0.06,42,reviewed,us,us
+2026-10-19T01:37:23.883Z,31.987,-103.301,7.2754,2.7,ml,35,32,0,0.1,tx,tx2026uohnpt,2026-10-19T15:05:08.637Z,"17 km SW of Jal, New Mexico",earthquake,0.44462012044682,0.91598053518099,0.2,48,reviewed,tx,tx
+2026-10-19T00:54:53.489Z,31.978,-103.309,6.1127,2.6,ml,35,48,0,0.1,tx,tx2026uogdiy,2026-10-19T14:57:32.547Z,"18 km SW of Jal, New Mexico",earthquake,0.4743666453073,0.54417032175139,0.2,48,reviewed,tx,tx
+2026-10-19T00:52:37.998Z,31.979,-103.307,6.0999,2.7,ml,27,44,0,0.1,tx,tx2026uogbla,2026-10-19T01:22:08.040Z,"18 km SW of Jal, New Mexico",earthquake,0.51632337516612,0.71475132814182,0.2,27,reviewed,tx,tx
+2026-10-18T23:59:22.511Z,21.1202,104.1567,10,4.4,mb,25,103,3.652,0.84,us,us6000u38y,2026-10-19T00:37:26.040Z,"33 km SE of Sơn La, Vietnam",earthquake,11.85,1.921,0.127,18,reviewed,us,us
+2026-10-18T23:30:43.709Z,-28.3596,-179.9252,444.195,4.4,mb,51,75,9.271,0.72,us,us6000u38u,2026-10-19T00:00:34.040Z,"Kermadec Islands region",earthquake,14.54,7.483,0.096,31,reviewed,us,us
+2026-10-18T22:34:22.230Z,-20.9271,-178.6587,551.945,4.5,mb,54,122,4.434,0.7,us,us6000u38i,2026-10-18T23:19:33.040Z,"Fiji region",earthquake,9.35,5.529,0.052,106,reviewed,us,us
+2026-10-18T22:31:43.272Z,-5.4567,152.6162,10,5.1,mww,77,37,1.336,0.71,us,us6000u38g,2026-10-18T23:24:55.040Z,"129 km SSE of Kokopo, Papua New Guinea",earthquake,9.55,1.766,0.098,10,reviewed,us,us
+2026-10-18T22:08:34.120Z,38.511166666667,-112.90866666667,4.02,2.49,ml,24,51,0.008486,0.14,uu,uu80160806,2026-10-18T23:14:03.744Z,"15 km NE of Milford, Utah",earthquake,0.31,0.62,0.026440126207186,2,reviewed,uu,uu
+2026-10-18T22:06:13.969Z,-5.6049,151.8407,10,4.7,mb,33,75,1.441,0.64,us,us6000u38b,2026-10-18T22:35:20.040Z,"147 km SSW of Kokopo, Papua New Guinea",earthquake,10.16,1.82,0.108,26,reviewed,us,us
+2026-10-18T21:15:40.811Z,19.5033,-68.8348,10,2.7,ml,15,204,1.073,0.75,us,us6000u37z,2026-10-18T21:37:13.040Z,"61 km NNE of Miches, Dominican Republic",earthquake,5.81,1.996,0.069,28,reviewed,us,us
+2026-10-18T20:24:09.032Z,-7.3545,128.6566,142.589,4.4,mb,46,92,5.974,0.78,us,us6000u37s,2026-10-18T20:56:55.040Z,"223 km NE of Lospalos, Timor Leste",earthquake,12.03,7.043,0.093,33,reviewed,us,us
+2026-10-18T20:19:51.090Z,19.180166244507,-155.69766235352,-0.31999999284744,2.88,ml,49,127,0.102,0.280000001,hv,hv75060536,2026-10-18T21:09:10.813Z,"14 km NNE of Hawaiian Ocean View, Hawaii",earthquake,0.51,0.209999993,0.29,30,automatic,hv,hv
+2026-10-18T20:02:47.576Z,31.988,-103.29,6.9202,2.6,ml,37,46,0.1,0.2,tx,tx2026unwlji,2026-10-19T15:08:59.766Z,"16 km SSW of Jal, New Mexico",earthquake,0.54802178708383,1.2180254159948,0.1,23,reviewed,tx,tx
+2026-10-18T19:32:28.734Z,-21.541,-174.2956,10,5.2,mb,82,71,4.777,1.47,us,us6000u37h,2026-10-18T20:13:00.040Z,"71 km ESE of ‘Ohonua, Tonga",earthquake,8.48,1.789,0.049,134,reviewed,us,us
+2026-10-18T19:30:02.981Z,31.66,-104.428,6.6125,2.9,ml,31,71,0,0.2,tx,tx2026unvjfb,2026-10-18T19:41:53.040Z,"57 km S of Whites City, New Mexico",earthquake,0.93940376049744,0.75725445754911,0.1,25,reviewed,tx,tx
+2026-10-18T19:12:55.692Z,29.094,-97.768,6.9901,2.8,ml,19,62,0.1,0.2,tx,tx2026unuutp,2026-10-18T19:34:50.040Z,"19 km S of Nixon, Texas",earthquake,0.90599939581831,1.0990076701493,0.2,10,reviewed,tx,tx
+2026-10-18T18:28:38.450Z,19.170333333333,-68.242,21.03,3.39,md,7,287,0.6655,0.3,pr,pr71537168,2026-10-18T19:41:23.950Z,"67 km NNE of Punta Cana, Dominican Republic",earthquake,2,31.61,0.040385786785756,5,reviewed,pr,pr
+2026-10-18T18:28:37.630Z,19.177833557129,-155.50283813477,29.719999313354,2.67,md,45,99,0.04449,0.119999997,hv,hv75060496,2026-10-18T18:32:13.860Z,"3 km SW of Pāhala, Hawaii",earthquake,0.41,0.610000014,0.083525987839598,9,automatic,hv,hv
