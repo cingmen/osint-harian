@@ -5,303 +5,303 @@
   <description>Ringkasan harian perubahan, kegagalan, anomali, dan kata kunci pemantauan.</description>
   <language>id</language>
   <item>
-    <title>PERUBAHAN : BMKG Gempa Terkini — kejadian: 1 · magnitudo tertinggi: 2.5</title>
+    <title>PERUBAHAN : BMKG Gempa Terkini — kejadian: 1 · magnitudo tertinggi: 5.2</title>
     <link>https://cingmen.github.io/osint-harian#log</link>
-    <guid isPermaLink="false">20261022-0</guid>
-    <pubDate>Thu, 22 Oct 2026 03:25:21 +0700</pubDate>
+    <guid isPermaLink="false">20261023-0</guid>
+    <pubDate>Fri, 23 Oct 2026 03:21:10 +0700</pubDate>
   </item>
   <item>
     <title>PERUBAHAN : BMKG Gempa Dirasakan — kejadian: 15 · magnitudo tertinggi: 5.4</title>
     <link>https://cingmen.github.io/osint-harian#log</link>
-    <guid isPermaLink="false">20261022-1</guid>
-    <pubDate>Thu, 22 Oct 2026 03:25:21 +0700</pubDate>
+    <guid isPermaLink="false">20261023-1</guid>
+    <pubDate>Fri, 23 Oct 2026 03:21:10 +0700</pubDate>
+  </item>
+  <item>
+    <title>PERUBAHAN : NVD CVE 24 jam — baris 0 → 0 (+0)</title>
+    <link>https://cingmen.github.io/osint-harian#log</link>
+    <guid isPermaLink="false">20261023-2</guid>
+    <pubDate>Fri, 23 Oct 2026 03:21:10 +0700</pubDate>
+  </item>
+  <item>
+    <title>PERUBAHAN : USGS Gempa M2.5+ 24 jam — kejadian: 48 · magnitudo tertinggi: 7</title>
+    <link>https://cingmen.github.io/osint-harian#log</link>
+    <guid isPermaLink="false">20261023-3</guid>
+    <pubDate>Fri, 23 Oct 2026 03:21:10 +0700</pubDate>
+  </item>
+  <item>
+    <title>PERUBAHAN : NWS Peringatan Aktif (AS) — baris 30764 → 38563 (+7799)</title>
+    <link>https://cingmen.github.io/osint-harian#log</link>
+    <guid isPermaLink="false">20261023-4</guid>
+    <pubDate>Fri, 23 Oct 2026 03:21:10 +0700</pubDate>
+  </item>
+  <item>
+    <title>PERUBAHAN : GitHub DMCA Commit 24 jam — baris 0 → 0 (+0)</title>
+    <link>https://cingmen.github.io/osint-harian#log</link>
+    <guid isPermaLink="false">20261023-5</guid>
+    <pubDate>Fri, 23 Oct 2026 03:21:10 +0700</pubDate>
+  </item>
+  <item>
+    <title>WATCH : sanction — US-sanctioned ICC wins top EU human rights award</title>
+    <link>https://cingmen.github.io/osint-harian#log</link>
+    <guid isPermaLink="false">20261023-6</guid>
+    <pubDate>Fri, 23 Oct 2026 03:21:10 +0700</pubDate>
+  </item>
+  <item>
+    <title>PERUBAHAN : BMKG Gempa Terkini — kejadian: 1 · magnitudo tertinggi: 2.5</title>
+    <link>https://cingmen.github.io/osint-harian#log</link>
+    <guid isPermaLink="false">20261022-7</guid>
+    <pubDate>Fri, 23 Oct 2026 03:21:10 +0700</pubDate>
+  </item>
+  <item>
+    <title>PERUBAHAN : BMKG Gempa Dirasakan — kejadian: 15 · magnitudo tertinggi: 5.4</title>
+    <link>https://cingmen.github.io/osint-harian#log</link>
+    <guid isPermaLink="false">20261022-8</guid>
+    <pubDate>Fri, 23 Oct 2026 03:21:10 +0700</pubDate>
   </item>
   <item>
     <title>PERUBAHAN : CISA KEV (kerentanan aktif) — tidak ada CVE baru di KEV (jumlah tetap 1790)</title>
     <link>https://cingmen.github.io/osint-harian#log</link>
-    <guid isPermaLink="false">20261022-2</guid>
-    <pubDate>Thu, 22 Oct 2026 03:25:21 +0700</pubDate>
+    <guid isPermaLink="false">20261022-9</guid>
+    <pubDate>Fri, 23 Oct 2026 03:21:10 +0700</pubDate>
   </item>
   <item>
     <title>PERUBAHAN : NVD CVE 24 jam — baris 0 → 0 (+0)</title>
     <link>https://cingmen.github.io/osint-harian#log</link>
-    <guid isPermaLink="false">20261022-3</guid>
-    <pubDate>Thu, 22 Oct 2026 03:25:21 +0700</pubDate>
+    <guid isPermaLink="false">20261022-10</guid>
+    <pubDate>Fri, 23 Oct 2026 03:21:10 +0700</pubDate>
   </item>
   <item>
     <title>PERUBAHAN : USGS Gempa M2.5+ 24 jam — kejadian: 38 · magnitudo tertinggi: 5.2</title>
     <link>https://cingmen.github.io/osint-harian#log</link>
-    <guid isPermaLink="false">20261022-4</guid>
-    <pubDate>Thu, 22 Oct 2026 03:25:21 +0700</pubDate>
+    <guid isPermaLink="false">20261022-11</guid>
+    <pubDate>Fri, 23 Oct 2026 03:21:10 +0700</pubDate>
   </item>
   <item>
     <title>PERUBAHAN : NWS Peringatan Aktif (AS) — baris 35452 → 30764 (-4688)</title>
     <link>https://cingmen.github.io/osint-harian#log</link>
-    <guid isPermaLink="false">20261022-5</guid>
-    <pubDate>Thu, 22 Oct 2026 03:25:21 +0700</pubDate>
+    <guid isPermaLink="false">20261022-12</guid>
+    <pubDate>Fri, 23 Oct 2026 03:21:10 +0700</pubDate>
   </item>
   <item>
     <title>PERUBAHAN : GitHub DMCA Commit 24 jam — baris 0 → 0 (+0)</title>
     <link>https://cingmen.github.io/osint-harian#log</link>
-    <guid isPermaLink="false">20261022-6</guid>
-    <pubDate>Thu, 22 Oct 2026 03:25:21 +0700</pubDate>
+    <guid isPermaLink="false">20261022-13</guid>
+    <pubDate>Fri, 23 Oct 2026 03:21:10 +0700</pubDate>
   </item>
   <item>
     <title>PERUBAHAN : BMKG Gempa Terkini — kejadian: 1 · magnitudo tertinggi: 5.4</title>
     <link>https://cingmen.github.io/osint-harian#log</link>
-    <guid isPermaLink="false">20261021-7</guid>
-    <pubDate>Thu, 22 Oct 2026 03:25:21 +0700</pubDate>
+    <guid isPermaLink="false">20261021-14</guid>
+    <pubDate>Fri, 23 Oct 2026 03:21:10 +0700</pubDate>
   </item>
   <item>
     <title>PERUBAHAN : BMKG Gempa Dirasakan — kejadian: 15 · magnitudo tertinggi: 5.4</title>
     <link>https://cingmen.github.io/osint-harian#log</link>
-    <guid isPermaLink="false">20261021-8</guid>
-    <pubDate>Thu, 22 Oct 2026 03:25:21 +0700</pubDate>
+    <guid isPermaLink="false">20261021-15</guid>
+    <pubDate>Fri, 23 Oct 2026 03:21:10 +0700</pubDate>
   </item>
   <item>
     <title>PERUBAHAN : CISA KEV (kerentanan aktif) — CVE baru masuk KEV: CVE-2026-106931,CVE-2026-110936,CVE-2026-96652,CVE-2026-96654,CVE-2026-96655,CVE-2026-96656</title>
     <link>https://cingmen.github.io/osint-harian#log</link>
-    <guid isPermaLink="false">20261021-9</guid>
-    <pubDate>Thu, 22 Oct 2026 03:25:21 +0700</pubDate>
+    <guid isPermaLink="false">20261021-16</guid>
+    <pubDate>Fri, 23 Oct 2026 03:21:10 +0700</pubDate>
   </item>
   <item>
     <title>PERUBAHAN : NVD CVE 24 jam — baris 0 → 0 (+0)</title>
     <link>https://cingmen.github.io/osint-harian#log</link>
-    <guid isPermaLink="false">20261021-10</guid>
-    <pubDate>Thu, 22 Oct 2026 03:25:21 +0700</pubDate>
+    <guid isPermaLink="false">20261021-17</guid>
+    <pubDate>Fri, 23 Oct 2026 03:21:10 +0700</pubDate>
   </item>
   <item>
     <title>PERUBAHAN : USGS Gempa M2.5+ 24 jam — kejadian: 48 · magnitudo tertinggi: 6.3</title>
     <link>https://cingmen.github.io/osint-harian#log</link>
-    <guid isPermaLink="false">20261021-11</guid>
-    <pubDate>Thu, 22 Oct 2026 03:25:21 +0700</pubDate>
+    <guid isPermaLink="false">20261021-18</guid>
+    <pubDate>Fri, 23 Oct 2026 03:21:10 +0700</pubDate>
   </item>
   <item>
     <title>PERUBAHAN : NWS Peringatan Aktif (AS) — baris 32966 → 35452 (+2486)</title>
     <link>https://cingmen.github.io/osint-harian#log</link>
-    <guid isPermaLink="false">20261021-12</guid>
-    <pubDate>Thu, 22 Oct 2026 03:25:21 +0700</pubDate>
+    <guid isPermaLink="false">20261021-19</guid>
+    <pubDate>Fri, 23 Oct 2026 03:21:10 +0700</pubDate>
   </item>
   <item>
     <title>PERUBAHAN : GitHub DMCA Commit 24 jam — baris 0 → 0 (+0)</title>
     <link>https://cingmen.github.io/osint-harian#log</link>
-    <guid isPermaLink="false">20261021-13</guid>
-    <pubDate>Thu, 22 Oct 2026 03:25:21 +0700</pubDate>
+    <guid isPermaLink="false">20261021-20</guid>
+    <pubDate>Fri, 23 Oct 2026 03:21:10 +0700</pubDate>
   </item>
   <item>
     <title>PERUBAHAN : BMKG Gempa Terkini — kejadian: 1 · magnitudo tertinggi: 4.2</title>
     <link>https://cingmen.github.io/osint-harian#log</link>
-    <guid isPermaLink="false">20261020-14</guid>
-    <pubDate>Thu, 22 Oct 2026 03:25:21 +0700</pubDate>
+    <guid isPermaLink="false">20261020-21</guid>
+    <pubDate>Fri, 23 Oct 2026 03:21:10 +0700</pubDate>
   </item>
   <item>
     <title>PERUBAHAN : BMKG Gempa Dirasakan — kejadian: 15 · magnitudo tertinggi: 5.3</title>
     <link>https://cingmen.github.io/osint-harian#log</link>
-    <guid isPermaLink="false">20261020-15</guid>
-    <pubDate>Thu, 22 Oct 2026 03:25:21 +0700</pubDate>
+    <guid isPermaLink="false">20261020-22</guid>
+    <pubDate>Fri, 23 Oct 2026 03:21:10 +0700</pubDate>
   </item>
   <item>
     <title>PERUBAHAN : NVD CVE 24 jam — baris 0 → 0 (+0)</title>
     <link>https://cingmen.github.io/osint-harian#log</link>
-    <guid isPermaLink="false">20261020-16</guid>
-    <pubDate>Thu, 22 Oct 2026 03:25:21 +0700</pubDate>
+    <guid isPermaLink="false">20261020-23</guid>
+    <pubDate>Fri, 23 Oct 2026 03:21:10 +0700</pubDate>
   </item>
   <item>
     <title>PERUBAHAN : USGS Gempa M2.5+ 24 jam — kejadian: 54 · magnitudo tertinggi: 6</title>
     <link>https://cingmen.github.io/osint-harian#log</link>
-    <guid isPermaLink="false">20261020-17</guid>
-    <pubDate>Thu, 22 Oct 2026 03:25:21 +0700</pubDate>
+    <guid isPermaLink="false">20261020-24</guid>
+    <pubDate>Fri, 23 Oct 2026 03:21:10 +0700</pubDate>
   </item>
   <item>
     <title>PERUBAHAN : NWS Peringatan Aktif (AS) — baris 34462 → 32966 (-1496)</title>
     <link>https://cingmen.github.io/osint-harian#log</link>
-    <guid isPermaLink="false">20261020-18</guid>
-    <pubDate>Thu, 22 Oct 2026 03:25:21 +0700</pubDate>
+    <guid isPermaLink="false">20261020-25</guid>
+    <pubDate>Fri, 23 Oct 2026 03:21:10 +0700</pubDate>
   </item>
   <item>
     <title>PERUBAHAN : GitHub DMCA Commit 24 jam — baris 0 → 0 (+0)</title>
     <link>https://cingmen.github.io/osint-harian#log</link>
-    <guid isPermaLink="false">20261020-19</guid>
-    <pubDate>Thu, 22 Oct 2026 03:25:21 +0700</pubDate>
+    <guid isPermaLink="false">20261020-26</guid>
+    <pubDate>Fri, 23 Oct 2026 03:21:10 +0700</pubDate>
   </item>
   <item>
     <title>WATCH : sanction — Trump says suspension of Russia sanctions is to keep peace negotiations going</title>
     <link>https://cingmen.github.io/osint-harian#log</link>
-    <guid isPermaLink="false">20261020-20</guid>
-    <pubDate>Thu, 22 Oct 2026 03:25:21 +0700</pubDate>
+    <guid isPermaLink="false">20261020-27</guid>
+    <pubDate>Fri, 23 Oct 2026 03:21:10 +0700</pubDate>
   </item>
   <item>
     <title>WATCH : sanction — Trump slams Zelenskyy amid Russia sanctions rift and says ‘somebody else’ should negotiate for Ukraine - live</title>
     <link>https://cingmen.github.io/osint-harian#log</link>
-    <guid isPermaLink="false">20261020-21</guid>
-    <pubDate>Thu, 22 Oct 2026 03:25:21 +0700</pubDate>
+    <guid isPermaLink="false">20261020-28</guid>
+    <pubDate>Fri, 23 Oct 2026 03:21:10 +0700</pubDate>
   </item>
   <item>
     <title>PERUBAHAN : BMKG Gempa Terkini — kejadian: 1 · magnitudo tertinggi: 4.1</title>
     <link>https://cingmen.github.io/osint-harian#log</link>
-    <guid isPermaLink="false">20261019-22</guid>
-    <pubDate>Thu, 22 Oct 2026 03:25:21 +0700</pubDate>
+    <guid isPermaLink="false">20261019-29</guid>
+    <pubDate>Fri, 23 Oct 2026 03:21:10 +0700</pubDate>
   </item>
   <item>
     <title>PERUBAHAN : BMKG Gempa Dirasakan — kejadian: 15 · magnitudo tertinggi: 5.3</title>
     <link>https://cingmen.github.io/osint-harian#log</link>
-    <guid isPermaLink="false">20261019-23</guid>
-    <pubDate>Thu, 22 Oct 2026 03:25:21 +0700</pubDate>
+    <guid isPermaLink="false">20261019-30</guid>
+    <pubDate>Fri, 23 Oct 2026 03:21:10 +0700</pubDate>
   </item>
   <item>
     <title>PERUBAHAN : OFAC SDN (daftar sanksi) — entri sanksi 19417 → 19458 (+41)</title>
     <link>https://cingmen.github.io/osint-harian#log</link>
-    <guid isPermaLink="false">20261019-24</guid>
-    <pubDate>Thu, 22 Oct 2026 03:25:21 +0700</pubDate>
+    <guid isPermaLink="false">20261019-31</guid>
+    <pubDate>Fri, 23 Oct 2026 03:21:10 +0700</pubDate>
   </item>
   <item>
     <title>PERUBAHAN : NVD CVE 24 jam — baris 0 → 0 (+0)</title>
     <link>https://cingmen.github.io/osint-harian#log</link>
-    <guid isPermaLink="false">20261019-25</guid>
-    <pubDate>Thu, 22 Oct 2026 03:25:21 +0700</pubDate>
+    <guid isPermaLink="false">20261019-32</guid>
+    <pubDate>Fri, 23 Oct 2026 03:21:10 +0700</pubDate>
   </item>
   <item>
     <title>PERUBAHAN : USGS Gempa M2.5+ 24 jam — kejadian: 32 · magnitudo tertinggi: 5.2</title>
     <link>https://cingmen.github.io/osint-harian#log</link>
-    <guid isPermaLink="false">20261019-26</guid>
-    <pubDate>Thu, 22 Oct 2026 03:25:21 +0700</pubDate>
+    <guid isPermaLink="false">20261019-33</guid>
+    <pubDate>Fri, 23 Oct 2026 03:21:10 +0700</pubDate>
   </item>
   <item>
     <title>PERUBAHAN : NWS Peringatan Aktif (AS) — baris 45173 → 34462 (-10711)</title>
     <link>https://cingmen.github.io/osint-harian#log</link>
-    <guid isPermaLink="false">20261019-27</guid>
-    <pubDate>Thu, 22 Oct 2026 03:25:21 +0700</pubDate>
+    <guid isPermaLink="false">20261019-34</guid>
+    <pubDate>Fri, 23 Oct 2026 03:21:10 +0700</pubDate>
   </item>
   <item>
     <title>PERUBAHAN : BMKG Gempa Terkini — kejadian: 1 · magnitudo tertinggi: 2.6</title>
     <link>https://cingmen.github.io/osint-harian#log</link>
-    <guid isPermaLink="false">20261018-28</guid>
-    <pubDate>Thu, 22 Oct 2026 03:25:21 +0700</pubDate>
+    <guid isPermaLink="false">20261018-35</guid>
+    <pubDate>Fri, 23 Oct 2026 03:21:10 +0700</pubDate>
   </item>
   <item>
     <title>PERUBAHAN : BMKG Gempa Dirasakan — kejadian: 15 · magnitudo tertinggi: 4.9</title>
     <link>https://cingmen.github.io/osint-harian#log</link>
-    <guid isPermaLink="false">20261018-29</guid>
-    <pubDate>Thu, 22 Oct 2026 03:25:21 +0700</pubDate>
+    <guid isPermaLink="false">20261018-36</guid>
+    <pubDate>Fri, 23 Oct 2026 03:21:10 +0700</pubDate>
   </item>
   <item>
     <title>PERUBAHAN : NVD CVE 24 jam — baris 0 → 0 (+0)</title>
     <link>https://cingmen.github.io/osint-harian#log</link>
-    <guid isPermaLink="false">20261018-30</guid>
-    <pubDate>Thu, 22 Oct 2026 03:25:21 +0700</pubDate>
+    <guid isPermaLink="false">20261018-37</guid>
+    <pubDate>Fri, 23 Oct 2026 03:21:10 +0700</pubDate>
   </item>
   <item>
     <title>PERUBAHAN : USGS Gempa M2.5+ 24 jam — kejadian: 48 · magnitudo tertinggi: 5.7</title>
     <link>https://cingmen.github.io/osint-harian#log</link>
-    <guid isPermaLink="false">20261018-31</guid>
-    <pubDate>Thu, 22 Oct 2026 03:25:21 +0700</pubDate>
+    <guid isPermaLink="false">20261018-38</guid>
+    <pubDate>Fri, 23 Oct 2026 03:21:10 +0700</pubDate>
   </item>
   <item>
     <title>PERUBAHAN : NWS Peringatan Aktif (AS) — baris 56880 → 45173 (-11707)</title>
     <link>https://cingmen.github.io/osint-harian#log</link>
-    <guid isPermaLink="false">20261018-32</guid>
-    <pubDate>Thu, 22 Oct 2026 03:25:21 +0700</pubDate>
+    <guid isPermaLink="false">20261018-39</guid>
+    <pubDate>Fri, 23 Oct 2026 03:21:10 +0700</pubDate>
   </item>
   <item>
     <title>PERUBAHAN : GitHub DMCA Commit 24 jam — baris 0 → 0 (+0)</title>
     <link>https://cingmen.github.io/osint-harian#log</link>
-    <guid isPermaLink="false">20261018-33</guid>
-    <pubDate>Thu, 22 Oct 2026 03:25:21 +0700</pubDate>
+    <guid isPermaLink="false">20261018-40</guid>
+    <pubDate>Fri, 23 Oct 2026 03:21:10 +0700</pubDate>
   </item>
   <item>
     <title>WATCH : sanction — Trump waives several Russia sanctions as row with Zelensky intensifies</title>
     <link>https://cingmen.github.io/osint-harian#log</link>
-    <guid isPermaLink="false">20261018-34</guid>
-    <pubDate>Thu, 22 Oct 2026 03:25:21 +0700</pubDate>
+    <guid isPermaLink="false">20261018-41</guid>
+    <pubDate>Fri, 23 Oct 2026 03:21:10 +0700</pubDate>
   </item>
   <item>
     <title>WATCH : sanction — Trump faces bipartisan backlash over Russia sanctions waiver</title>
     <link>https://cingmen.github.io/osint-harian#log</link>
-    <guid isPermaLink="false">20261018-35</guid>
-    <pubDate>Thu, 22 Oct 2026 03:25:21 +0700</pubDate>
+    <guid isPermaLink="false">20261018-42</guid>
+    <pubDate>Fri, 23 Oct 2026 03:21:10 +0700</pubDate>
   </item>
   <item>
     <title>WATCH : sanction — Trump’s pause on Russia sanctions is ‘reward’ for Putin, Zelenskyy says</title>
     <link>https://cingmen.github.io/osint-harian#log</link>
-    <guid isPermaLink="false">20261018-36</guid>
-    <pubDate>Thu, 22 Oct 2026 03:25:21 +0700</pubDate>
+    <guid isPermaLink="false">20261018-43</guid>
+    <pubDate>Fri, 23 Oct 2026 03:21:10 +0700</pubDate>
   </item>
   <item>
     <title>PERUBAHAN : BMKG Gempa Terkini — kejadian: 1 · magnitudo tertinggi: 2.3</title>
     <link>https://cingmen.github.io/osint-harian#log</link>
-    <guid isPermaLink="false">20261017-37</guid>
-    <pubDate>Thu, 22 Oct 2026 03:25:21 +0700</pubDate>
+    <guid isPermaLink="false">20261017-44</guid>
+    <pubDate>Fri, 23 Oct 2026 03:21:10 +0700</pubDate>
   </item>
   <item>
     <title>PERUBAHAN : BMKG Gempa Dirasakan — kejadian: 15 · magnitudo tertinggi: 4.9</title>
     <link>https://cingmen.github.io/osint-harian#log</link>
-    <guid isPermaLink="false">20261017-38</guid>
-    <pubDate>Thu, 22 Oct 2026 03:25:21 +0700</pubDate>
+    <guid isPermaLink="false">20261017-45</guid>
+    <pubDate>Fri, 23 Oct 2026 03:21:10 +0700</pubDate>
   </item>
   <item>
     <title>PERUBAHAN : CISA KEV (kerentanan aktif) — CVE baru masuk KEV: CVE-2025-61624,CVE-2026-102764</title>
     <link>https://cingmen.github.io/osint-harian#log</link>
-    <guid isPermaLink="false">20261017-39</guid>
-    <pubDate>Thu, 22 Oct 2026 03:25:21 +0700</pubDate>
+    <guid isPermaLink="false">20261017-46</guid>
+    <pubDate>Fri, 23 Oct 2026 03:21:10 +0700</pubDate>
   </item>
   <item>
     <title>PERUBAHAN : NVD CVE 24 jam — baris 0 → 0 (+0)</title>
     <link>https://cingmen.github.io/osint-harian#log</link>
-    <guid isPermaLink="false">20261017-40</guid>
-    <pubDate>Thu, 22 Oct 2026 03:25:21 +0700</pubDate>
+    <guid isPermaLink="false">20261017-47</guid>
+    <pubDate>Fri, 23 Oct 2026 03:21:10 +0700</pubDate>
   </item>
   <item>
     <title>PERUBAHAN : USGS Gempa M2.5+ 24 jam — kejadian: 48 · magnitudo tertinggi: 6.9</title>
     <link>https://cingmen.github.io/osint-harian#log</link>
-    <guid isPermaLink="false">20261017-41</guid>
-    <pubDate>Thu, 22 Oct 2026 03:25:21 +0700</pubDate>
+    <guid isPermaLink="false">20261017-48</guid>
+    <pubDate>Fri, 23 Oct 2026 03:21:10 +0700</pubDate>
   </item>
   <item>
     <title>PERUBAHAN : NWS Peringatan Aktif (AS) — baris 55881 → 56880 (+999)</title>
     <link>https://cingmen.github.io/osint-harian#log</link>
-    <guid isPermaLink="false">20261017-42</guid>
-    <pubDate>Thu, 22 Oct 2026 03:25:21 +0700</pubDate>
-  </item>
-  <item>
-    <title>PERUBAHAN : GitHub DMCA Commit 24 jam — baris 0 → 0 (+0)</title>
-    <link>https://cingmen.github.io/osint-harian#log</link>
-    <guid isPermaLink="false">20261017-43</guid>
-    <pubDate>Thu, 22 Oct 2026 03:25:21 +0700</pubDate>
-  </item>
-  <item>
-    <title>PERUBAHAN : BMKG Gempa Terkini — kejadian: 1 · magnitudo tertinggi: 2.7</title>
-    <link>https://cingmen.github.io/osint-harian#log</link>
-    <guid isPermaLink="false">20261016-44</guid>
-    <pubDate>Thu, 22 Oct 2026 03:25:21 +0700</pubDate>
-  </item>
-  <item>
-    <title>PERUBAHAN : BMKG Gempa Dirasakan — kejadian: 15 · magnitudo tertinggi: 5.7</title>
-    <link>https://cingmen.github.io/osint-harian#log</link>
-    <guid isPermaLink="false">20261016-45</guid>
-    <pubDate>Thu, 22 Oct 2026 03:25:21 +0700</pubDate>
-  </item>
-  <item>
-    <title>PERUBAHAN : CISA KEV (kerentanan aktif) — CVE baru masuk KEV: CVE-2026-21589</title>
-    <link>https://cingmen.github.io/osint-harian#log</link>
-    <guid isPermaLink="false">20261016-46</guid>
-    <pubDate>Thu, 22 Oct 2026 03:25:21 +0700</pubDate>
-  </item>
-  <item>
-    <title>PERUBAHAN : NVD CVE 24 jam — baris 0 → 0 (+0)</title>
-    <link>https://cingmen.github.io/osint-harian#log</link>
-    <guid isPermaLink="false">20261016-47</guid>
-    <pubDate>Thu, 22 Oct 2026 03:25:21 +0700</pubDate>
-  </item>
-  <item>
-    <title>PERUBAHAN : USGS Gempa M2.5+ 24 jam — kejadian: 43 · magnitudo tertinggi: 5.6</title>
-    <link>https://cingmen.github.io/osint-harian#log</link>
-    <guid isPermaLink="false">20261016-48</guid>
-    <pubDate>Thu, 22 Oct 2026 03:25:21 +0700</pubDate>
-  </item>
-  <item>
-    <title>PERUBAHAN : NWS Peringatan Aktif (AS) — baris 41944 → 55881 (+13937)</title>
-    <link>https://cingmen.github.io/osint-harian#log</link>
-    <guid isPermaLink="false">20261016-49</guid>
-    <pubDate>Thu, 22 Oct 2026 03:25:21 +0700</pubDate>
+    <guid isPermaLink="false">20261017-49</guid>
+    <pubDate>Fri, 23 Oct 2026 03:21:10 +0700</pubDate>
   </item>
 </channel></rss>

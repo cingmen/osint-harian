@@ -1,0 +1,49 @@
+time,latitude,longitude,depth,mag,magType,nst,gap,dmin,rms,net,id,updated,place,type,horizontalError,depthError,magError,magNst,status,locationSource,magSource
+2026-10-22T19:32:16.550Z,19.424499511719,-155.60383605957,-1.0099999904633,2.76,md,48,45,0.03117,0.370000005,hv,hv75062386,2026-10-22T19:41:16.040Z,"27 km E of Honaunau-Napoopoo, Hawaii",earthquake,0.41,0.620000005,0.11482925351034,3,automatic,hv,hv
+2026-10-22T19:32:02.270Z,19.42799949646,-155.61549377441,-0.029999999329448,2.98,ml,16,100,0.0276,0.319999993,hv,hv75062381,2026-10-22T19:42:14.914Z,"26 km E of Honaunau-Napoopoo, Hawaii",earthquake,0.59,1.02999997,0.31,39,automatic,hv,hv
+2026-10-22T19:06:56.074Z,-15.1269,-173.3304,23.411,4.9,mb,39,102,1.927,1.18,us,us6000u46r,2026-10-22T19:27:42.040Z,"104 km NNE of Hihifo, Tonga",earthquake,9.71,5.393,0.102,30,reviewed,us,us
+2026-10-22T18:36:32.291Z,53.3232,-161.3613,10,3.9,mb,24,172,1.956,0.33,us,us6000u45y,2026-10-22T18:49:00.040Z,"203 km SSE of King Cove, Alaska",earthquake,3.74,1.952,0.121,18,reviewed,us,us
+2026-10-22T18:06:44.294Z,32.3707,93.9886,10,5,mb,58,57,8.802,1.17,us,us6000u45j,2026-10-22T18:28:47.040Z,"207 km ENE of Nagqu, China",earthquake,10.53,1.825,0.047,148,reviewed,us,us
+2026-10-22T17:21:26.780Z,44.035,147.0825,76.309,4.8,mb,88,165,3.236,0.73,us,us6000u45f,2026-10-22T17:38:20.040Z,"39 km NE of Shikotan, Russia",earthquake,9.28,7.767,0.035,251,reviewed,us,us
+2026-10-22T16:57:53.999Z,32.3207,93.8055,10,4.7,mb,61,66,8.963,0.66,us,us6000u45a,2026-10-22T19:57:13.040Z,"190 km ENE of Nagqu, China",earthquake,9.82,1.874,0.069,63,reviewed,us,us
+2026-10-22T16:51:24.606Z,65.0219,-134.2798,10,4.2,mb,45,79,1.595,0.7,us,us6000u457,2026-10-22T19:51:33.338Z,"269 km ENE of Dawson City, Canada",earthquake,6.09,1.917,0.175,9,reviewed,us,us
+2026-10-22T16:51:21.365Z,-22.564,-175.4438,35,4.8,mb,19,123,7.019,1.04,us,us6000u459,2026-10-22T17:23:14.040Z,"144 km SSW of ‘Ohonua, Tonga",earthquake,15.22,1.922,0.16,13,reviewed,us,us
+2026-10-22T16:50:16.850Z,32.4493,93.8798,10,4.5,mb,46,106,11.237,0.79,us,us6000u458,2026-10-22T19:33:41.040Z,"203 km ENE of Nagqu, China",earthquake,11.59,1.89,0.088,38,reviewed,us,us
+2026-10-22T16:45:00.942Z,32.4691,93.7403,10,4.6,mb,47,96,8.947,0.55,us,us6000u455,2026-10-22T19:23:08.040Z,"193 km NE of Nagqu, China",earthquake,9.19,1.88,0.082,44,reviewed,us,us
+2026-10-22T16:21:33.822Z,32.4918,93.9447,10,4.9,mb,63,62,8.782,0.73,us,us6000u451,2026-10-22T19:14:27.040Z,"210 km ENE of Nagqu, China",earthquake,8.67,1.871,0.064,77,reviewed,us,us
+2026-10-22T15:57:55.210Z,32.5222,94.0289,10,4.3,mb,20,112,13.618,0.71,us,us6000u44z,2026-10-22T19:04:07.040Z,"219 km ENE of Nagqu, China",earthquake,15.2,1.907,0.129,17,reviewed,us,us
+2026-10-22T15:45:37.094Z,33.7966,86.2316,10,4.9,mb,49,86,10.797,0.92,us,us6000u44w,2026-10-22T16:09:42.040Z,"western Xizang",earthquake,10.02,1.889,0.093,37,reviewed,us,us
+2026-10-22T15:27:48.445Z,40.1472,77.3556,10,4.7,mb,21,155,2.015,0.53,us,us6000u44u,2026-10-22T18:37:18.040Z,"139 km ENE of Kashgar, China",earthquake,11.55,1.936,0.159,12,reviewed,us,us
+2026-10-22T15:19:57.039Z,58.648,-155.169,136.4,2.6,ml,35,68,0.1,0.5,ak,aka2026uyfanq,2026-10-22T15:21:46.850Z,"86 km SSE of Igiugig, Alaska",earthquake,9.2,5.1009,0.3,5,automatic,ak,ak
+2026-10-22T15:12:04.462Z,32.4401,93.8669,10,5.2,mb,70,62,8.863,0.71,us,us6000u44n,2026-10-22T15:40:56.040Z,"201 km ENE of Nagqu, China",earthquake,9.59,1.834,0.064,81,reviewed,us,us
+2026-10-22T14:33:40.353Z,32.3805,93.7797,18,7,mww,131,21,8.956,1.01,us,us6000u43g,2026-10-22T18:57:19.152Z,"191 km ENE of Nagqu, China",earthquake,6.98,1.76,0.035,78,reviewed,us,us
+2026-10-22T14:25:19.290Z,45.886333333333,-122.85683333333,24.04,3.02,ml,94,23,0.02862,0.12,uw,uw714124012,2026-10-22T20:20:46.268Z,"3 km W of Columbia City, Oregon",earthquake,0.13,0.26,0.15178529395064,95,reviewed,uw,uw
+2026-10-22T12:22:57.822Z,-13.9085,165.6239,10,4.9,mb,41,116,6.728,0.4,us,us6000u432,2026-10-22T13:07:34.040Z,"200 km NW of Port-Olry, Vanuatu",earthquake,10.91,1.904,0.075,56,reviewed,us,us
+2026-10-22T10:57:52.259Z,-2.8037,102.1272,135.261,4.9,mb,85,52,4.878,0.61,us,us6000u42q,2026-10-22T11:31:57.040Z,"85 km NNW of Curup, Indonesia",earthquake,10.74,6.873,0.064,77,reviewed,us,us
+2026-10-22T10:42:23.569Z,64.208,-151.216,12.9,2.9,ml,50,30,0.1,1,ak,aka2026uxvwcs,2026-10-22T10:45:12.957Z,"64 km ENE of Lake Minchumina, Alaska",earthquake,3.3,2.5571,0.2,31,automatic,ak,ak
+2026-10-22T10:07:41.749Z,36.677,71.3996,174.513,4.6,mb,79,59,1.847,0.77,us,us6000u42e,2026-10-22T10:24:35.040Z,"11 km W of Ashkāsham, Afghanistan",earthquake,6.65,7.065,0.068,64,reviewed,us,us
+2026-10-22T09:44:42.240Z,41.563,-109.88433333333,-2.25,3.25,ml,22,112,0.1136,0.19,uu,uu80161371,2026-10-22T13:24:01.270Z,"3 km NW of Little America, Wyoming",earthquake,0.43,0.99,0.20661383838829,20,reviewed,uu,uu
+2026-10-22T09:04:38.330Z,19.170666666667,-64.105666666667,33.81,3.4,md,13,310,0.7328,0.57,pr,pr71537448,2026-10-22T10:02:48.950Z,"117 km NE of Cruz Bay, U.S. Virgin Islands",earthquake,7.68,28.6,0.06147797012313,4,reviewed,pr,pr
+2026-10-22T08:34:18.537Z,53.7958,160.2671,61.06,4.5,mb,39,133,1.683,0.77,us,us6000u423,2026-10-22T09:03:20.040Z,"136 km NE of Petropavlovsk-Kamchatsky, Russia",earthquake,12.07,7.7,0.085,41,reviewed,us,us
+2026-10-22T08:06:35.200Z,13.8474,145.2184,99.23,4.6,mb,39,132,1.486,0.34,us,us6000u41z,2026-10-22T11:43:58.496Z,"49 km NE of Yigo Village, Guam",earthquake,12.46,7.974,0.075,53,reviewed,us,us
+2026-10-22T07:49:29.455Z,-62.4088,163.5214,10,4.8,mb,16,201,15.194,0.33,us,us6000u41y,2026-10-22T08:58:09.040Z,"Balleny Islands region",earthquake,18.39,1.989,0.144,15,reviewed,us,us
+2026-10-22T07:28:10.068Z,14.9718,-91.2421,176.976,4.2,mb,24,173,1.562,0.62,us,us6000u41s,2026-10-22T08:54:13.040Z,"3 km WNW of Patzité, Guatemala",earthquake,13.52,9.613,0.081,43,reviewed,us,us
+2026-10-22T07:00:06.106Z,62.237,-148.817,16.8,2.9,ml,132,18,0.5,1.3,ak,aka2026uxolir,2026-10-22T13:22:08.433Z,"51 km N of Sutton-Alpine, Alaska",earthquake,1.5,1.592,0.1,89,automatic,ak,ak
+2026-10-22T05:48:51.917Z,32.7634,-103.4739,9.709,2.5,ml,38,101,0.44,1.02,us,us6000u41a,2026-10-22T07:55:58.040Z,"23 km SSW of Lovington, New Mexico",earthquake,2.59,7.024,0.074,24,reviewed,us,us
+2026-10-22T05:23:59.562Z,-5.1295,152.2467,57.317,4.8,mb,34,162,0.936,0.74,us,us6000u417,2026-10-22T05:40:49.040Z,"86 km S of Kokopo, Papua New Guinea",earthquake,11.44,5.832,0.096,34,reviewed,us,us
+2026-10-22T04:44:17.421Z,56.9659,-34.0939,10,4.8,mww,53,100,7.19,1.05,us,us6000u411,2026-10-22T05:16:10.040Z,"Reykjanes Ridge",earthquake,11.08,1.916,0.093,11,reviewed,us,us
+2026-10-22T04:39:19.529Z,59.955,-152.052,88.1,2.7,ml,133,52,0.5,0.7,ak,aka2026uxjtil,2026-10-22T04:43:12.970Z,"17 km W of Happy Valley, Alaska",earthquake,2.3,1.6064,0.2,88,automatic,ak,ak
+2026-10-22T04:18:34.430Z,37.169998168945,-121.22966766357,-0.69999998807907,3.15,ml,102,112,0.1058,0.37,nc,nc75453266,2026-10-22T18:40:18.678Z,"23 km WSW of Gustine, CA",earthquake,0.47,4.84000015,0.247,32,automatic,nc,nc
+2026-10-22T04:16:24.280Z,-21.1419,-179.1733,624.829,4.2,mb,19,122,4.274,0.71,us,us6000u40x,2026-10-22T04:32:53.040Z,"Fiji region",earthquake,21.31,14.773,0.132,16,reviewed,us,us
+2026-10-22T03:35:17.429Z,14.8614,-93.8388,49.131,4.6,mb,39,145,2.164,0.93,us,us6000u40r,2026-10-22T03:54:26.040Z,"97 km SW of El Palmarcito, Mexico",earthquake,7.05,8.135,0.044,153,reviewed,us,us
+2026-10-22T03:24:07.495Z,7.4475,-80.6336,10,4,mb,14,134,1.881,0.72,us,us6000u40p,2026-10-22T10:13:56.189Z,"2 km N of El Cortezo, Panama",earthquake,5.82,1.798,0.365,2,reviewed,us,us
+2026-10-22T02:23:25.941Z,72.1141,0.3693,10,4.4,mb,45,105,7.31,0.72,us,us6000u40d,2026-10-22T03:03:57.040Z,"Norwegian Sea",earthquake,11.26,1.911,0.076,50,reviewed,us,us
+2026-10-22T01:43:10.400Z,40.23450088501,-124.17082977295,10.989999771118,3.25,ml,41,108,0.01543,0.17,nc,nc75453186,2026-10-22T14:08:13.349Z,"14 km SE of Petrolia, CA",earthquake,0.36,0.389999986,0.38,11,automatic,nc,nc
+2026-10-22T01:08:03.006Z,-31.2167,-68.7255,103.228,4.4,mb,26,74,0.331,0.53,us,us6000u3zu,2026-10-22T02:24:52.040Z,"30 km NW of Albardón, Argentina",earthquake,6.08,2.125,0.218,6,reviewed,us,us
+2026-10-21T21:58:48.618Z,56.863,-34.1306,10,5,mb,88,50,7.243,0.66,us,us6000u3yp,2026-10-21T22:12:21.040Z,"Reykjanes Ridge",earthquake,8.79,1.869,0.036,255,reviewed,us,us
+2026-10-21T21:38:55.441Z,56.8137,-34.1689,10,5.3,mww,85,50,7.259,0.93,us,us6000u3yj,2026-10-21T21:51:49.040Z,"Reykjanes Ridge",earthquake,8.67,1.875,0.075,17,reviewed,us,us
+2026-10-21T21:15:50.450Z,-20.3503,-69.9156,46.359,2.8,ml,9,86,0.217,0.58,us,us6000u3ye,2026-10-22T06:13:59.374Z,"17 km SW of Pozo Almonte, Chile",earthquake,3.34,6.35,0.085,18,reviewed,us,us
+2026-10-21T20:34:50.454Z,-19.7855,14.7284,10,4.9,mb,80,28,2.755,0.6,us,us6000u3y1,2026-10-22T04:30:52.087Z,"68 km NNW of Khorixas, Namibia",earthquake,7.89,1.801,0.068,68,reviewed,us,us
+2026-10-21T20:30:20.350Z,63.129,-150.606,115.7,2.6,ml,77,36,0.6,0.6,ak,aka2026uwtlhl,2026-10-21T20:34:13.247Z,"70 km N of Petersville, Alaska",earthquake,2.6,2.4801,0.3,53,automatic,ak,ak
+2026-10-21T20:29:33.943Z,56.898,-154.118,65.2,2.6,ml,31,132,0.3,0.8,ak,aka2026uwtkpf,2026-10-22T13:28:55.040Z,"6 km SSE of Akhiok, Alaska",earthquake,6.9,4.8516,0.4,21,reviewed,ak,ak
+2026-10-21T20:25:53.355Z,-6.7238,129.6818,143.278,4.4,mb,41,73,6.247,0.71,us,us6000u3xv,2026-10-22T13:48:25.040Z,"Banda Sea",earthquake,10.58,8.234,0.092,34,reviewed,us,us
