@@ -1,0 +1,33 @@
+time,latitude,longitude,depth,mag,magType,nst,gap,dmin,rms,net,id,updated,place,type,horizontalError,depthError,magError,magNst,status,locationSource,magSource
+2026-10-26T14:02:54.892Z,61.636,-141.316,5,2.8,ml,46,52,0.4,0.6,ak,aka2026vfmqfn,2026-10-26T14:06:02.846Z,"88 km ENE of McCarthy, Alaska",earthquake,2.6,,0.1,29,automatic,ak,ak
+2026-10-26T13:10:33.190Z,36.86266708374,-121.60500335693,4.8299999237061,2.5,md,64,49,0.02413,0.17,nc,nc75455061,2026-10-26T16:43:00.468Z,"4 km SE of Aromas, CA",earthquake,0.23,0.449999988,0.14,69,automatic,nc,nc
+2026-10-26T12:13:30.652Z,-13.8613,165.6029,10,5.2,mww,45,104,6.77,0.66,us,us6000u4zb,2026-10-26T12:30:59.040Z,"205 km NW of Port-Olry, Vanuatu",earthquake,9.47,1.835,0.073,18,reviewed,us,us
+2026-10-26T11:38:06.778Z,53.5071,-165.1239,35,4.6,mwr,23,168,0.762,0.86,us,us6000u4z7,2026-10-26T11:48:30.831Z,"81 km SSE of Akutan, Alaska",earthquake,5.49,1.995,0.06,27,reviewed,us,us
+2026-10-26T11:17:55.055Z,-13.9396,165.3858,10,5,mww,37,107,6.658,0.96,us,us6000u4z6,2026-10-26T11:34:36.040Z,"218 km NW of Port-Olry, Vanuatu",earthquake,7.57,1.874,0.089,12,reviewed,us,us
+2026-10-26T11:01:55.933Z,-59.8141,-27.7087,173.493,4.8,mb,47,57,7.321,1.07,us,us6000u4z3,2026-10-26T15:39:30.560Z,"South Sandwich Islands region",earthquake,13.27,6.192,0.085,42,reviewed,us,us
+2026-10-26T10:30:22.297Z,-18.3187,-177.9801,636.621,4.3,mb,52,83,3.123,0.8,us,us6000u4yw,2026-10-26T10:44:44.040Z,"287 km E of Levuka, Fiji",earthquake,13.38,9.184,0.043,157,reviewed,us,us
+2026-10-26T10:13:01.234Z,-18.283,-178.0109,641.812,5.5,mww,86,38,3.078,0.82,us,us6000u4yr,2026-10-26T12:19:10.404Z,"283 km E of Levuka, Fiji",earthquake,11.17,7.478,0.078,16,reviewed,us,us
+2026-10-26T10:09:03.981Z,31.652,-104.396,6.4587,2.6,ml,31,71,0,0.1,tx,tx2026vbupcx,2026-10-26T14:33:35.851Z,"58 km S of Whites City, New Mexico",earthquake,1.012704778338,0.74627620016606,0.2,28,reviewed,tx,tx
+2026-10-26T08:10:33.644Z,44.7225,147.9339,139.439,4.5,mb,111,128,3.873,0.59,us,us6000u4yj,2026-10-26T10:02:21.040Z,"56 km S of Kuril’sk, Russia",earthquake,8.92,7.162,0.055,96,reviewed,us,us
+2026-10-26T07:48:16.240Z,40.2886,77.9297,10,4.5,mb,36,127,2.356,0.5,us,us6000u4yi,2026-10-26T09:00:07.040Z,"107 km WNW of Tumxuk, China",earthquake,5,1.804,0.103,28,reviewed,us,us
+2026-10-26T05:45:31.202Z,25.8377,67.9886,10,4.3,mb,39,187,9.035,0.47,us,us6000u4y8,2026-10-26T13:14:53.040Z,"26 km SSW of Sann, Pakistan",earthquake,13.58,1.98,0.099,29,reviewed,us,us
+2026-10-26T04:53:40.479Z,-8.443,121.5729,10,5,mb,34,112,3.857,0.82,us,us6000u4y1,2026-10-26T05:10:35.040Z,"45 km NNW of Ende, Indonesia",earthquake,11.32,1.884,0.103,30,reviewed,us,us
+2026-10-26T04:53:35.102Z,-14.0694,165.6991,10,4.8,mww,35,106,6.585,0.83,us,us6000u4y2,2026-10-26T05:16:27.040Z,"182 km NW of Port-Olry, Vanuatu",earthquake,11.38,1.889,0.098,10,reviewed,us,us
+2026-10-26T04:25:32.120Z,4.3227,-76.8709,84.268,4.3,mb,17,127,2.287,0.91,us,us6000u4xx,2026-10-26T04:59:17.236Z,"44 km SW of Sipí, Colombia",earthquake,7.18,16.424,0.189,8,reviewed,us,us
+2026-10-26T04:12:25.224Z,40.5558,141.9305,59.573,4.2,mb,19,181,0.699,0.49,us,us6000u4xv,2026-10-26T04:28:24.040Z,"37 km E of Hachinohe, Japan",earthquake,5.9,8.868,0.216,6,reviewed,us,us
+2026-10-26T03:59:22.208Z,-10.0437,123.2505,35,4.8,mb,48,55,6.082,0.46,us,us6000u4xp,2026-10-26T04:17:47.040Z,"41 km WNW of Kupang, Indonesia",earthquake,12.37,1.921,0.084,44,reviewed,us,us
+2026-10-26T03:41:46.590Z,19.068666666667,-66.079166666667,30.78,2.99,md,15,246,0.7555,0.28,pr,pr71537678,2026-10-26T04:13:37.530Z,"66 km N of San Juan, Puerto Rico",earthquake,1.53,10.89,0.11637762029379,10,reviewed,pr,pr
+2026-10-26T01:22:20.998Z,-13.8803,165.5831,10,4.9,mb,31,66,6.748,0.91,us,us6000u4xa,2026-10-26T01:38:29.040Z,"205 km NW of Port-Olry, Vanuatu",earthquake,9.81,1.906,0.132,18,reviewed,us,us
+2026-10-26T00:55:57.006Z,-33.0605,-72.1743,19.048,4.2,mb,26,186,0.444,0.62,us,us6000u4x2,2026-10-26T03:38:05.040Z,"50 km W of Valparaíso, Chile",earthquake,3.15,4.364,0.216,6,reviewed,us,us
+2026-10-25T23:32:08.371Z,-7.2149,124.338,568.75,4.3,mb,43,96,5.057,0.33,us,us6000u4wt,2026-10-26T03:21:29.040Z,"181 km NNW of Maubara, Timor Leste",earthquake,13.31,8.112,0.091,34,reviewed,us,us
+2026-10-25T22:16:27.821Z,27.8494,139.7272,482.177,4.8,mb,82,74,7.725,0.69,us,us6000u4wi,2026-10-25T23:11:02.040Z,"Bonin Islands, Japan region",earthquake,11.84,6.854,0.057,96,reviewed,us,us
+2026-10-25T22:14:16.010Z,27.8572,139.6916,485.13,5.3,mww,121,63,7.699,0.57,us,us6000u4we,2026-10-26T01:57:30.040Z,"Bonin Islands, Japan region",earthquake,10.22,6.053,0.083,14,reviewed,us,us
+2026-10-25T22:01:35.793Z,32.23,93.6303,10,4.7,mb,52,75,9.136,0.82,us,us6000u4wc,2026-10-26T00:17:59.040Z,"170 km ENE of Nagqu, China",earthquake,8.65,1.89,0.061,82,reviewed,us,us
+2026-10-25T21:17:39.120Z,18.849,-64.423166666667,8.26,3.25,md,13,278,0.3574,0.25,pr,pr71537658,2026-10-25T22:19:11.040Z,"69 km NE of Cruz Bay, U.S. Virgin Islands",earthquake,1.31,1.66,0.13257975978874,7,reviewed,pr,pr
+2026-10-25T20:35:54.777Z,39.8786,-107.8326,8.093,2.8,ml,38,42,0.405,0.71,us,us6000u4vz,2026-10-25T20:56:49.040Z,"18 km SSE of Meeker, Colorado",earthquake,2.18,7.615,0.037,98,reviewed,us,us
+2026-10-25T20:30:42.515Z,-14.2065,165.7734,10,4.8,mww,71,99,6.467,0.63,us,us6000u4vy,2026-10-25T20:49:14.040Z,"167 km WNW of Port-Olry, Vanuatu",earthquake,10.04,1.859,0.11,8,reviewed,us,us
+2026-10-25T19:54:29.501Z,29.447,-97.026,2.6605,2.7,ml,16,119,0.2,0.6,tx,tx2026vasgst,2026-10-26T14:34:31.296Z,"8 km W of Hallettsville, Texas",earthquake,2.2781582099793,1.611098315013,0.1,17,reviewed,tx,tx
+2026-10-25T19:26:12.258Z,-6.172,130.3943,127.02,4.4,mb,42,50,6.669,0.93,us,us6000u4vp,2026-10-25T19:50:40.040Z,"267 km WSW of Tual, Indonesia",earthquake,8.41,6.951,0.091,35,reviewed,us,us
+2026-10-25T17:49:58.419Z,52.1923,-178.8056,152.896,4.6,mb,74,83,0.413,0.8,us,us6000u4vb,2026-10-26T04:28:57.396Z,"153 km WNW of Adak, Alaska",earthquake,9.54,5.095,0.036,225,reviewed,us,us
+2026-10-25T17:44:23.735Z,36.274,71.1025,110.025,5.2,mww,93,20,2.315,0.77,us,us6000u4va,2026-10-25T18:27:54.570Z,"59 km SW of Ashkāsham, Afghanistan",earthquake,6.5,6.356,0.073,18,reviewed,us,us
+2026-10-25T17:11:49.932Z,-16.0993,-73.4741,62.095,4.7,mb,74,130,3.75,1.46,us,us6000u4v1,2026-10-25T17:36:35.040Z,"19 km NE of Atico, Peru",earthquake,8.65,7.582,0.058,89,reviewed,us,us
