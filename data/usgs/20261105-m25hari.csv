@@ -1,0 +1,43 @@
+time,latitude,longitude,depth,mag,magType,nst,gap,dmin,rms,net,id,updated,place,type,horizontalError,depthError,magError,magNst,status,locationSource,magSource
+2026-11-04T21:32:02.343Z,60.116,-153.379,154.7,2.7,ml,94,68,0.2,0.8,ak,aka2026vwruvq,2026-11-04T21:35:46.434Z,"52 km E of Port Alsworth, Alaska",earthquake,3.8,2.0109,0.3,53,automatic,ak,ak
+2026-11-04T21:24:25.643Z,-25.3174,179.8078,508.132,5,mb,44,89,4.4,0.86,us,us7000tw43,2026-11-04T21:39:19.040Z,"south of the Fiji Islands",earthquake,11.15,7.829,0.089,40,reviewed,us,us
+2026-11-04T19:55:26.313Z,12.6311,-87.1544,159.022,4.5,mb,73,144,1.411,0.68,us,us7000tw3k,2026-11-04T20:26:42.040Z,"2 km W of Chinandega, Nicaragua",earthquake,9.93,9.645,0.06,83,reviewed,us,us
+2026-11-04T19:53:34.570Z,56.625,-154.798,1.3,2.5,ml,15,177,0.3,0.7,ak,aka2026vwonln,2026-11-04T19:55:05.703Z,"52 km SW of Akhiok, Alaska",earthquake,15.3,6.8004,0.1,7,automatic,ak,ak
+2026-11-04T19:45:09.512Z,60.362,-152.465,100.9,2.7,ml,85,51,0.2,0.6,ak,aka2026vwogbw,2026-11-04T19:49:25.719Z,"56 km NW of Ninilchik, Alaska",earthquake,3.2,2.1809,0.4,55,automatic,ak,ak
+2026-11-04T19:39:02.999Z,60.068,-147.74,29.4,2.6,ml,38,117,0.2,0.9,ak,aka2026vwoaud,2026-11-04T19:43:26.619Z,"15 km E of Chenega, Alaska",earthquake,3.9,2.3166,0.2,28,automatic,ak,ak
+2026-11-04T19:15:13.940Z,35.956666666667,-117.3935,2.49,2.69,ml,50,33,0.1109,0.15,ci,ci41358359,2026-11-04T20:35:30.650Z,"21 km N of Searles Valley, CA",earthquake,0.12,0.37,0.10247174476392,24,reviewed,ci,ci
+2026-11-04T18:59:30.920Z,35.958,-117.3925,2.64,3.12,ml,44,33,0.111,0.15,ci,ci41358343,2026-11-04T19:57:24.857Z,"21 km N of Searles Valley, CA",earthquake,0.14,0.7,0.14361679335713,157,reviewed,ci,ci
+2026-11-04T17:28:36.393Z,63.368,-151.802,1,2.5,ml,31,38,0.1,0.9,ak,aka2026vwjrrv,2026-11-04T17:30:11.212Z,"19 km SSW of Denali National Park, Alaska",earthquake,2.5,2.2599,0.2,6,automatic,ak,ak
+2026-11-04T17:09:51.240Z,19.4948,-68.0753,10,3.49,md,8,225,1.1315,0.49,pr,pr2026308002,2026-11-04T19:06:20.678Z,"106 km NNE of Punta Cana, Dominican Republic",earthquake,5.3,5.14,0.07,6,reviewed,pr,pr
+2026-11-04T16:59:23.360Z,19.4396,-68.1008,11,4.21,md,26,202,0.9673,0.65,pr,pr2026308001,2026-11-04T20:17:54.789Z,"100 km NNE of Punta Cana, Dominican Republic",earthquake,2.78,3.72,0.11,14,reviewed,pr,pr
+2026-11-04T14:59:59.236Z,58.862,-153.022,68.7,2.5,ml,30,78,0.3,0.7,ak,aka2026vwesvb,2026-11-04T19:07:12.160Z,"83 km SW of Nanwalek, Alaska",earthquake,4.3,3.8743,0.2,18,reviewed,ak,ak
+2026-11-04T12:22:50.918Z,52.208,-168.733,12.6,4.2,ml,62,217,0.8,1,ak,aka2026vvzmnn,2026-11-04T17:21:48.010Z,"81 km S of Nikolski, Alaska",earthquake,4.2,2.5696,0.2,42,reviewed,ak,ak
+2026-11-04T12:14:45.921Z,-5.4706,152.0301,10,4.3,mb,10,181,1.278,0.56,us,us7000tvxj,2026-11-04T14:03:56.040Z,"127 km SSW of Kokopo, Papua New Guinea",earthquake,9.56,1.972,0.201,7,reviewed,us,us
+2026-11-04T12:12:50.864Z,61.047,-151.217,75.8,2.8,ml,83,32,0.3,0.7,ak,aka2026vvzdxb,2026-11-04T12:16:05.933Z,"4 km WSW of Tyonek, Alaska",earthquake,2.2,2.1564,0.3,48,automatic,ak,ak
+2026-11-04T11:53:35.500Z,38.5195,-112.91966666667,3.82,2.53,ml,30,57,0.01942,0.09,uu,uu80162776,2026-11-04T14:29:41.355Z,"15 km NNE of Milford, Utah",earthquake,0.22,0.35,0.23087892735958,16,reviewed,uu,uu
+2026-11-04T11:15:40.351Z,57.027,-156.155,3.3,2.5,ml,25,213,0.6,0.6,ak,aka2026vvxgii,2026-11-04T11:17:12.101Z,"92 km SE of Ugashik, Alaska",earthquake,8.4,3.2349,0.1,12,automatic,ak,ak
+2026-11-04T10:17:33.908Z,31.88,-101.738,7.1045,2.5,ml,47,53,0.1,0.1,tx,tx2026vsikdc,2026-11-04T15:30:32.607Z,"24 km W of Garden City, Texas",earthquake,0.58065588876558,1.9163477965775,0.2,28,reviewed,tx,tx
+2026-11-04T08:34:33.730Z,63.496,-147.461,5,3.2,ml,108,17,0.4,1.3,ak,aka2026vvrwqb,2026-11-04T09:43:11.040Z,"75 km E of Cantwell, Alaska",earthquake,1.7,,0.2,75,automatic,ak,ak
+2026-11-04T07:40:12.288Z,4.3895,127.0325,49.074,5,mb,33,111,3.03,1.16,us,us7000tvwj,2026-11-04T08:00:21.040Z,"207 km ESE of Sarangani, Philippines",earthquake,13.8,8.413,0.113,25,reviewed,us,us
+2026-11-04T06:57:35.378Z,59.89,-153.144,131.9,3,ml,102,51,0.1,0.8,ak,aka2026vvoqoh,2026-11-04T11:02:27.040Z,"55 km ENE of Pedro Bay, Alaska",earthquake,3.4,2.004,0.3,69,automatic,ak,ak
+2026-11-04T06:11:30.600Z,17.914333333333,-66.851333333333,11.7,2.81,md,12,192,0.06598,0.17,pr,pr71538438,2026-11-04T06:41:24.170Z,"8 km SSE of Maria Antonia, Puerto Rico",earthquake,0.46,0.42,0.076115768008855,9,reviewed,pr,pr
+2026-11-04T06:08:49.254Z,59.248,-136.659,5,3.2,ml,27,111,0.3,1.5,ak,aka2026vvnaod,2026-11-04T16:17:38.606Z,"40 km WSW of Covenant Life, Alaska",earthquake,3.8,0,0.2,19,reviewed,ak,ak
+2026-11-04T05:51:19.066Z,65.871,-146.852,5.2,2.5,ml,35,52,0.7,0.9,ak,aka2026vvmlci,2026-11-04T05:55:25.843Z,"59 km SSE of Beaver, Alaska",earthquake,2.8,2.0597,0.2,18,automatic,ak,ak
+2026-11-04T05:13:47.530Z,18.789833333333,-67.327,14.09,3.05,md,28,216,0.3804,0.17,pr,pr71538433,2026-11-04T05:56:10.970Z,"40 km NW of San Antonio, Puerto Rico",earthquake,0.49,0.63,0.013240058246454,9,reviewed,pr,pr
+2026-11-04T05:12:40.710Z,18.727333333333,-67.283166666667,15.43,3.03,md,15,213,0.3056,0.27,pr,pr71538428,2026-11-04T05:58:49.930Z,"32 km NW of San Antonio, Puerto Rico",earthquake,0.9,1.04,0.016490444494629,9,reviewed,pr,pr
+2026-11-04T04:49:27.438Z,53.5345,-159.9536,35,3,ml,17,252,1.967,0.44,us,us7000tvw3,2026-11-04T06:36:17.040Z,"203 km S of Sand Point, Alaska",earthquake,4.51,2.022,0.105,12,reviewed,us,us
+2026-11-04T04:18:29.908Z,58.435,-152.15,38.6,2.6,ml,21,171,0.2,0.6,ak,aka2026vvjipe,2026-11-04T05:47:57.112Z,"60 km NNE of Ouzinkie, Alaska",earthquake,5.6,3.973,0.2,11,reviewed,ak,ak
+2026-11-04T03:17:35.366Z,61.733,-151.161,83.1,3.4,ml,128,28,0.4,1,ak,aka2026vvhhsm,2026-11-04T05:01:17.040Z,"31 km SSE of Skwentna, Alaska",earthquake,1.9,2.1096,0.2,84,automatic,ak,ak
+2026-11-04T03:06:09.938Z,59.467,-152.734,77.6,2.5,ml,32,103,0.6,0.5,ak,aka2026vvgxwy,2026-11-04T03:08:26.635Z,"47 km WNW of Nanwalek, Alaska",earthquake,5.4,4.8813,0.2,15,automatic,ak,ak
+2026-11-04T02:40:29.495Z,27.0774,140.2929,429.393,4.2,mb,61,88,8.639,0.67,us,us7000tvvc,2026-11-04T03:05:33.040Z,"Bonin Islands, Japan region",earthquake,14.06,7.963,0.082,42,reviewed,us,us
+2026-11-04T02:26:30.731Z,59.087,-152.229,62.1,2.7,ml,31,143,0.8,0.5,ak,aka2026vvfpmx,2026-11-04T02:27:51.732Z,"34 km SSW of Nanwalek, Alaska",earthquake,5.8,7.6448,0.2,4,automatic,ak,ak
+2026-11-04T02:15:15.910Z,19.4611,-68.9866,26,3.56,md,12,279,0.2645,0.18,pr,pr2026308000,2026-11-04T08:51:00.923Z,"46 km NE of Samaná, Dominican Republic",earthquake,2.18,2.59,0.09,9,reviewed,pr,pr
+2026-11-04T01:34:55.239Z,55.09,-159.561,5.3,2.6,ml,16,248,1,0.6,ak,aka2026vvdxak,2026-11-04T05:44:06.493Z,"65 km ESE of Sand Point, Alaska",earthquake,8.7,4.0026,0.1,11,reviewed,ak,ak
+2026-11-04T01:15:43.509Z,36.36333333,-98.15433333,6.47,3.18,ml,95,55,0,0.1,ok,ok2026vozy,2026-11-04T13:50:38.161Z,"3 km SE of Meno, Oklahoma",earthquake,,0.2,0.2,46,reviewed,ok,ok
+2026-11-04T01:13:32.827Z,64.056,-148.816,5,3,ml,99,18,0.3,1.3,ak,aka2026vvdefx,2026-11-04T01:42:26.242Z,"15 km ENE of Ferry, Alaska",earthquake,2.6,,0.3,68,automatic,ak,ak
+2026-11-04T00:48:30.789Z,36.36316667,-98.15366667,6.79,3.57,ml,92,55,0,0.11,ok,ok2026vozb,2026-11-04T13:18:37.544Z,"3 km SE of Meno, Oklahoma",earthquake,,0.2,0.26,42,reviewed,ok,ok
+2026-11-04T00:37:05.518Z,60.516,-147.535,11.9,2.5,ml,37,145,0.4,0.9,ak,aka2026vvbyqq,2026-11-04T02:03:40.474Z,"56 km NNE of Chenega, Alaska",earthquake,3.4,1.667,0.2,18,automatic,ak,ak
+2026-11-04T00:32:59.774Z,-19.2691,-177.5052,556.459,4.6,mb,84,31,4.069,0.95,us,us7000tvuv,2026-11-04T01:23:06.040Z,"Fiji region",earthquake,11.76,6.376,0.041,176,reviewed,us,us
+2026-11-03T23:48:27.808Z,54.418,-160.123,14.3,2.6,ml,15,279,1.2,0.7,ak,aka2026vvaimd,2026-11-03T23:58:43.043Z,"105 km SSE of Sand Point, Alaska",earthquake,19.9,13.7337,0.2,6,reviewed,ak,ak
+2026-11-03T22:50:33.435Z,39.294,73.3725,10,4.5,mb,49,80,1.2,0.69,us,us7000tvu9,2026-11-04T00:32:14.040Z,"99 km ESE of Kyzyl-Eshme, Kyrgyzstan",earthquake,5.32,1.868,0.09,36,reviewed,us,us
+2026-11-03T22:27:59.037Z,-17.5316,-178.3689,541.868,4.4,mb,98,51,2.404,0.61,us,us7000tvu2,2026-11-03T22:56:53.040Z,"252 km ENE of Levuka, Fiji",earthquake,12.26,6.163,0.052,106,reviewed,us,us
