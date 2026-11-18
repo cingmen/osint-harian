@@ -1,0 +1,43 @@
+time,latitude,longitude,depth,mag,magType,nst,gap,dmin,rms,net,id,updated,place,type,horizontalError,depthError,magError,magNst,status,locationSource,magSource
+2026-11-18T21:28:47.873Z,51.445,172.9,10,5.1,mb,89,127,3.564,0.87,us,us6000ubw3,2026-11-18T22:28:59.064Z,"157 km S of Attu Station, Alaska",earthquake,10.28,1.866,0.038,219,reviewed,us,us
+2026-11-18T20:38:39.129Z,-2.9421,146.4693,16.856,4.7,mb,34,49,1.268,0.61,us,us6000ubvu,2026-11-18T22:17:22.040Z,"134 km SW of Lorengau, Papua New Guinea",earthquake,8.83,4.132,0.117,25,reviewed,us,us
+2026-11-18T20:30:54.635Z,9.8835,123.257,10,4.4,mb,50,112,3.619,0.91,us,us6000ubvt,2026-11-18T22:46:25.686Z,"12 km SSE of Jimalalud, Philippines",earthquake,9.72,1.89,0.086,41,reviewed,us,us
+2026-11-18T19:14:23.713Z,-57.7514,-146.746,10,6.1,mww,105,86,23.288,0.81,us,us7000tz37,2026-11-18T21:19:40.040Z,"Pacific-Antarctic Ridge",earthquake,12.15,1.86,0.073,18,reviewed,us,us
+2026-11-18T18:49:26.640Z,40.539833068848,-120.6686630249,4.0900001525879,2.55,md,10,211,0.09655,0.06,nc,nc75468022,2026-11-18T19:12:20.545Z,"14 km N of Susanville, CA",earthquake,0.73,1.16999996,0.15,10,automatic,nc,nc
+2026-11-18T18:46:53.317Z,-21.411,-68.368,133.871,4.5,mb,52,58,0.899,1.01,us,us7000tz33,2026-11-18T19:12:25.040Z,"23 km SSW of Ollagüe, Chile",earthquake,5.74,6.678,0.093,34,reviewed,us,us
+2026-11-18T18:08:00.785Z,-5.4599,35.1065,10,5,mb,105,31,4.251,0.81,us,us7000tz2w,2026-11-18T22:38:21.153Z,"46 km NNE of Kilimatinde, Tanzania",earthquake,8.39,1.81,0.061,88,reviewed,us,us
+2026-11-18T18:07:31.393Z,-5.4691,35.1024,10,4.3,mb,59,57,4.26,0.58,us,us7000tz32,2026-11-18T18:50:23.040Z,"45 km NNE of Kilimatinde, Tanzania",earthquake,9.43,1.881,0.081,46,reviewed,us,us
+2026-11-18T17:22:23.454Z,32.2779,130.4609,10,5.3,mww,148,74,0.766,0.56,us,us7000tz1n,2026-11-18T22:50:14.416Z,"4 km NNW of Tsunagi, Japan",earthquake,5.25,1.838,0.063,24,reviewed,us,us
+2026-11-18T16:33:27.127Z,47.2371,-113.5736,10,2.7,ml,35,61,0.312,0.93,us,us7000tz1f,2026-11-18T20:02:02.040Z,"9 km NW of Seeley Lake, Montana",earthquake,1.89,2.01,0.041,80,reviewed,us,us
+2026-11-18T16:25:02.070Z,45.0855,-125.06266666667,-0.21,2.5,ml,17,310,0.9046,1.28,uw,uw714140301,2026-11-18T19:03:23.550Z,"83 km W of Lincoln City, Oregon",earthquake,49.62,31.61,0.14347592264863,11,reviewed,uw,uw
+2026-11-18T16:24:27.988Z,43.7963,-128.0431,10,4.2,mb,60,198,2.893,0.83,us,us7000tz1c,2026-11-18T22:34:35.130Z,"off the coast of Oregon",earthquake,11.06,1.992,0.085,40,reviewed,us,us
+2026-11-18T16:06:51.220Z,12.0918,143.9927,10,5.3,mb,111,55,3.579,0.65,us,us7000tz1a,2026-11-18T22:16:56.186Z,"149 km SSW of Merizo Village, Guam",earthquake,9.52,1.856,0.051,132,reviewed,us,us
+2026-11-18T13:58:45.390Z,32.38867,-119.212,5.76,3.3,ml,9,301,0.8137,0.18,ci,ci41363287,2026-11-18T16:35:55.054Z,"91 km SW of San Clemente Is. (NW tip), CA",earthquake,0.82,31.61,0.21,7,reviewed,ci,ci
+2026-11-18T13:56:49.271Z,38.1669,-117.8467,7.1777,2.85,ml,22,49,0.305,0.176,nn,nn00927112,2026-11-18T17:49:02.756Z,"33 km SE of Mina, Nevada",earthquake,,1.8368,0.33,16,reviewed,nn,nn
+2026-11-18T13:05:18.670Z,40.273498535156,-124.86416625977,5.0199999809265,2.93,md,15,318,0.3993,0.28,nc,nc75467972,2026-11-18T15:38:28.040Z,"49 km W of Petrolia, CA",earthquake,13.61,12.1199999,0.13,7,automatic,nc,nc
+2026-11-18T12:46:07.933Z,62.016,-151.397,77.8,3.3,ml,137,62,0.6,1,ak,aka2026wvwonz,2026-11-18T13:49:31.040Z,"2 km N of Skwentna, Alaska",earthquake,2.2,2.4218,0.2,91,automatic,ak,ak
+2026-11-18T12:27:55.408Z,51.171,-178.254,21.4,4,ml,31,212,0.5,0.5,ak,aka2026wvvyxt,2026-11-18T18:16:04.029Z,"136 km SW of Adak, Alaska",earthquake,6.2,3.1622,0.1,24,reviewed,ak,ak
+2026-11-18T11:10:57.037Z,-39.6909,-91.5033,10,4.9,mb,44,223,14.356,0.42,us,us7000tyza,2026-11-18T11:48:21.040Z,"West Chile Rise",earthquake,15.89,1.996,0.082,46,reviewed,us,us
+2026-11-18T11:05:58.129Z,56.272,-157.184,27,2.7,ml,13,297,0.8,0.4,ak,aka2026wvtfya,2026-11-18T11:06:54.684Z,"75 km E of Chignik, Alaska",earthquake,18,9.3559,0.3,5,automatic,ak,ak
+2026-11-18T09:37:00.617Z,38.7192,137.8725,10,5.2,mb,121,96,2.186,0.62,us,us7000tyyw,2026-11-18T10:26:08.189Z,"86 km NW of Ryōtsu-minato, Japan",earthquake,6.88,1.846,0.027,465,reviewed,us,us
+2026-11-18T09:33:04.130Z,60.248,-153.194,0,2.7,ml,73,44,0.2,0.9,ak,aka2026wvqdhv,2026-11-18T11:53:32.040Z,"62 km E of Port Alsworth, Alaska",earthquake,2.2,1.5052,0.2,49,automatic,ak,ak
+2026-11-18T09:02:30.907Z,63.26,-153.348,5,2.6,ml,38,70,0.6,1.4,ak,aka2026wvpcvd,2026-11-18T09:06:43.912Z,"58 km ENE of Nikolai, Alaska",earthquake,3.4,,0.1,26,automatic,ak,ak
+2026-11-18T06:35:06.121Z,63.222,-151.292,0.1,2.5,ml,50,68,0.4,0.9,ak,aka2026wvkfab,2026-11-18T06:37:54.690Z,"41 km SSE of Denali National Park, Alaska",earthquake,2.5,1.9564,0.1,30,automatic,ak,ak
+2026-11-18T06:07:42.780Z,-15.1438,-75.9238,21.895,5.9,mww,82,131,3.262,0.97,us,us7000tyy8,2026-11-18T11:43:03.610Z,"85 km WNW of San Juan, Peru",earthquake,8.71,5.366,0.046,45,reviewed,us,us
+2026-11-18T05:27:41.920Z,32.346,-119.2325,5.8,3.94,mw,14,258,0.8567,0.21,ci,ci41363167,2026-11-18T18:34:44.833Z,"96 km SW of San Clemente Is. (NW tip), CA",earthquake,0.53,31.61,,5,reviewed,ci,ci
+2026-11-18T05:25:43.280Z,0.4346,-103.0838,10,5.2,mb,53,197,17.591,1.05,us,us7000tyxz,2026-11-18T05:38:36.040Z,"Galapagos Triple Junction region",earthquake,9.83,1.934,0.029,400,reviewed,us,us
+2026-11-18T05:24:55.060Z,-8.0301,120.6485,10,4.8,mb,26,105,3.126,1.25,us,us7000tyy2,2026-11-18T05:59:49.040Z,"67 km NNE of Ruteng, Indonesia",earthquake,7.18,1.899,0.125,20,reviewed,us,us
+2026-11-18T04:49:11.633Z,33.1868,-3.4696,10,4.1,mb,13,186,1.127,0.57,us,us7000tyxl,2026-11-18T09:24:25.359Z,"95 km SSE of Tmourghout, Morocco",earthquake,6.61,1.992,0.198,7,reviewed,us,us
+2026-11-18T04:41:32.015Z,-8.2501,120.5285,10,5.8,mww,80,50,3.306,1.36,us,us7000tyxi,2026-11-18T06:49:25.429Z,"40 km N of Ruteng, Indonesia",earthquake,8.39,1.842,0.075,17,reviewed,us,us
+2026-11-18T04:21:35.658Z,-8.151,120.6489,10,5.2,mb,40,87,3.241,1.04,us,us7000tyxc,2026-11-18T06:20:56.413Z,"54 km NNE of Ruteng, Indonesia",earthquake,10.97,1.878,0.1,33,reviewed,us,us
+2026-11-18T03:42:34.269Z,-5.7009,146.5479,52.291,5.8,mww,65,29,3.724,0.85,us,us7000tyx2,2026-11-18T06:19:18.983Z,"99 km ESE of Madang, Papua New Guinea",earthquake,7.6,6.738,0.062,25,reviewed,us,us
+2026-11-18T03:39:51.225Z,63.859,-149.148,0.3,2.6,ml,55,31,0.2,0.9,ak,aka2026wvejbp,2026-11-18T03:46:53.042Z,"8 km W of Healy, Alaska",earthquake,2.4,2.2173,0.2,34,automatic,ak,ak
+2026-11-18T03:23:58.023Z,-2.9907,136.6576,10,4.8,mb,38,73,10.739,1.04,us,us7000tywx,2026-11-18T03:42:34.040Z,"134 km ENE of Nabire, Indonesia",earthquake,5.71,1.896,0.112,25,reviewed,us,us
+2026-11-18T03:01:33.114Z,37.0461,-104.9291,6.081,2.6,ml,14,102,0.139,1.08,us,us7000tywr,2026-11-18T03:33:02.040Z,"11 km SW of Weston, Colorado",earthquake,2.71,4.84,0.062,34,reviewed,us,us
+2026-11-18T02:46:16.700Z,17.9463,-68.6115,90,4.06,md,30,201,0.6125,0.54,pr,pr2026322000,2026-11-18T04:02:58.707Z,"47 km S of Boca de Yuma, Dominican Republic",earthquake,2.86,3.37,0.1,20,reviewed,pr,pr
+2026-11-18T02:22:56.671Z,12.1387,143.8866,10,5.8,mww,92,38,3.591,1.1,us,us7000tywi,2026-11-18T20:32:58.491Z,"150 km SW of Merizo Village, Guam",earthquake,9.25,1.854,0.103,9,reviewed,us,us
+2026-11-18T01:02:51.758Z,63.19,-150.666,129.7,2.8,ml,81,46,0.7,0.6,ak,aka2026wuzcyb,2026-11-18T01:06:24.140Z,"65 km SE of Denali National Park, Alaska",earthquake,2.9,2.3895,0.3,48,automatic,ak,ak
+2026-11-18T00:48:56.089Z,45.6863,26.452,130.266,5.3,mww,96,39,2.14,0.61,us,us7000tyw8,2026-11-18T23:03:58.357Z,"16 km ESE of Comandău, Romania",earthquake,8.66,5.309,0.04,60,reviewed,us,us
+2026-11-18T00:46:31.418Z,39.1912,71.5875,10,5.3,mb,45,99,0.33,0.6,us,us7000tyw6,2026-11-18T05:05:20.040Z,"7 km SE of Karakenja, Tajikistan",earthquake,6.79,1.857,0.076,58,reviewed,us,us
+2026-11-18T00:26:22.786Z,61.548,-147.62,11.4,2.8,ml,90,23,0.3,0.8,ak,aka2026wuxxhs,2026-11-18T04:41:35.040Z,"29 km S of Glacier View, Alaska",earthquake,1.8,1.3029,0.1,55,automatic,ak,ak
+2026-11-17T23:25:33.527Z,13.022,57.6884,10,4.5,mb,37,112,11.943,0.55,us,us7000tyvt,2026-11-18T04:20:39.040Z,"Owen Fracture Zone region",earthquake,8.64,1.93,0.101,29,reviewed,us,us
